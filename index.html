@@ -144,6 +144,7 @@ details[open]{border-color:var(--edge)}
 #ins ul{margin:0;padding-left:18px;color:var(--mute)}
 #ins li{margin-bottom:4px}
 #ins b{color:var(--ink)}
+.cap{margin:8px 0 0;color:var(--mute);font-size:12px}
 </style>
 </head>
 <body>
@@ -187,8 +188,8 @@ details[open]{border-color:var(--edge)}
       <h2 style="font-size:18px;margin-bottom:12px">Build a chart</h2>
       <div class="builder">
         <label>X axis (category or date)<select id="bx"></select></label>
-        <label>Chart type<select id="bt"><option value="line">Line</option><option value="bar">Bar</option><option value="hbar">Horizontal bar</option><option value="stacked">Stacked bar</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></select></label>
-        <label>Combine repeats<select id="ba"><option value="sum">Sum</option><option value="avg">Average</option></select></label>
+        <label>Chart type<select id="bt"><option value="line">Line</option><option value="bar">Bar</option><option value="hbar">Horizontal bar</option><option value="stacked">Stacked bar</option><option value="combo">Bars + line (2+ values)</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></select></label>
+        <label>Combine repeats<select id="ba"><option value="auto">Auto (recommended)</option><option value="sum">Sum</option><option value="avg">Average</option></select></label>
         <label>Group dates by<select id="bg"><option value="">None</option><option value="month">Month</option><option value="quarter">Quarter</option><option value="year">Year</option></select></label>
         <label>Filter by<select id="bf"></select></label>
         <label>Value<select id="bfv" disabled></select></label>
@@ -201,7 +202,7 @@ details[open]{border-color:var(--edge)}
       <div class="chips" id="by"></div>
     </div>
 
-    <div class="panel xp"><h2 style="font-size:18px;margin-right:auto">Export</h2><button class="btn" id="xpdf">PDF report</button><button class="btn ghost" id="xxls">Excel workbook</button><button class="btn ghost" id="xcsv">Clean CSV</button></div>
+    <div class="panel xp"><h2 style="font-size:18px;margin-right:auto">Export</h2><button class="btn" id="xpdf">PDF report</button><button class="btn ghost" id="xxls">Excel workbook</button><button class="btn ghost" id="xcsv">Clean CSV</button><button class="btn ghost" id="xsave">Save dashboard</button><button class="btn ghost" id="xload">Load dashboard</button><input type="file" id="cfgfile" accept=".json" hidden><input id="rtitle" placeholder="PDF report title (optional)" aria-label="PDF report title" style="flex:1;min-width:190px;padding:9px 12px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit"><label class="btn ghost" for="logo" style="cursor:pointer">Add logo to PDF</label><input type="file" id="logo" accept="image/png,image/jpeg" hidden></div>
     <div class="grid" id="charts"></div>
 
     <div class="panel"><h2 style="font-size:18px">Data preview</h2><div class="tbl" id="tbl"></div></div>
@@ -276,6 +277,7 @@ drop.addEventListener('drop',e=>e.dataTransfer.files[0]&&read(e.dataTransfer.fil
 file.onchange=()=>file.files[0]&&read(file.files[0]);
 
 function read(f){
+  $('msg').textContent='Reading '+f.name+'...';
   const r=new FileReader();
   r.onload=e=>{try{load(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:true}),f.name)}catch(err){$('msg').textContent='Could not read this file. Please check it is a valid Excel or CSV file.'}};
   r.readAsArrayBuffer(f);
@@ -288,7 +290,8 @@ function load(w,name){
 $('sheet').onchange=useSheet;
 
 function useSheet(){
-  const ws=wb.Sheets[$('sheet').value];
+  const ws=wb.Sheets[$('sheet').value];FN=0;ER=0;
+  for(const k in ws){if(k[0]==='!')continue;const c=ws[k];if(c.t==='e'){c.t='z';c.v=null;ER++}else if(c.f&&c.v===undefined)FN++}
   let data=XLSX.utils.sheet_to_json(ws,{defval:null,raw:true});
   data=data.filter(r=>Object.values(r).some(v=>v!=null));
   if(!data.length){$('msg').textContent='This sheet has no data rows. Make sure row 1 holds column headings.';return}
@@ -305,20 +308,20 @@ function useSheet(){
   $('bx').innerHTML=(cats.length?cats:cols).map(c=>`<option>${esc(c)}</option>`).join('');
   $('by').innerHTML=nums.map((c,i)=>`<span class="chip${i<2?' on':''}" tabindex="0" role="button" data-c="${esc(c)}">${esc(c)}</span>`).join('');
   document.querySelectorAll('.chip').forEach(ch=>{ch.onclick=()=>ch.classList.toggle('on');ch.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ch.classList.toggle('on')}}});
-  kpis();table();fillFilter();insights();
+  classify();kpis();table();fillFilter();insights();
   charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';
   if(!nums.length){$('msg').textContent='No numeric columns found, so there is nothing to chart.';return}
-  const x=$('bx').value;
-  addChart({x,ys:nums.slice(0,3),type:'line',agg:'sum'});
-  addChart({x,ys:[nums[0]],type:'bar',agg:'sum'});
-  if(cats.length)addChart({x:cats[0],ys:[nums[0]],type:'doughnut',agg:'sum'});
+  autoDash();
+  
+  
+  
   setTimeout(()=>$('app').scrollIntoView({behavior:'smooth'}),200);
 }
 
 function kpis(){
-  $('kpis').innerHTML=nums.slice(0,4).map(c=>{
+  $('kpis').innerHTML=MEAS.slice(0,4).map(c=>{
     const v=rows.map(r=>r[c]).filter(x=>x!==null);const s=v.reduce((a,b)=>a+b,0);
-    return `<div class="kpi"><small>${esc(c)}</small><strong>${fmt(s)}</strong><span>avg ${fmt(s/v.length)} · max ${fmt(Math.max(...v))}</span></div>`}).join('');
+    return `<div class="kpi"><small>${esc(c)}</small><strong>${ff(c,AVG[c]?s/v.length:s)}</strong><span>${AVG[c]?'average':'total'}, per-row avg ${ff(c,s/v.length)} · max ${ff(c,v.reduce((a,b)=>Math.max(a,b),-Infinity))}</span></div>`}).join('');
 }
 function table(){
   const sh=rows.slice(0,50);
@@ -328,31 +331,33 @@ function table(){
 const roll=(v,g)=>{if(!g)return v;let y,m,a=/^(\d{4})-(\d{2})/.exec(v);if(a){y=a[1];m=+a[2]}else if(a=/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/.exec(v)){y=a[3];m=+a[2]}else return v;return g==='year'?y:g==='quarter'?y+' Q'+Math.ceil(m/3):y+'-'+String(m).padStart(2,'0')};
 function series(x,ys,agg,g,f){
   const m=new Map();
-  rows.forEach(r=>{if(f&&f.c&&r[f.c]!==f.v)return;const k=r[x]===''?'(blank)':roll(r[x],g);if(!m.has(k))m.set(k,{n:0,v:ys.map(()=>0)});const o=m.get(k);o.n++;ys.forEach((y,i)=>o.v[i]+=r[y]||0)});
+  rows.forEach(r=>{if(f&&f.c&&r[f.c]!==f.v)return;const k=r[x]===''?'(blank)':roll(r[x],g);if(!m.has(k))m.set(k,{n:ys.map(()=>0),v:ys.map(()=>0)});const o=m.get(k);ys.forEach((y,i)=>{if(r[y]!==null){o.v[i]+=r[y];o.n[i]++}})});
   const labels=[...m.keys()];if(g)labels.sort();
-  return{labels,data:ys.map((y,i)=>labels.map(k=>{const o=m.get(k);return agg==='avg'?o.v[i]/o.n:o.v[i]}))};
+  return{labels,data:ys.map((y,i)=>labels.map(k=>{const o=m.get(k);return isAvg(y,agg)?(o.n[i]?o.v[i]/o.n[i]:0):o.v[i]}))};
 }
 function build(cv,cfg,light){
   const {labels,data}=series(cfg.x,cfg.ys,cfg.agg,cfg.g,cfg.f);
   const round=cfg.type==='pie'||cfg.type==='doughnut';
   let L=labels,D=data;
   if(cfg.s||+cfg.n){const dir=cfg.s||'desc',ix=L.map((_,i)=>i).sort((a,b)=>dir==='asc'?D[0][a]-D[0][b]:D[0][b]-D[0][a]),sel=ix.slice(0,+cfg.n||ix.length);L=sel.map(i=>labels[i]);D=data.map(d=>sel.map(i=>d[i]))}
+  if(!round&&L.length>600){const k=Math.ceil(L.length/400),NL=[],ND=D.map(()=>[]);for(let i=0;i<L.length;i+=k){NL.push(L[i]);D.forEach((d,j)=>{const s=d.slice(i,i+k).reduce((a,b)=>a+b,0);ND[j].push(isAvg(cfg.ys[j],cfg.agg)?s/Math.min(k,d.length-i):s)})}L=NL;D=ND}
   if(round){
     const idx=L.map((_,i)=>i).sort((a,b)=>D[0][b]-D[0][a]).slice(0,10);
     L=idx.map(i=>labels[i]);D=[idx.map(i=>data[0][i])];
   }
   const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid');
+  const dual=!round&&!['hbar','stacked'].includes(cfg.type)&&new Set(cfg.ys.map(y=>FAM[y])).size>1;
   const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:PAL,borderColor:light?'#fff':css('--card'),borderWidth:2}
-    :{label:cfg.ys[i],data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:PAL[i%8]+'33',fill:cfg.type==='area',tension:.3,borderWidth:2,pointRadius:L.length>40?0:3,borderRadius:3});
-  if(cfg.tr&&!round&&cfg.type!=='hbar')D.forEach((d,i)=>{const n=d.length;if(n>2){let sx=0,sy=0,sxy=0,sxx=0;d.forEach((y,k)=>{sx+=k;sy+=y;sxy+=k*y;sxx+=k*k});const b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a=(sy-b*sx)/n;ds.push({label:cfg.ys[i]+' trend',data:d.map((_,k)=>a+b*k),type:'line',borderColor:PAL[i%8],borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false,backgroundColor:'transparent'})}});
+    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:PAL[i%8]+'33',fill:cfg.type==='area',tension:.3,borderWidth:2,pointRadius:L.length>40?0:3,borderRadius:3});
+  if(cfg.tr&&!round&&cfg.type!=='hbar')D.forEach((d,i)=>{const n=d.length;if(n>2){let sx=0,sy=0,sxy=0,sxx=0;d.forEach((y,k)=>{sx+=k;sy+=y;sxy+=k*y;sxx+=k*k});const b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a=(sy-b*sx)/n;ds.push({label:cfg.ys[i]+' trend',data:d.map((_,k)=>a+b*k),type:'line',yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',borderColor:PAL[i%8],borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false,backgroundColor:'transparent'})}});
   return new Chart(cv,{type:CT(cfg.type),data:{labels:L,datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),indexAxis:cfg.type==='hbar'?'y':'x',
-    plugins:{legend:{display:round||ds.length>1,labels:{color:t}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmt(cfg.type==='hbar'?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
-    scales:round?{}:{x:{stacked:cfg.type==='stacked',ticks:{color:t,maxTicksLimit:12,callback:cfg.type==='hbar'?v=>fmt(v):undefined},grid:{color:g}},y:{stacked:cfg.type==='stacked',ticks:{color:t,callback:cfg.type==='hbar'?undefined:v=>fmt(v)},grid:{color:g}}}}});
+    plugins:{legend:{display:round||ds.length>1,labels:{color:t}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${ff(c.dataset.col||cfg.ys[0],cfg.type==='hbar'?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
+    scales:round?{}:{x:{stacked:cfg.type==='stacked',ticks:{color:t,maxTicksLimit:12,callback:cfg.type==='hbar'?v=>ff(cfg.ys[0],v):undefined},grid:{color:g}},y:{stacked:cfg.type==='stacked',ticks:{color:t,callback:cfg.type==='hbar'?undefined:v=>ff(cfg.ys[0],v)},grid:{color:g}},...(dual?{y2:{position:'right',grid:{drawOnChartArea:false},ticks:{color:t,callback:v=>ff(cfg.ys.find(y=>FAM[y]!==FAM[cfg.ys[0]]),v)}}}:{})}}});
 }
 function addChart(cfg){
   const id='c'+Date.now()+Math.random().toString(36).slice(2,5);
   const el=document.createElement('div');el.className='cc';
-  el.innerHTML=`<header><h2>${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div>`;
+  el.innerHTML=`<header><h2>${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(capText(cfg))}</p>`;
   $('charts').appendChild(el);
   const item={chart:build($(id),cfg),cfg,el};charts.push(item);
   el.querySelector('select').onchange=e=>{item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg)};
@@ -363,7 +368,7 @@ $('add').onclick=()=>{
   const ys=[...document.querySelectorAll('.chip.on')].map(c=>c.dataset.c);
   if(!ys.length){$('msg').textContent='Pick at least one value to plot.';return}
   $('msg').textContent='';
-  addChart({x:$('bx').value,ys,type:$('bt').value,agg:$('ba').value,g:$('bg').value,f:$('bf').value?{c:$('bf').value,v:$('bfv').value}:null,n:$('bn').value,s:$('bs').value,tr:$('btr').checked});
+  const cfg0={x:$('bx').value,ys,type:$('bt').value,agg:$('ba').value,g:$('bg').value,f:$('bf').value?{c:$('bf').value,v:$('bfv').value}:null,n:$('bn').value,s:$('bs').value,tr:$('btr').checked};const bad=validate(cfg0);if(bad){$('msg').textContent=bad;toast(bad);return}if(new Set(ys.map(y=>FAM[y])).size>1)toast('Different kinds of values are drawn on separate left and right axes.');addChart(cfg0);
 };
 $('sample').onclick=()=>{
   const m=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],reg=['North','South','West'];
@@ -372,26 +377,76 @@ $('sample').onclick=()=>{
   const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(d),'FY Sales');
   load(w,'Sample data');
 };
-const TN={line:'Line',bar:'Bar',hbar:'Horizontal bar',stacked:'Stacked bar',area:'Area',doughnut:'Doughnut',pie:'Pie'},BARS=['bar','hbar','stacked'],CT=t=>t==='area'?'line':(t==='hbar'||t==='stacked')?'bar':t;
+const TN={line:'Line',bar:'Bar',hbar:'Horizontal bar',stacked:'Stacked bar',combo:'Bars + line',area:'Area',doughnut:'Doughnut',pie:'Pie'},BARS=['bar','hbar','stacked','combo'],CT=t=>t==='area'?'line':(t==='hbar'||t==='stacked'||t==='combo')?'bar':t;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const ctt=c=>c.ys.join(', ')+' by '+c.x+(c.g?' ('+c.g+')':'')+(c.f?' ['+c.f.c+': '+c.f.v+']':'');
-function fillFilter(){$('bf').innerHTML='<option value="">No filter</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fv()}
+function fillFilter(){$('bf').innerHTML='<option value="">No filter</option>'+CAT.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fv()}
 function fv(){const c=$('bf').value;$('bfv').innerHTML=c?[...new Set(rows.map(r=>r[c]))].slice(0,200).map(v=>`<option value="${esc(v)}">${esc(v||'(blank)')}</option>`).join(''):'';$('bfv').disabled=!c}
 $('bf').onchange=fv;
 function insights(){
-  const n=nums[0],x=cats[0],out=[];let miss=0;
+  const n=MEAS[0],x=CAT[0]||DATE[0],out=[];let miss=0;
   rows.forEach(r=>cols.forEach(c=>{if(r[c]===''||r[c]===null)miss++}));
-  const dup=rows.length-new Set(rows.map(r=>JSON.stringify(r))).size;
+  const dup=rows.length>50000?0:rows.length-new Set(rows.map(r=>JSON.stringify(r))).size;
   out.push(`<b>Data check:</b> ${rows.length} rows, ${nums.length} numeric and ${cats.length} text or date columns, ${miss} empty cells, ${dup} duplicate rows.`);
+  if(ER)out.push(`<b>Excel errors:</b> ${ER} cells with errors such as #DIV/0! were treated as empty.`);
+  if(FN)out.push(`<b>Formulas without saved results:</b> ${FN} cells. Open the file in Excel, save it once and upload it again to include them.`);
+  if(rows.length>600)out.push('<b>Large data:</b> long charts are automatically grouped into about 400 points so they stay fast.');
   if(n&&x){
-    const s=series(x,[n],'sum'),v=s.data[0],tot=v.reduce((a,b)=>a+b,0)||1,ix=s.labels.map((_,i)=>i).sort((a,b)=>v[b]-v[a]);
-    if(s.labels.length>1)out.push(`<b>${esc(n)}:</b> highest for ${esc(s.labels[ix[0]])} at ${fmt(v[ix[0]])} (${(v[ix[0]]/tot*100).toFixed(1)}% of the total) and lowest for ${esc(s.labels[ix[ix.length-1]])}.`);
-    const d=series(x,[n],'sum','month');
-    if(d.labels.length>2&&/^\d{4}-\d{2}$/.test(d.labels[0])){const w=d.data[0],l=w.length-1,ch=w[l-1]?(w[l]-w[l-1])/Math.abs(w[l-1])*100:0;out.push(`<b>Latest month (${d.labels[l]}):</b> ${fmt(w[l])}, ${ch>=0?'up':'down'} ${Math.abs(ch).toFixed(1)}% from ${d.labels[l-1]}.`)}
+    const s=series(x,[n],'auto'),v=s.data[0],tot=v.reduce((a,b)=>a+b,0)||1,ix=s.labels.map((_,i)=>i).sort((a,b)=>v[b]-v[a]);
+    if(s.labels.length>1)out.push(`<b>${esc(n)}:</b> highest for ${esc(s.labels[ix[0]])} at ${ff(n,v[ix[0]])}${AVG[n]?'':' ('+(v[ix[0]]/tot*100).toFixed(1)+'% of the total)'} and lowest for ${esc(s.labels[ix[ix.length-1]])}.`);
+    const d=DATE[0]?series(DATE[0],[n],'auto','month'):{labels:[]};
+    if(d.labels.length>2&&/^\d{4}-\d{2}$/.test(d.labels[0])){const w=d.data[0],l=w.length-1,ch=w[l-1]?(w[l]-w[l-1])/Math.abs(w[l-1])*100:0;out.push(`<b>Latest month (${d.labels[l]}):</b> ${ff(n,w[l])}, ${ch>=0?'up':'down'} ${Math.abs(ch).toFixed(1)}% from ${d.labels[l-1]}.`)}
   }
   $('ins').innerHTML='<h2 style="font-size:18px;margin-bottom:8px">Quick insights</h2><ul>'+out.map(o=>'<li>'+o+'</li>').join('')+'</ul>';
 }
 $('cur').onchange=$('nsys').onchange=()=>{NF.cur=$('cur').value;NF.sys=$('nsys').value;if(rows.length){kpis();insights();rebuild()}};
+var DATE=[],CAT=[],MEAS=[],AVG={},FAM={},RT={};
+const isAvg=(y,a)=>a==='avg'||(a==='auto'&&AVG[y]);
+const pc=(c,v)=>RT[c]?(v*100).toFixed(1)+'%':(+v).toFixed(1)+'%';
+const ff=(c,v)=>FAM[c]==='ratio'?pc(c,v):FAM[c]==='unit'?(+v).toLocaleString(undefined,{maximumFractionDigits:2}):fmt(v);
+const capText=c=>c.ys.map(y=>y+': '+(isAvg(y,c.agg)?'average':'total')).join(', ')+(c.g?', grouped by '+c.g:'')+(c.ys.some(y=>FAM[y]!==FAM[c.ys[0]])?'. Right axis: '+c.ys.find(y=>FAM[y]!==FAM[c.ys[0]]):'');
+function classify(){
+  const u=c=>new Set(rows.map(r=>r[c])).size;
+  DATE=cats.filter(c=>{const v=rows.map(r=>r[c]).filter(Boolean);return v.length&&v.filter(x=>/^\d{4}-\d{2}/.test(x)||/^\d{1,2}[\/.-]\d{1,2}[\/.-]\d{4}/.test(x)).length/v.length>=.8});
+  CAT=cats.filter(c=>!DATE.includes(c)&&u(c)>1&&u(c)<=Math.max(2,Math.min(15,rows.length/2)));
+  AVG={};FAM={};RT={};
+  nums.forEach(c=>{
+    const v=rows.map(r=>r[c]).filter(x=>x!==null),frac=v.length>0&&v.every(x=>x>=-1&&x<=1)&&v.some(x=>x%1),
+      rt=/%|percent|pct|rate|ratio|margin|growth|yield|roe|roa|cagr|share/i.test(c)||frac;
+    RT[c]=!!frac;FAM[c]=rt?'ratio':/qty|quantity|units|count|volume|headcount|orders|customers|pieces/i.test(c)?'unit':'amt';
+    AVG[c]=rt||/price|average|avg|score|per\s/i.test(c);
+  });
+  MEAS=nums.filter(c=>{const v=rows.map(r=>r[c]).filter(x=>x!==null),mx=v.reduce((a,b)=>Math.max(a,b),-Infinity),mn=v.reduce((a,b)=>Math.min(a,b),Infinity);return !(/(^|[^a-z])(id|sr|sl|code|year|rank|serial)([^a-z]|$)/i.test(c)||(v.length>2&&v.every(Number.isInteger)&&new Set(v).size===v.length&&mx-mn<v.length*2))});
+  if(!MEAS.length)MEAS=nums.slice();
+}
+function validate(c){
+  const fams=new Set(c.ys.map(y=>FAM[y]));
+  if(fams.size>2)return 'Mix at most two kinds of values (amounts, units, percentages) on one chart.';
+  if(c.agg==='sum'&&c.ys.some(y=>AVG[y]))return 'Summing a rate, price or average gives a misleading number. Use Auto or Average.';
+  if(c.type==='pie'||c.type==='doughnut'){
+    if(DATE.includes(c.x))return 'Pie and doughnut charts show shares of a whole. Pick a category column instead of a date.';
+    if(AVG[c.ys[0]])return c.ys[0]+' is a rate or average, so shares of a whole are not meaningful. Use a bar chart.';
+    if(rows.some(r=>r[c.ys[0]]<0))return 'This column has negative values, which a pie chart cannot show.';
+  }
+  if(c.type==='stacked'&&(c.ys.some(y=>AVG[y])||fams.size>1))return 'Stacked bars only make sense for amounts that add up. Use grouped bars or lines for rates and mixed units.';
+  if(c.type==='combo'&&c.ys.length<2)return 'Pick at least two values for a bars + line chart.';
+  return '';
+}
+function autoDash(){
+  const money=MEAS.filter(c=>FAM[c]==='amt'&&!AVG[c]),units=MEAS.filter(c=>FAM[c]==='unit'&&!AVG[c]),rat=MEAS.filter(c=>FAM[c]==='ratio'),m1=money[0]||units[0]||MEAS[0],D=DATE[0],C=CAT[0];
+  if(D){const g=new Set(rows.map(r=>r[D])).size>24?'month':'';
+    if(money.length)addChart({x:D,ys:money.slice(0,3),type:'line',agg:'auto',g});
+    if(units.length)addChart({x:D,ys:units.slice(0,2),type:'line',agg:'auto',g});
+    if(rat.length)addChart({x:D,ys:rat.slice(0,2),type:'line',agg:'auto',g});}
+  if(C&&m1){addChart({x:C,ys:[m1],type:'bar',agg:'auto',s:'desc'});
+    if(!AVG[m1]&&rows.every(r=>r[m1]===null||r[m1]>=0)&&new Set(rows.map(r=>r[C])).size<=8)addChart({x:C,ys:[m1],type:'doughnut',agg:'auto'});}
+  if(!charts.length&&m1&&cats[0])addChart({x:cats[0],ys:[m1],type:'bar',agg:'auto',n:'10',s:'desc'});
+}
+var FN=0,ER=0,LOGO=null;
+$('logo').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{LOGO={d:r.result,f:/png/i.test(f.type)?'PNG':'JPEG',w:im.naturalWidth,h:im.naturalHeight};toast('Logo will appear in PDF reports')};im.src=r.result};r.readAsDataURL(f);e.target.value=''};
+$('xsave').onclick=()=>charts.length?save(slug(fname)+'.chartzen.json',JSON.stringify({v:1,fname,NF,charts:charts.map(c=>c.cfg)})):toast('Add a chart first.');
+$('xload').onclick=()=>$('cfgfile').click();
+$('cfgfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;f.text().then(t=>{try{const j=JSON.parse(t);if(!rows.length)return toast('Load your data file first, then load the dashboard.');const ok=j.charts.filter(c=>cols.includes(c.x)&&c.ys.every(y=>cols.includes(y))&&(!c.f||cols.includes(c.f.c)));if(j.NF){NF.cur=j.NF.cur||'';NF.sys=j.NF.sys||'in';$('cur').value=NF.cur;$('nsys').value=NF.sys;kpis();insights()}charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';ok.forEach(c=>addChart(c));toast(ok.length+' of '+j.charts.length+' charts restored')}catch(err){toast('That is not a valid Chartzen dashboard file.')}})};
 function rebuild(){charts.forEach(c=>{c.chart.destroy();c.chart=build(c.el.querySelector('canvas'),c.cfg)})}
 matchMedia('(prefers-color-scheme:dark)').addEventListener('change',rebuild);
 var fname='Chartzen report';
@@ -415,13 +470,15 @@ function ctable(it){const s=series(it.cfg.x,it.cfg.ys,it.cfg.agg,it.cfg.g,it.cfg
 function makePdf(list){
   const doc=new jspdf.jsPDF({orientation:'l',unit:'pt',format:'a4'}),W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
   doc.setFillColor(10,26,47);doc.rect(0,0,W,H,'F');
+  if(LOGO)doc.addImage(LOGO.d,LOGO.f,50,50,LOGO.w*60/LOGO.h,60);
   doc.setTextColor(255);doc.setFontSize(40);doc.setFont('helvetica','bold');doc.text('Chartzen',50,H/2-10);
   doc.setFontSize(16);doc.setFont('helvetica','normal');doc.setTextColor(147,165,186);
-  doc.text(fname,50,H/2+20);doc.text(new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'})+', '+list.length+' chart'+(list.length>1?'s':''),50,H/2+44);
+  doc.text($('rtitle').value||fname,50,H/2+20);doc.text(new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'})+', '+list.length+' chart'+(list.length>1?'s':''),50,H/2+44);
   list.forEach(it=>{
     doc.addPage();doc.setTextColor(16,36,62);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text(ctitle(it),40,48);
     const w=W-80;doc.addImage(shot(it).toDataURL('image/jpeg',.92),'JPEG',40,66,w,Math.min(w*640/1200,H-120));
     doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(120);doc.text('Made with Chartzen',40,H-24);
+    if(LOGO)doc.addImage(LOGO.d,LOGO.f,W-40-LOGO.w*22/LOGO.h,H-42,LOGO.w*22/LOGO.h,22);
   });
   return doc.output('blob');
 }
