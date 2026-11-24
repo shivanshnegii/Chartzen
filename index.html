@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chartzen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Manrope:wght@400;500;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#f2f5f7;--card:#fff;--ink:#10243e;--mute:#5d6f84;--line:#dbe3ea;--acc:#0b8f6c;--accsoft:#dff3ec;--grid:#e6ecf1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1a2b;--card:#142338;--ink:#e8eef5;--mute:#93a5ba;--line:#26384f;--acc:#2fd0a3;--accsoft:#12382f;--grid:#223650}}
+:root[data-theme="dark"]{--bg:#0d1a2b;--card:#142338;--ink:#e8eef5;--mute:#93a5ba;--line:#26384f;--acc:#2fd0a3;--accsoft:#12382f;--grid:#223650}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 Manrope,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}
+h1,h2{font-family:'Bricolage Grotesque',Manrope,sans-serif;margin:0}
+h1{font-size:clamp(34px,6vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.sub{color:var(--mute);margin:10px 0 0;max-width:56ch}
+.drop{margin-top:24px;border:2px dashed var(--line);background:var(--card);border-radius:14px;padding:34px 18px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.drop.on,.drop:hover{border-color:var(--acc);background:var(--accsoft)}
+.drop b{font-family:'Bricolage Grotesque',sans-serif;font-size:20px}
+.drop p{margin:6px 0 0;color:var(--mute)}
+button,select{font:inherit;color:var(--ink)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible,select:focus-visible,.drop:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+#app{display:none}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi small{color:var(--mute);display:block}
+.kpi strong{font:800 24px 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+.kpi span{color:var(--mute);font-size:13px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:18px}
+.builder{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+.builder label{display:flex;flex-direction:column;gap:4px;color:var(--mute);font-size:13px}
+select{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:150px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:5px 12px;cursor:pointer;background:var(--bg);font-size:13px}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:16px;margin-top:18px}
+.cc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.cc header{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.cc h2{font-size:17px}
+.cc .tools{display:flex;gap:6px}
+.cc .tools select{min-width:0;padding:4px 6px;font-size:13px}
+.cc .tools button{padding:4px 9px;font-size:13px}
+.cv{position:relative;height:320px}
+.tbl{overflow-x:auto;max-height:300px;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{position:sticky;top:0;background:var(--card)}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.note{color:var(--mute);font-size:13px;margin-top:22px}
+#splash{position:fixed;inset:0;z-index:100;background:#0a1a2f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;cursor:pointer;transition:transform .75s cubic-bezier(.77,0,.18,1)}
+#splash.out{transform:translateY(-100%)}
+#splash svg{width:132px;height:auto;overflow:visible}
+.bar{fill:#0b8f6c;transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);animation:rise .6s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*.1s + .2s)}
+.ln{fill:none;stroke:#2fd0a3;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:120;stroke-dashoffset:120;animation:draw .9s ease forwards .8s}
+.dot{fill:#e0a526;opacity:0;transform-box:fill-box;transform-origin:center;animation:pop .35s ease forwards 1.65s}
+.wm{font:800 clamp(34px,8vw,54px)/1 'Bricolage Grotesque',Manrope,sans-serif;letter-spacing:-.03em;color:#fff;opacity:0;animation:up .6s ease forwards 1.2s}
+.tg{color:#93a5ba;opacity:0;animation:up .6s ease forwards 1.5s}
+@keyframes rise{to{transform:scaleY(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{0%{opacity:0;transform:scale(0)}70%{transform:scale(1.5)}100%{opacity:1;transform:scale(1)}}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#splash{display:none}}
+html{scroll-behavior:smooth}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav div{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.nav .lg{font:800 20px 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;margin-right:auto;color:var(--ink);text-decoration:none}
+.nav a{color:var(--mute);text-decoration:none;padding:6px 10px;border-radius:8px;transition:color .2s,background .2s}
+.nav a:hover{color:var(--ink);background:var(--accsoft)}
+.nav a.cta{background:var(--acc);color:#fff;font-weight:700}
+.nav a.cta:hover{opacity:.9;background:var(--acc);color:#fff}
+.nav a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media(max-width:620px){.nav a:not(.lg):not(.cta){display:none}}
+.btn,.chip,.kpi,.cc,.drop,select{transition:transform .2s ease,box-shadow .2s ease,background .2s,border-color .2s,opacity .2s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(11,143,108,.25)}
+.btn:active{transform:translateY(0)}
+.chip:hover{border-color:var(--acc)}
+.kpi:hover,.cc:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,36,62,.08)}
+.kpi,.cc{animation:cardin .5s ease both}
+@keyframes cardin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec{margin-top:72px}
+.sec>h2{font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;margin-bottom:6px}
+.sec>p.lead{color:var(--mute);max-width:60ch;margin:0 0 22px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px 28px}
+.feat div{border-top:2px solid var(--acc);padding-top:12px}
+.feat h3{font:700 17px 'Bricolage Grotesque',sans-serif;margin:0 0 4px}
+.feat p{margin:0;color:var(--mute)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;counter-reset:s}
+.steps div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;counter-increment:s}
+.steps div::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accsoft);color:var(--acc);font-weight:800;margin-bottom:10px}
+.steps h3{margin:0 0 4px;font:700 17px 'Bricolage Grotesque',sans-serif}
+.steps p{margin:0;color:var(--mute)}
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start}
+@media(max-width:760px){.about{grid-template-columns:1fr}}
+.about p{margin:0 0 12px;color:var(--mute)}
+.about ul{margin:0;padding-left:18px;color:var(--mute)}
+.about li{margin-bottom:6px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:border-color .2s}
+details[open]{border-color:var(--acc)}
+summary{cursor:pointer;font-weight:700}
+summary:focus-visible{outline:3px solid var(--acc);outline-offset:4px}
+details p{margin:8px 0 0;color:var(--mute)}
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.kpi,.cc{animation:none}*{transition:none!important}}
+/* Clear glass */
+:root{--card:rgba(255,255,255,.5);--line:rgba(255,255,255,.7);--grid:rgba(16,36,62,.08);--sep:rgba(16,36,62,.12);--hl:rgba(255,255,255,.55);--edge:rgba(255,255,255,.8);--sh:rgba(31,60,100,.14);--field:rgba(255,255,255,.45);--thbg:rgba(255,255,255,.75)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:rgba(24,42,68,.42);--line:rgba(255,255,255,.16);--grid:rgba(255,255,255,.1);--sep:rgba(255,255,255,.14);--hl:rgba(255,255,255,.12);--edge:rgba(255,255,255,.22);--sh:rgba(0,0,0,.4);--field:rgba(255,255,255,.08);--thbg:rgba(20,35,56,.85)}}
+:root[data-theme="dark"]{--card:rgba(24,42,68,.42);--line:rgba(255,255,255,.16);--grid:rgba(255,255,255,.1);--sep:rgba(255,255,255,.14);--hl:rgba(255,255,255,.12);--edge:rgba(255,255,255,.22);--sh:rgba(0,0,0,.4);--field:rgba(255,255,255,.08);--thbg:rgba(20,35,56,.85)}
+body{background:var(--bg);position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(42vw 42vw at 8% 6%,rgba(47,208,163,.5),transparent 70%),radial-gradient(46vw 46vw at 94% 16%,rgba(70,120,255,.42),transparent 70%),radial-gradient(42vw 42vw at 72% 94%,rgba(255,176,60,.38),transparent 70%),radial-gradient(36vw 36vw at 4% 82%,rgba(160,110,255,.34),transparent 70%)}
+.kpi,.cc,.panel,.steps div,details,.drop,.nav div{background:linear-gradient(135deg,var(--hl),transparent 45%),var(--card);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 36px var(--sh),inset 0 1px 0 var(--edge),inset 0 -1px 0 var(--hl)}
+.drop{border-style:solid;border-radius:26px}
+.drop.on,.drop:hover{background:linear-gradient(135deg,var(--hl),transparent 45%),var(--accsoft);border-color:var(--acc)}
+.nav{background:transparent;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.nav div{width:calc(100% - 24px);max-width:1156px;margin:10px auto;padding:8px 12px 8px 18px;border-radius:999px}
+.nav a{border-radius:999px}
+.nav a.cta{background:linear-gradient(180deg,rgba(255,255,255,.3),transparent 55%),var(--acc);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+select,.chip{background:var(--field);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--edge);border-radius:14px}
+.chip{border-radius:999px}
+.chip.on{background:linear-gradient(180deg,rgba(255,255,255,.3),transparent 55%),var(--acc);border-color:rgba(255,255,255,.5);color:#fff}
+.btn{background:linear-gradient(180deg,rgba(255,255,255,.32),transparent 55%),var(--acc);border:1px solid rgba(255,255,255,.45);border-radius:14px;box-shadow:0 6px 18px rgba(11,143,108,.28),inset 0 1px 0 rgba(255,255,255,.55)}
+.btn.ghost{background:var(--field);color:var(--ink);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--edge);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+th{background:var(--thbg)}
+th,td{border-bottom-color:var(--sep)}
+.tbl{border-radius:14px}
+.feat div{border-top:1px solid var(--sep);border-image:none}
+.feat div::before{content:"";display:block;width:34px;height:4px;border-radius:4px;background:var(--acc);margin:-14px 0 12px}
+footer{border-top-color:var(--sep)}
+details[open]{border-color:var(--edge)}
+.kpi:hover,.cc:hover{box-shadow:0 16px 44px var(--sh),inset 0 1px 0 var(--edge),inset 0 -1px 0 var(--hl)}
+.xp{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#theme{padding:6px 14px;margin-left:4px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:90;padding:10px 20px;border-radius:999px;color:var(--ink);background:var(--card);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid var(--line);box-shadow:0 10px 36px var(--sh);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div id="splash" aria-hidden="true">
+  <svg viewBox="0 0 120 80">
+    <rect class="bar" style="--i:0" x="10" y="46" width="14" height="26" rx="2"/>
+    <rect class="bar" style="--i:1" x="32" y="34" width="14" height="38" rx="2"/>
+    <rect class="bar" style="--i:2" x="54" y="40" width="14" height="32" rx="2"/>
+    <rect class="bar" style="--i:3" x="76" y="22" width="14" height="50" rx="2"/>
+    <rect class="bar" style="--i:4" x="98" y="10" width="14" height="62" rx="2"/>
+    <path class="ln" d="M17 46 L39 34 L61 40 L83 22 L105 10"/>
+    <circle class="dot" cx="105" cy="10" r="5"/>
+  </svg>
+  <div class="wm">Chartzen</div>
+  <div class="tg">Excel data in, charts out.</div>
+</div>
+<nav class="nav"><div>
+  <a class="lg" href="#top">Chartzen</a>
+  <a href="#features">Features</a><a href="#how">How it works</a><a href="#about">About</a><a href="#faq">FAQ</a>
+  <button class="btn ghost" id="theme">Dark mode</button>
+  <a class="cta" href="#drop">Upload file</a>
+</div></nav>
+<div id="toast" role="status"></div>
+<div class="wrap" id="top">
+  <h1>Chartzen</h1>
+  <p class="sub">Drop in your Excel or CSV file and get the charts you need. Your data is read inside your browser and never uploaded anywhere.</p>
+
+  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file">
+    <b>Drop your .xlsx, .xls or .csv here</b>
+    <p>or click to choose a file</p>
+    <input type="file" id="file" accept=".xlsx,.xls,.csv" hidden>
+  </div>
+  <div class="row"><button class="btn ghost" id="sample">Try sample data</button><span id="msg" class="sub" style="margin:0"></span></div>
+
+  <div id="app">
+    <div class="row"><label class="sub" style="margin:0">Sheet <select id="sheet"></select></label><span id="meta" class="sub" style="margin:0"></span></div>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="panel">
+      <h2 style="font-size:18px;margin-bottom:12px">Build a chart</h2>
+      <div class="builder">
+        <label>X axis (category or date)<select id="bx"></select></label>
+        <label>Chart type<select id="bt"><option value="line">Line</option><option value="bar">Bar</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></select></label>
+        <label>Combine repeats<select id="ba"><option value="sum">Sum</option><option value="avg">Average</option></select></label>
+        <label>Group dates by<select id="bg"><option value="">None</option><option value="month">Month</option><option value="quarter">Quarter</option><option value="year">Year</option></select></label>
+        <button class="btn" id="add">Add chart</button>
+      </div>
+      <p style="color:var(--mute);font-size:13px;margin:12px 0 6px">Values to plot (pick one or more)</p>
+      <div class="chips" id="by"></div>
+    </div>
+
+    <div class="panel xp"><h2 style="font-size:18px;margin-right:auto">Export</h2><button class="btn" id="xpdf">PDF report</button><button class="btn ghost" id="xxls">Excel workbook</button><button class="btn ghost" id="xcsv">Clean CSV</button></div>
+    <div class="grid" id="charts"></div>
+
+    <div class="panel"><h2 style="font-size:18px">Data preview</h2><div class="tbl" id="tbl"></div></div>
+  </div>
+  <section class="sec" id="features">
+  <h2>Everything you need to go from sheet to chart</h2>
+  <p class="lead">Built for the way finance teams actually work: messy exports, multiple sheets and reports due today.</p>
+  <div class="feat">
+    <div><h3>Instant dashboard</h3><p>KPI totals, averages and three starter charts appear the moment your file loads.</p></div>
+    <div><h3>Cleans messy numbers</h3><p>Values with ₹, $, %, commas and bracketed negatives like (500) are read correctly.</p></div>
+    <div><h3>Multi-sheet workbooks</h3><p>Switch between sheets of the same workbook without uploading again.</p></div>
+    <div><h3>Five chart types</h3><p>Line, bar, area, pie and doughnut, with sum or average grouping for repeated labels.</p></div>
+    <div><h3>Indian number style</h3><p>Large figures are shown in lakhs (L) and crores (Cr) so they read at a glance.</p></div>
+    <div><h3>Private by design</h3><p>Your file is processed inside your browser and is never sent to a server.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="how">
+  <h2>How it works</h2>
+  <p class="lead">Three steps, no formulas and no setup.</p>
+  <div class="steps">
+    <div><h3>Upload your file</h3><p>Drop an .xlsx, .xls or .csv file. Keep column headings in the first row.</p></div>
+    <div><h3>Review the dashboard</h3><p>Chartzen finds your number and category columns and draws the charts that fit.</p></div>
+    <div><h3>Customise and save</h3><p>Pick your own X axis and values, change the chart type, then download each chart as a PNG.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <h2>About Chartzen</h2>
+  <div class="about">
+    <div>
+      <p>Chartzen is a charting tool for finance professionals: analysts, accountants, FP&amp;A teams and business owners who keep their numbers in Excel and need clear charts for reports, reviews and presentations.</p>
+      <p>Instead of building every chart by hand, you upload your data and get a working set of charts in seconds, then refine them to match what you need.</p>
+    </div>
+    <ul>
+      <li>Monthly and quarterly revenue and expense trends</li>
+      <li>Budget versus actual comparisons</li>
+      <li>Region, product or cost-centre breakdowns</li>
+      <li>Quick charts for board decks and management reports</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <h2>Questions people ask</h2>
+  <p class="lead"></p>
+  <details><summary>Which file formats work?</summary><p>Excel files (.xlsx and .xls) and CSV files. If a workbook has several sheets, choose the one you want from the Sheet menu.</p></details>
+  <details><summary>Is my financial data safe?</summary><p>Yes. Everything is read and charted inside your own browser. Your file is not uploaded or stored anywhere.</p></details>
+  <details><summary>Why is one of my columns not available to plot?</summary><p>A column is treated as numeric when most of its cells are numbers. Columns with mostly text are used as the X axis instead. Check for stray text in your number columns.</p></details>
+  <details><summary>How large can my file be?</summary><p>Thousands of rows work smoothly. The data preview shows the first 50 rows, but every row is used in the charts and totals.</p></details>
+  <details><summary>Can I use the charts in a report or deck?</summary><p>Yes. Use the Download menu on any chart for PNG, JPG, PDF or CSV, or export every chart at once as a PDF report or Excel workbook.</p></details>
+</section>
+
+<footer><span>Chartzen. Made for finance professionals.</span><span>Your data stays in your browser.</span></footer>
+</div>
+
+<script>
+const PAL=['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a'];
+let wb=null,rows=[],cols=[],nums=[],cats=[],charts=[];
+const $=id=>document.getElementById(id);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt=v=>Math.abs(v)>=1e7?(v/1e7).toFixed(2)+' Cr':Math.abs(v)>=1e5?(v/1e5).toFixed(2)+' L':v.toLocaleString(undefined,{maximumFractionDigits:2});
+const toNum=v=>{if(typeof v==='number')return v;if(v==null||v==='')return null;let s=String(v).replace(/[₹$€£,%\s]/g,'');if(/^\(.*\)$/.test(s))s='-'+s.slice(1,-1);const n=Number(s);return s!==''&&!isNaN(n)?n:null};
+
+const drop=$('drop'),file=$('file');
+drop.onclick=()=>file.click();
+drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();file.click()}};
+['dragover','dragenter'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('on')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('on')}));
+drop.addEventListener('drop',e=>e.dataTransfer.files[0]&&read(e.dataTransfer.files[0]));
+file.onchange=()=>file.files[0]&&read(file.files[0]);
+
+function read(f){
+  const r=new FileReader();
+  r.onload=e=>{try{load(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:true}),f.name)}catch(err){$('msg').textContent='Could not read this file. Please check it is a valid Excel or CSV file.'}};
+  r.readAsArrayBuffer(f);
+}
+function load(w,name){
+  wb=w;$('msg').textContent=name;fname=name.replace(/\.[^.]+$/,'');
+  $('sheet').innerHTML=wb.SheetNames.map(n=>`<option>${n}</option>`).join('');
+  useSheet();
+}
+$('sheet').onchange=useSheet;
+
+function useSheet(){
+  const ws=wb.Sheets[$('sheet').value];
+  let data=XLSX.utils.sheet_to_json(ws,{defval:null,raw:true});
+  data=data.filter(r=>Object.values(r).some(v=>v!=null));
+  if(!data.length){$('msg').textContent='This sheet has no data rows. Make sure row 1 holds column headings.';return}
+  cols=Object.keys(data[0]);
+  nums=[];cats=[];
+  cols.forEach(c=>{
+    const vals=data.map(r=>r[c]).filter(v=>v!=null&&v!=='');
+    const ok=vals.filter(v=>toNum(v)!==null&&!(v instanceof Date)).length;
+    (vals.length&&ok/vals.length>=.7)?nums.push(c):cats.push(c);
+  });
+  rows=data.map(r=>{const o={};cols.forEach(c=>{let v=r[c];if(v instanceof Date)v=v.toISOString().slice(0,10);o[c]=nums.includes(c)?toNum(v):(v==null?'':String(v))});return o});
+  $('app').style.display='block';
+  $('meta').textContent=`${rows.length} rows, ${cols.length} columns`;
+  $('bx').innerHTML=(cats.length?cats:cols).map(c=>`<option>${c}</option>`).join('');
+  $('by').innerHTML=nums.map((c,i)=>`<span class="chip${i<2?' on':''}" tabindex="0" role="button" data-c="${c}">${c}</span>`).join('');
+  document.querySelectorAll('.chip').forEach(ch=>{ch.onclick=()=>ch.classList.toggle('on');ch.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ch.classList.toggle('on')}}});
+  kpis();table();
+  charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';
+  if(!nums.length){$('msg').textContent='No numeric columns found, so there is nothing to chart.';return}
+  const x=$('bx').value;
+  addChart({x,ys:nums.slice(0,3),type:'line',agg:'sum'});
+  addChart({x,ys:[nums[0]],type:'bar',agg:'sum'});
+  if(cats.length)addChart({x:cats[0],ys:[nums[0]],type:'doughnut',agg:'sum'});
+  setTimeout(()=>$('app').scrollIntoView({behavior:'smooth'}),200);
+}
+
+function kpis(){
+  $('kpis').innerHTML=nums.slice(0,4).map(c=>{
+    const v=rows.map(r=>r[c]).filter(x=>x!==null);const s=v.reduce((a,b)=>a+b,0);
+    return `<div class="kpi"><small>${c}</small><strong>${fmt(s)}</strong><span>avg ${fmt(s/v.length)} · max ${fmt(Math.max(...v))}</span></div>`}).join('');
+}
+function table(){
+  const sh=rows.slice(0,50);
+  $('tbl').innerHTML='<table><thead><tr>'+cols.map(c=>`<th>${c}</th>`).join('')+'</tr></thead><tbody>'+sh.map(r=>'<tr>'+cols.map(c=>nums.includes(c)?`<td class="n">${r[c]==null?'':r[c].toLocaleString()}</td>`:`<td>${r[c]}</td>`).join('')+'</tr>').join('')+'</tbody></table>';
+}
+
+const roll=(v,g)=>{if(!g)return v;let y,m,a=/^(\d{4})-(\d{2})/.exec(v);if(a){y=a[1];m=+a[2]}else if(a=/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/.exec(v)){y=a[3];m=+a[2]}else return v;return g==='year'?y:g==='quarter'?y+' Q'+Math.ceil(m/3):y+'-'+String(m).padStart(2,'0')};
+function series(x,ys,agg,g){
+  const m=new Map();
+  rows.forEach(r=>{const k=r[x]===''?'(blank)':roll(r[x],g);if(!m.has(k))m.set(k,{n:0,v:ys.map(()=>0)});const o=m.get(k);o.n++;ys.forEach((y,i)=>o.v[i]+=r[y]||0)});
+  const labels=[...m.keys()];if(g)labels.sort();
+  return{labels,data:ys.map((y,i)=>labels.map(k=>{const o=m.get(k);return agg==='avg'?o.v[i]/o.n:o.v[i]}))};
+}
+function build(cv,cfg,light){
+  const {labels,data}=series(cfg.x,cfg.ys,cfg.agg,cfg.g);
+  const round=cfg.type==='pie'||cfg.type==='doughnut';
+  let L=labels,D=data;
+  if(round){
+    const idx=L.map((_,i)=>i).sort((a,b)=>D[0][b]-D[0][a]).slice(0,10);
+    L=idx.map(i=>labels[i]);D=[idx.map(i=>data[0][i])];
+  }
+  const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid');
+  const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:PAL,borderColor:light?'#fff':css('--card'),borderWidth:2}
+    :{label:cfg.ys[i],data:d,borderColor:PAL[i%8],backgroundColor:cfg.type==='bar'?PAL[i%8]:PAL[i%8]+'33',fill:cfg.type==='area',tension:.3,borderWidth:2,pointRadius:L.length>40?0:3,borderRadius:3});
+  return new Chart(cv,{type:cfg.type==='area'?'line':cfg.type,data:{labels:L,datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),
+    plugins:{legend:{display:round||ds.length>1,labels:{color:t}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.parsed.y??c.parsed)}`}}},
+    scales:round?{}:{x:{ticks:{color:t,maxTicksLimit:12},grid:{color:g}},y:{ticks:{color:t,callback:v=>fmt(v)},grid:{color:g}}}}});
+}
+function addChart(cfg){
+  const id='c'+Date.now()+Math.random().toString(36).slice(2,5);
+  const el=document.createElement('div');el.className='cc';
+  el.innerHTML=`<header><h2>${cfg.ys.join(', ')} by ${cfg.x}${cfg.g?' ('+cfg.g+')':''}</h2><div class="tools"><select aria-label="Chart type">${['line','bar','area','doughnut','pie'].map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${t[0].toUpperCase()+t.slice(1)}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div>`;
+  $('charts').appendChild(el);
+  const item={chart:build($(id),cfg),cfg,el};charts.push(item);
+  el.querySelector('select').onchange=e=>{item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg)};
+  const dsel=el.querySelector('[data-a=dl]');dsel.onchange=async()=>{const f=dsel.value;dsel.value='';if(f)await dl(item,f)};
+  el.querySelector('[data-a=rm]').onclick=()=>{item.chart.destroy();el.remove();charts=charts.filter(c=>c!==item)};
+}
+$('add').onclick=()=>{
+  const ys=[...document.querySelectorAll('.chip.on')].map(c=>c.dataset.c);
+  if(!ys.length){$('msg').textContent='Pick at least one value to plot.';return}
+  $('msg').textContent='';
+  addChart({x:$('bx').value,ys,type:$('bt').value,agg:$('ba').value,g:$('bg').value});
+};
+$('sample').onclick=()=>{
+  const m=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],reg=['North','South','West'];
+  const d=[['Date','Region','Revenue','Expenses','Profit']];
+  m.forEach((mo,i)=>reg.forEach((r,j)=>{const rev=800000+i*45000+j*120000+Math.round(Math.sin(i+j)*60000),ex=Math.round(rev*(.62+j*.03));d.push([new Date(Date.UTC(2025,3+i,1)).toISOString().slice(0,10),r,rev,ex,rev-ex])}));
+  const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(d),'FY Sales');
+  load(w,'Sample data');
+};
+function rebuild(){charts.forEach(c=>{c.chart.destroy();c.chart=build(c.el.querySelector('canvas'),c.cfg)})}
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',rebuild);
+var fname='Chartzen report';
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2800)}
+async function save(name,data){
+  const d=typeof claude!=='undefined'?await claude.use('downloads'):null;
+  if(!d){const u=URL.createObjectURL(new Blob([data]));const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('Saved '+name);return}
+  try{await d.save({filename:name,data});toast('Saved '+name)}catch(e){if(!e||e.code!=='declined')toast('Could not save '+name)}
+}
+const slug=s=>String(s).replace(/[^\w]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'chart';
+const ctitle=it=>it.cfg.ys.join(', ')+' by '+it.cfg.x+(it.cfg.g?' ('+it.cfg.g+')':'');
+function shot(it){
+  const c=document.createElement('canvas');c.width=1200;c.height=640;
+  const ch=build(c,it.cfg,true);ch.update('none');
+  const o=document.createElement('canvas');o.width=1200;o.height=640;
+  const x=o.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,1200,640);x.drawImage(c,0,0);ch.destroy();return o;
+}
+const toBlob=(cv,t)=>new Promise(r=>cv.toBlob(r,t,.92));
+function csv(a){return a.map(r=>r.map(v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')).join('\n')}
+function ctable(it){const s=series(it.cfg.x,it.cfg.ys,it.cfg.agg,it.cfg.g);return [[it.cfg.x,...it.cfg.ys]].concat(s.labels.map((l,i)=>[l,...s.data.map(d=>d[i])]))}
+function makePdf(list){
+  const doc=new jspdf.jsPDF({orientation:'l',unit:'pt',format:'a4'}),W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
+  doc.setFillColor(10,26,47);doc.rect(0,0,W,H,'F');
+  doc.setTextColor(255);doc.setFontSize(40);doc.setFont('helvetica','bold');doc.text('Chartzen',50,H/2-10);
+  doc.setFontSize(16);doc.setFont('helvetica','normal');doc.setTextColor(147,165,186);
+  doc.text(fname,50,H/2+20);doc.text(new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'})+', '+list.length+' chart'+(list.length>1?'s':''),50,H/2+44);
+  list.forEach(it=>{
+    doc.addPage();doc.setTextColor(16,36,62);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text(ctitle(it),40,48);
+    const w=W-80;doc.addImage(shot(it).toDataURL('image/jpeg',.92),'JPEG',40,66,w,Math.min(w*640/1200,H-120));
+    doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(120);doc.text('Made with Chartzen',40,H-24);
+  });
+  return doc.output('blob');
+}
+async function dl(it,f){
+  const n=slug(ctitle(it));
+  if(f==='png'||f==='jpg')return save(n+'.'+f,await toBlob(shot(it),f==='png'?'image/png':'image/jpeg'));
+  if(f==='pdf')return save(n+'.pdf',makePdf([it]));
+  if(f==='csv')return save(n+'.csv',csv(ctable(it)));
+}
+$('xpdf').onclick=()=>charts.length?save(slug(fname)+'-report.pdf',makePdf(charts)):toast('Add a chart first.');
+$('xxls').onclick=()=>{
+  if(!rows.length)return toast('Load a file first.');
+  const w=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(w,XLSX.utils.json_to_sheet(rows),'Data');
+  charts.forEach((it,i)=>XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(ctable(it)),('Chart '+(i+1)).slice(0,31)));
+  save(slug(fname)+'-chartzen.xlsx',XLSX.write(w,{bookType:'xlsx',type:'array'}));
+};
+$('xcsv').onclick=()=>rows.length?save(slug(fname)+'-clean.csv',csv([cols].concat(rows.map(r=>cols.map(c=>r[c]))))):toast('Load a file first.');
+const isDark=()=>document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem('cz-theme',t)}catch(e){}rebuild();$('theme').textContent=isDark()?'Light mode':'Dark mode'}
+$('theme').onclick=()=>setTheme(isDark()?'light':'dark');
+try{const s=localStorage.getItem('cz-theme');if(s)document.documentElement.dataset.theme=s}catch(e){}
+$('theme').textContent=isDark()?'Light mode':'Dark mode';
+const sp=$('splash');
+if(sp){const end=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),800)};sp.onclick=end;setTimeout(end,3000)}
+</script>
+</body>
+</html>
