@@ -400,7 +400,7 @@ function insights(){
   $('ins').innerHTML='<h2 style="font-size:18px;margin-bottom:8px">Quick insights</h2><ul>'+out.map(o=>'<li>'+o+'</li>').join('')+'</ul>';
 }
 $('cur').onchange=$('nsys').onchange=()=>{NF.cur=$('cur').value;NF.sys=$('nsys').value;if(rows.length){kpis();insights();rebuild()}};
-var DATE=[],CAT=[],MEAS=[],AVG={},FAM={},RT={};
+var DATE=[],CAT=[],IDS=[],MEAS=[],AVG={},FAM={},RT={};
 const isAvg=(y,a)=>a==='avg'||(a==='auto'&&AVG[y]);
 const pc=(c,v)=>RT[c]?(v*100).toFixed(1)+'%':(+v).toFixed(1)+'%';
 const ff=(c,v)=>FAM[c]==='ratio'?pc(c,v):FAM[c]==='unit'?(+v).toLocaleString(undefined,{maximumFractionDigits:2}):fmt(v);
@@ -412,19 +412,20 @@ function classify(){
   AVG={};FAM={};RT={};
   nums.forEach(c=>{
     const v=rows.map(r=>r[c]).filter(x=>x!==null),frac=v.length>0&&v.every(x=>x>=-1&&x<=1)&&v.some(x=>x%1),
-      rt=/%|percent|pct|rate|ratio|margin|growth|yield|roe|roa|cagr|share/i.test(c)||frac;
+      rt=/%|percent|pct|rate|ratio|margin|growth|yield|roe|roa|cagr|share/i.test(c)||frac||(/discount/i.test(c)&&v.length>0&&v.every(x=>x>=0&&x<=100));
     RT[c]=!!frac;FAM[c]=rt?'ratio':/qty|quantity|units|count|volume|headcount|orders|customers|pieces/i.test(c)?'unit':'amt';
     AVG[c]=rt||/price|average|avg|score|per\s/i.test(c);
   });
   MEAS=nums.filter(c=>{const v=rows.map(r=>r[c]).filter(x=>x!==null),mx=v.reduce((a,b)=>Math.max(a,b),-Infinity),mn=v.reduce((a,b)=>Math.min(a,b),Infinity);return !(/(^|[^a-z])(id|sr|sl|code|year|rank|serial)([^a-z]|$)/i.test(c)||(v.length>2&&v.every(Number.isInteger)&&new Set(v).size===v.length&&mx-mn<v.length*2))});
-  if(!MEAS.length)MEAS=nums.slice();
+  IDS=nums.filter(c=>!MEAS.includes(c));if(!MEAS.length)MEAS=nums.slice();
+  $('bx').innerHTML=[...DATE,...CAT,...cats.filter(c=>!DATE.includes(c)&&!CAT.includes(c)),...IDS].map(c=>`<option>${esc(c)}</option>`).join('');
 }
 function validate(c){
   const fams=new Set(c.ys.map(y=>FAM[y]));
   if(fams.size>2)return 'Mix at most two kinds of values (amounts, units, percentages) on one chart.';
   if(c.agg==='sum'&&c.ys.some(y=>AVG[y]))return 'Summing a rate, price or average gives a misleading number. Use Auto or Average.';
   if(c.type==='pie'||c.type==='doughnut'){
-    if(DATE.includes(c.x))return 'Pie and doughnut charts show shares of a whole. Pick a category column instead of a date.';
+    if(DATE.includes(c.x)||IDS.includes(c.x))return 'Pie and doughnut charts show shares of a whole. Pick a category column instead of a date or an ID.';
     if(AVG[c.ys[0]])return c.ys[0]+' is a rate or average, so shares of a whole are not meaningful. Use a bar chart.';
     if(rows.some(r=>r[c.ys[0]]<0))return 'This column has negative values, which a pie chart cannot show.';
   }
@@ -433,13 +434,17 @@ function validate(c){
   return '';
 }
 function autoDash(){
-  const money=MEAS.filter(c=>FAM[c]==='amt'&&!AVG[c]),units=MEAS.filter(c=>FAM[c]==='unit'&&!AVG[c]),rat=MEAS.filter(c=>FAM[c]==='ratio'),m1=money[0]||units[0]||MEAS[0],D=DATE[0],C=CAT[0];
-  if(D){const g=new Set(rows.map(r=>r[D])).size>24?'month':'';
+  const money=MEAS.filter(c=>FAM[c]==='amt'&&!AVG[c]),units=MEAS.filter(c=>FAM[c]==='unit'&&!AVG[c]),rat=MEAS.filter(c=>FAM[c]==='ratio'),m1=money.find(c=>/revenue|sales|income/i.test(c))||money[0]||units[0]||MEAS[0],D=DATE[0],C=CAT[0];
+  if(D){const g='month';
     if(money.length)addChart({x:D,ys:money.slice(0,3),type:'line',agg:'auto',g});
     if(units.length)addChart({x:D,ys:units.slice(0,2),type:'line',agg:'auto',g});
-    if(rat.length)addChart({x:D,ys:rat.slice(0,2),type:'line',agg:'auto',g});}
-  if(C&&m1){addChart({x:C,ys:[m1],type:'bar',agg:'auto',s:'desc'});
+    rat.slice(0,2).forEach(r=>addChart({x:D,ys:[r],type:'line',agg:'auto',g}));}
+  if(m1)CAT.slice(0,3).forEach(c=>addChart({x:c,ys:[m1],type:'bar',agg:'auto',s:'desc'}));
+  if(C&&m1){
     if(!AVG[m1]&&rows.every(r=>r[m1]===null||r[m1]>=0)&&new Set(rows.map(r=>r[C])).size<=8)addChart({x:C,ys:[m1],type:'doughnut',agg:'auto'});}
+  const ID=IDS[0]||cats.find(c=>/order|invoice|txn|transaction|(^|[^a-z])id([^a-z]|$)/i.test(c)&&!DATE.includes(c)&&!CAT.includes(c)),q=units[0],pr=MEAS.find(c=>/price|rate/i.test(c)&&FAM[c]==='amt');
+  if(ID&&q&&pr)addChart({x:ID,ys:[q,pr],type:'combo',agg:'auto'});
+  else if(ID&&q)addChart({x:ID,ys:[q],type:'bar',agg:'auto'});
   if(!charts.length&&m1&&cats[0])addChart({x:cats[0],ys:[m1],type:'bar',agg:'auto',n:'10',s:'desc'});
 }
 var FN=0,ER=0,LOGO=null;
