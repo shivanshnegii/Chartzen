@@ -202,6 +202,17 @@ h1{font-weight:700;letter-spacing:-.035em}
 body::before{animation:drift 24s ease-in-out infinite alternate}
 @keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-2%,3%,0) scale(1.1)}}
 @media (prefers-reduced-motion:reduce){body::before{animation:none}.rv{opacity:1;transform:none}}
+.filebar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 18px;margin-bottom:14px;border-radius:20px;background:linear-gradient(135deg,var(--hl),transparent 45%),var(--card);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid var(--line);box-shadow:0 10px 36px var(--sh),inset 0 1px 0 var(--edge)}
+.fb{display:flex;flex-direction:column;margin-right:auto;min-width:0}
+.fb b{font:800 17px 'Plus Jakarta Sans',Manrope,sans-serif;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fb span{color:var(--mute);font-size:13px}
+.badge{padding:5px 13px;border-radius:999px;font-size:13px;font-weight:700}
+.badge.ok{background:rgba(11,143,108,.16);color:var(--acc)}
+.badge.mid{background:rgba(224,165,38,.2);color:#b7791f}
+.badge.bad{background:rgba(216,80,63,.16);color:#d8503f}
+#toast.on{pointer-events:auto;cursor:pointer}
+.cc h2[contenteditable]{cursor:text;border-radius:6px;padding:1px 4px;margin-left:-4px;outline:none;transition:background .2s}
+.cc h2[contenteditable]:hover,.cc h2[contenteditable]:focus{background:var(--accsoft)}
 </style>
 </head>
 <body>
@@ -232,10 +243,11 @@ body::before{animation:drift 24s ease-in-out infinite alternate}
     <p>or click to choose a file</p>
     <input type="file" id="file" accept=".xlsx,.xls,.csv" hidden>
   </div>
-  <div class="row"><button class="btn ghost" id="sample">Try sample data</button><span id="msg" class="sub" style="margin:0"></span></div>
+  <div class="row"><select id="sampleSel" aria-label="Sample dataset"><option value="sales">Sales sample</option><option value="pl">Profit &amp; loss sample</option><option value="bva">Budget vs actual sample</option></select><button class="btn ghost" id="sample">Try sample data</button><button class="btn ghost" id="tpl">Download Excel template</button><span id="msg" class="sub" style="margin:0"></span></div>
 
   <div id="app">
-    <div class="row"><label class="sub" style="margin:0">Sheet <select id="sheet"></select></label><label class="sub" style="margin:0">Currency <select id="cur"><option value="">None</option><option>₹</option><option>$</option><option>€</option><option>£</option></select></label><label class="sub" style="margin:0">Numbers <select id="nsys"><option value="in">Lakh / Crore</option><option value="intl">K / M / B</option></select></label><span id="meta" class="sub" style="margin:0"></span></div>
+    <div class="filebar"><div class="fb"><b id="fbn"></b><span id="fbm"></span></div><span class="badge" id="fbh"></span><button class="btn ghost" id="fbr">Replace file</button></div>
+    <div class="row"><label class="sub" style="margin:0">Sheet <select id="sheet"></select></label><label class="sub" style="margin:0">Currency <select id="cur"><option value="">None</option><option>₹</option><option>$</option><option>€</option><option>£</option></select></label><label class="sub" style="margin:0">Numbers <select id="nsys"><option value="in">Lakh / Crore</option><option value="intl">K / M / B</option></select></label><label class="sub" style="margin:0">Colors <select id="pal"><option value="default">Default</option><option value="ocean">Ocean</option><option value="sunset">Sunset</option><option value="mono">Mono</option></select></label><span id="meta" class="sub" style="margin:0"></span></div>
     <div class="kpis" id="kpis"></div>
     <div class="panel" id="ins"></div>
 
@@ -243,7 +255,7 @@ body::before{animation:drift 24s ease-in-out infinite alternate}
       <h2 style="font-size:18px;margin-bottom:12px">Build a chart</h2>
       <div class="builder">
         <label>X axis (category or date)<select id="bx"></select></label>
-        <label>Chart type<select id="bt"><option value="line">Line</option><option value="bar">Bar</option><option value="hbar">Horizontal bar</option><option value="stacked">Stacked bar</option><option value="combo">Bars + line (2+ values)</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></select></label>
+        <label>Chart type<select id="bt"><option value="line">Line</option><option value="bar">Bar</option><option value="hbar">Horizontal bar</option><option value="stacked">Stacked bar</option><option value="stack100">100% stacked bar</option><option value="cumulative">Running total</option><option value="pareto">Pareto (80/20)</option><option value="waterfall">Waterfall (bridge)</option><option value="variance">Variance (green/red)</option><option value="hist">Histogram</option><option value="scatter">Scatter (X vs Y)</option><option value="radar">Radar</option><option value="polar">Polar area (size by value)</option><option value="combo">Bars + line (2+ values)</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></select></label>
         <label>Combine repeats<select id="ba"><option value="auto">Auto (recommended)</option><option value="sum">Sum</option><option value="avg">Average</option></select></label>
         <label>Group dates by<select id="bg"><option value="">None</option><option value="month">Month</option><option value="quarter">Quarter</option><option value="year">Year</option></select></label>
         <label>Filter by<select id="bf"></select></label>
@@ -301,6 +313,17 @@ body::before{animation:drift 24s ease-in-out infinite alternate}
   </div>
 </section>
 
+<section class="sec" id="trust">
+  <h2>Built to be trusted</h2>
+  <p class="lead">Charts you can put in front of a client or a board.</p>
+  <div class="feat">
+    <div><h3>Blocks misleading charts</h3><p>Pie charts of dates, summed percentages and stacked rates are stopped with a clear reason.</p></div>
+    <div><h3>Shows how numbers are built</h3><p>Every chart states whether a value is a total or an average, plus its highest and lowest points.</p></div>
+    <div><h3>Data health check</h3><p>Empty cells, duplicates, Excel errors and unsaved formulas are flagged before you chart.</p></div>
+    <div><h3>Your file stays with you</h3><p>Nothing is uploaded. Close the tab and the data is gone.</p></div>
+  </div>
+</section>
+
 <section class="sec" id="faq">
   <h2>Questions people ask</h2>
   <p class="lead"></p>
@@ -315,6 +338,7 @@ body::before{animation:drift 24s ease-in-out infinite alternate}
 </div>
 
 <script>
+const PALX=['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a','#6b7a90','#b45309','#0e7490','#9333ea'];
 const PAL=['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a'];
 let wb=null,rows=[],cols=[],nums=[],cats=[],charts=[];
 const $=id=>document.getElementById(id);
@@ -332,6 +356,8 @@ drop.addEventListener('drop',e=>e.dataTransfer.files[0]&&read(e.dataTransfer.fil
 file.onchange=()=>file.files[0]&&read(file.files[0]);
 
 function read(f){
+  if(!/\.(xlsx|xls|csv)$/i.test(f.name)){toast('Please choose an .xlsx, .xls or .csv file.');return}
+  if(f.size>30e6){toast('This file is larger than 30 MB. Try a smaller sheet.');return}
   $('msg').textContent='Reading '+f.name+'...';
   const r=new FileReader();
   r.onload=e=>{try{load(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:true}),f.name)}catch(err){$('msg').textContent='Could not read this file. Please check it is a valid Excel or CSV file.'}};
@@ -363,10 +389,10 @@ function useSheet(){
   $('bx').innerHTML=(cats.length?cats:cols).map(c=>`<option>${esc(c)}</option>`).join('');
   $('by').innerHTML=nums.map((c,i)=>`<span class="chip${i<2?' on':''}" tabindex="0" role="button" data-c="${esc(c)}">${esc(c)}</span>`).join('');
   document.querySelectorAll('.chip').forEach(ch=>{ch.onclick=()=>ch.classList.toggle('on');ch.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ch.classList.toggle('on')}}});
-  classify();kpis();countUp();table();fillFilter();insights();
+  classify();kpis();countUp();table();fillFilter();insights();fileBar();
   charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';
   if(!nums.length){$('msg').textContent='No numeric columns found, so there is nothing to chart.';return}
-  autoDash();
+  autoDash();toast('Dashboard ready: '+charts.length+' charts from '+rows.length.toLocaleString()+' rows');
   
   
   
@@ -394,38 +420,49 @@ function series(x,ys,agg,g,f){
 if(window.ChartDataLabels)Chart.register(ChartDataLabels);
 Chart.defaults.font.family="Manrope,system-ui,sans-serif";Chart.defaults.font.size=12;
 function build(cv,cfg,light){
-  const {labels,data}=series(cfg.x,cfg.ys,cfg.agg,cfg.g,cfg.f);
-  const round=cfg.type==='pie'||cfg.type==='doughnut';
+  if(cfg.type==='scatter')return buildScatter(cv,cfg,light);
+  const {labels,data}=cfg.type==='hist'?histo(cfg):series(cfg.x,cfg.ys,cfg.agg,cfg.g,cfg.f);
+  const round=['pie','doughnut','polar'].includes(cfg.type);
   let L=labels,D=data;
-  if(cfg.s||+cfg.n){const dir=cfg.s||'desc',ix=L.map((_,i)=>i).sort((a,b)=>dir==='asc'?D[0][a]-D[0][b]:D[0][b]-D[0][a]),sel=ix.slice(0,+cfg.n||ix.length);L=sel.map(i=>labels[i]);D=data.map(d=>sel.map(i=>d[i]))}
+  if(cfg.s||+cfg.n||cfg.type==='pareto'){const dir=cfg.s||'desc',ix=L.map((_,i)=>i).sort((a,b)=>dir==='asc'?D[0][a]-D[0][b]:D[0][b]-D[0][a]),sel=ix.slice(0,+cfg.n||ix.length);L=sel.map(i=>labels[i]);D=data.map(d=>sel.map(i=>d[i]))}
   if(!round&&L.length>600){const k=Math.ceil(L.length/400),NL=[],ND=D.map(()=>[]);for(let i=0;i<L.length;i+=k){NL.push(L[i]);D.forEach((d,j)=>{const s=d.slice(i,i+k).reduce((a,b)=>a+b,0);ND[j].push(isAvg(cfg.ys[j],cfg.agg)?s/Math.min(k,d.length-i):s)})}L=NL;D=ND}
   if(round){
-    const idx=L.map((_,i)=>i).sort((a,b)=>D[0][b]-D[0][a]).slice(0,10);
-    L=idx.map(i=>labels[i]);D=[idx.map(i=>data[0][i])];
+    const L0=L,V0=D[0].map(v=>Math.max(0,v)),idx=L0.map((_,i)=>i).sort((a,b)=>V0[b]-V0[a]);
+    L=idx.map(i=>L0[i]);D=[idx.map(i=>V0[i])];
+    if(cfg.type==='polar'&&L.length>12){L=L.slice(0,12);D=[D[0].slice(0,12)]}else if(cfg.type!=='polar'&&L.length>9){const rest=D[0].slice(9).reduce((a,b)=>a+b,0);L=L.slice(0,9).concat('Others ('+(idx.length-9)+')');D=[D[0].slice(0,9).concat(rest)]}
   }
+  if(cfg.type==='cumulative')D=D.map(d=>{let r=0;return d.map(v=>r+=v)});
+  if(cfg.type==='stack100'){const tt=L.map((_,k)=>D.reduce((a,d)=>a+Math.abs(d[k]),0)||1);D=D.map(d=>d.map((v,k)=>v/tt[k]*100))}
   if(cfg.g==='month')L=L.map(mlab);
+  const rcol=L.map((l,i)=>String(l).startsWith('Others')?'#94a3b8':PALX[i%PALX.length]);
   const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid');
-  const dual=!round&&!['hbar','stacked'].includes(cfg.type)&&new Set(cfg.ys.map(y=>FAM[y])).size>1;
-  const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:PAL,borderColor:light?'#fff':css('--card'),borderWidth:2}
-    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:cfg.type==='area',tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--card'),pointBorderWidth:2,borderRadius:6});
+  const dual=!round&&!['hbar','stacked','stack100','waterfall','hist','pareto','variance','radar'].includes(cfg.type)&&new Set(cfg.ys.map(y=>FAM[y])).size>1;
+  const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:rcol,borderColor:light?'#fff':css('--card'),borderWidth:2}
+    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:['area','cumulative','radar'].includes(cfg.type),tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--card'),pointBorderWidth:2,borderRadius:6});
   if(cfg.tr&&!round&&cfg.type!=='hbar')D.forEach((d,i)=>{const n=d.length;if(n>2){let sx=0,sy=0,sxy=0,sxx=0;d.forEach((y,k)=>{sx+=k;sy+=y;sxy+=k*y;sxx+=k*k});const b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a=(sy-b*sx)/n;ds.push({label:cfg.ys[i]+' trend',data:d.map((_,k)=>a+b*k),type:'line',yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',borderColor:PAL[i%8],borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false,backgroundColor:'transparent'})}});
-  const ink=light?'#10243e':css('--ink'),horiz=cfg.type==='hbar',stk=cfg.type==='stacked',n=L.length;
-  const trunc=v=>{v=String(v);return v.length>16?v.slice(0,15)+'\u2026':v};
-  const ytitle=cfg.ys.length===1?cfg.ys[0]+(isAvg(cfg.ys[0],cfg.agg)?' (average)':' (total)'):cfg.ys.filter(y=>FAM[y]===FAM[cfg.ys[0]]).join(', ');
+  const sp=cfg.type,yk=sp==='hist'?'#count':cfg.ys[0];
+  if(sp==='pareto'){const d=D[0],tot=d.reduce((a,b)=>a+b,0)||1;let r=0;ds.length=1;ds.push({label:'Cumulative %',type:'line',yAxisID:'y2',pct:true,data:d.map(v=>(r+=v)/tot*100),borderColor:PALX[2],backgroundColor:PALX[2],borderWidth:3,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2,tension:.2})}
+  if(sp==='waterfall'){const d=D[0];let r=0;const bars=d.map(v=>{const a=r;r+=v;return [a,r]}),dv=d.slice();L=L.concat('Total');bars.push([0,r]);dv.push(r);ds.length=0;ds.push({label:cfg.ys[0],col:cfg.ys[0],data:bars,deltas:dv,backgroundColor:dv.map((v,i)=>i===d.length?PALX[1]:v>=0?PALX[0]:PALX[3]),borderRadius:5,borderSkipped:false})}
+  if(sp==='variance'){ds.length=1;ds[0].backgroundColor=D[0].map(v=>v>=0?PALX[0]:PALX[3])}
+  if(sp==='hist'){ds.length=1;ds[0].col='#count';ds[0].label='Rows'}
+  if(sp==='stack100')ds.forEach(x=>x.pct=true);
+  const ink=light?'#10243e':css('--ink'),horiz=cfg.type==='hbar',stk=['stacked','stack100'].includes(cfg.type),n=L.length;
+  const trunc=v=>{v=String(v);return v.length>(cfg.type==='hist'?30:16)?v.slice(0,cfg.type==='hist'?29:15)+'\u2026':v};
+  const ytitle=cfg.type==='hist'?'Number of rows':cfg.type==='stack100'?'Share of total (%)':cfg.type==='cumulative'?cfg.ys.join(', ')+' (running total)':cfg.type==='waterfall'?cfg.ys[0]+' (change)':cfg.ys.length===1?cfg.ys[0]+(isAvg(cfg.ys[0],cfg.agg)?' (average)':' (total)'):cfg.ys.filter(y=>FAM[y]===FAM[cfg.ys[0]]).join(', ');
   const y2name=dual?cfg.ys.filter(y=>FAM[y]!==FAM[cfg.ys[0]]).join(', '):'';
-  const xt=cfg.x+(cfg.g?' ('+cfg.g+')':'');
+  const xt=cfg.type==='hist'?cfg.ys[0]+' (value ranges)':cfg.x+(cfg.g?' ('+cfg.g+')':'');
   const ttl=text=>({display:true,text,color:t,font:{size:12,weight:'600'},padding:8});
   const isLine=c=>(c.dataset.type||CT(cfg.type))==='line';
   const dl={
     display:c=>{
-      if(c.dataset.label.endsWith(' trend'))return false;
+      if(c.dataset.label.endsWith(' trend')||cfg.type==='radar')return false;
       const d=c.dataset.data,k=c.dataIndex;
       if(round)return d[k]/d.reduce((a,b)=>a+b,0)>=.04;
       if(!isLine(c))return n<=24&&!(stk&&!d[k]);
       if(n<=12)return true;
       return n<=120&&(k===0||k===n-1||d[k]===Math.max(...d)||d[k]===Math.min(...d));
     },
-    formatter:(v,c)=>round?(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(0)+'%':ff(c.dataset.col||cfg.ys[0],v),
+    formatter:(v,c)=>c.dataset.deltas?(c.dataIndex===c.dataset.deltas.length-1?'':c.dataset.deltas[c.dataIndex]>=0?'+':'')+ff(c.dataset.col,c.dataset.deltas[c.dataIndex]):c.dataset.pct?v.toFixed(0)+'%':round?(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(0)+'%':ff(c.dataset.col||cfg.ys[0],v),
     anchor:c=>round||stk?'center':'end',
     align:c=>round||stk?'center':isLine(c)?'top':'end',
     offset:c=>isLine(c)?6:4,
@@ -439,19 +476,19 @@ function build(cv,cfg,light){
     ticks:{color:t,padding:6,autoSkip:n>16,maxRotation:n>8?40:0,...(n>16?{maxTicksLimit:14}:{}),callback:horiz?v=>ff(cfg.ys[0],v):cat},
     ...(horiz?{grace:'12%',beginAtZero:true}:{})};
   const ys={stacked:stk,title:horiz?ttl(xt):ttl(ytitle),grid:{display:!horiz,color:g},border:{display:false},
-    ticks:{color:t,padding:6,callback:horiz?cat:v=>ff(cfg.ys[0],v)},
-    ...(horiz?{}:{grace:'12%',...(cfg.type!=='line'?{beginAtZero:true}:{})})};
+    ticks:{color:t,padding:6,callback:horiz?cat:v=>cfg.type==='stack100'?v+'%':ff(yk,v)},
+    ...(cfg.type==='stack100'?{max:100}:{}),...(horiz?{}:{grace:'12%',...(cfg.type!=='line'?{beginAtZero:true}:{})})};
   const y2={position:'right',title:ttl(y2name),grid:{drawOnChartArea:false},border:{display:false},grace:'12%',ticks:{color:t,padding:6,callback:v=>ff(cfg.ys.find(y=>FAM[y]!==FAM[cfg.ys[0]]),v)}};
   const pieLegend={position:'right',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:12},
-    generateLabels:ch=>{const d=ch.data.datasets[0].data,sm=d.reduce((a,b)=>a+b,0)||1;return ch.data.labels.map((l,i)=>({text:trunc(l)+'  '+(d[i]/sm*100).toFixed(1)+'%  ('+ff(cfg.ys[0],d[i])+')',fillStyle:PAL[i%8],strokeStyle:PAL[i%8],fontColor:t,hidden:!ch.getDataVisibility(i),index:i,pointStyle:'circle'}))}}};
+    generateLabels:ch=>{const d=ch.data.datasets[0].data,sm=d.reduce((a,b)=>a+b,0)||1;return ch.data.labels.map((l,i)=>({text:trunc(l)+'  '+(d[i]/sm*100).toFixed(1)+'%  ('+ff(cfg.ys[0],d[i])+')',fillStyle:rcol[i],strokeStyle:rcol[i],fontColor:t,hidden:!ch.getDataVisibility(i),index:i,pointStyle:'circle'}))}}};
   return new Chart(cv,{type:CT(cfg.type),data:{labels:L,datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),indexAxis:horiz?'y':'x',
     layout:{padding:{top:18,right:14,bottom:4,left:4}},
     ...(round?{}:{interaction:{mode:'index',intersect:false}}),
     datasets:{bar:{categoryPercentage:.72,barPercentage:.82,maxBarThickness:90}},
     plugins:{datalabels:dl,
       legend:round?pieLegend:{display:ds.length>1,position:'top',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:16,font:{size:12}}},
-      tooltip:{padding:10,boxPadding:4,usePointStyle:true,callbacks:{label:c=>`${c.dataset.label}: ${ff(c.dataset.col||cfg.ys[0],horiz?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
-    scales:round?{}:{x:xs,y:ys,...(dual?{y2}:{})}}});
+      tooltip:{padding:10,boxPadding:4,usePointStyle:true,callbacks:{label:c=>c.dataset.deltas?`${c.dataset.label}: ${ff(c.dataset.col,c.dataset.deltas[c.dataIndex])}`:c.dataset.pct?`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`:`${c.dataset.label}: ${ff(c.dataset.col||cfg.ys[0],horiz?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
+    scales:cfg.type==='radar'?{r:{ticks:{display:false},grid:{color:g},angleLines:{color:g},pointLabels:{color:t,font:{size:12}}}}:round?(cfg.type==='polar'?{r:{ticks:{display:false},grid:{color:g},angleLines:{color:g}}}:{}):{x:xs,y:ys,...(dual?{y2}:{}),...(cfg.type==='pareto'?{y2:{position:'right',min:0,max:100,title:ttl('Cumulative %'),grid:{drawOnChartArea:false},border:{display:false},ticks:{color:t,callback:v=>v+'%'}}}:{})}}});
 }
 
 const mlab=v=>{const m=/^(\d{4})-(\d{2})$/.exec(v);return m?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2]-1]+' '+m[1]:v};
@@ -460,18 +497,19 @@ function peek(cfg){try{const r=series(cfg.x,[cfg.ys[0]],cfg.agg,cfg.g,cfg.f),v=r
 function addChart(cfg){
   const id='c'+Date.now()+Math.random().toString(36).slice(2,5);
   const el=document.createElement('div');el.className='cc';
-  el.innerHTML=`<header><h2>${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="ex">Expand</button><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(capText(cfg)+peek(cfg))}</p>`;
+  el.innerHTML=`<header><h2 contenteditable="true" spellcheck="false" title="Click to rename this chart">${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="ex">Expand</button><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(capSpecial(cfg)||capText(cfg)+peek(cfg))}</p>`;
   $('charts').appendChild(el);
   const item={chart:build($(id),cfg),cfg,el};charts.push(item);fitH(item);
+  const h2=el.querySelector('h2');h2.onblur=()=>{const t=h2.textContent.trim();item.cfg.title=t&&t!==ctt({...item.cfg,title:undefined})?t:undefined};h2.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();h2.blur()}};
   el.querySelector('select').onchange=e=>{item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg);fitH(item)};
   el.querySelector('[data-a=ex]').onclick=()=>expand(item);const dsel=el.querySelector('[data-a=dl]');dsel.onchange=async()=>{const f=dsel.value;dsel.value='';if(f)await dl(item,f)};
-  el.querySelector('[data-a=rm]').onclick=()=>{item.chart.destroy();el.remove();charts=charts.filter(c=>c!==item)};
+  el.querySelector('[data-a=rm]').onclick=()=>{item.chart.destroy();el.remove();charts=charts.filter(c=>c!==item);lastRm=item.cfg;toast('Chart removed. Click here or press Ctrl+Z to undo.')};
 }
 $('add').onclick=()=>{
   const ys=[...document.querySelectorAll('.chip.on')].map(c=>c.dataset.c);
   if(!ys.length){$('msg').textContent='Pick at least one value to plot.';return}
   $('msg').textContent='';
-  const cfg0={x:$('bx').value,ys,type:$('bt').value,agg:$('ba').value,g:$('bg').value,f:$('bf').value?{c:$('bf').value,v:$('bfv').value}:null,n:$('bn').value,s:$('bs').value,tr:$('btr').checked};const bad=validate(cfg0);if(bad){$('msg').textContent=bad;toast(bad);return}if(new Set(ys.map(y=>FAM[y])).size>1)toast('Different kinds of values are drawn on separate left and right axes.');addChart(cfg0);
+  const cfg0={x:$('bx').value,ys,type:$('bt').value,agg:$('ba').value,g:$('bg').value,f:$('bf').value?{c:$('bf').value,v:$('bfv').value}:null,n:$('bn').value,s:$('bs').value,tr:$('btr').checked};const bad=validate(cfg0);if(bad){$('msg').textContent=bad;toast(bad);return}if(new Set(ys.map(y=>FAM[y])).size>1&&!['scatter','radar','hist'].includes(cfg0.type))toast('Different kinds of values are drawn on separate left and right axes.');addChart(cfg0);
 };
 $('sample').onclick=()=>{
   const m=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],reg=['North','South','West'];
@@ -480,9 +518,9 @@ $('sample').onclick=()=>{
   const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(d),'FY Sales');
   load(w,'Sample data');
 };
-const TN={line:'Line',bar:'Bar',hbar:'Horizontal bar',stacked:'Stacked bar',combo:'Bars + line',area:'Area',doughnut:'Doughnut',pie:'Pie'},BARS=['bar','hbar','stacked','combo'],CT=t=>t==='area'?'line':(t==='hbar'||t==='stacked'||t==='combo')?'bar':t;
+const TN={line:'Line',bar:'Bar',hbar:'Horizontal bar',stacked:'Stacked bar',stack100:'100% stacked bar',combo:'Bars + line',area:'Area',cumulative:'Running total',pareto:'Pareto (80/20)',waterfall:'Waterfall (bridge)',variance:'Variance (green/red)',hist:'Histogram',scatter:'Scatter (X vs Y)',radar:'Radar',doughnut:'Doughnut',pie:'Pie',polar:'Polar area (size by value)'},BARS=['bar','hbar','stacked','stack100','combo','pareto','waterfall','variance','hist'],CT=t=>t==='polar'?'polarArea':t==='radar'?'radar':['area','cumulative'].includes(t)?'line':['hbar','stacked','stack100','combo','pareto','waterfall','variance','hist'].includes(t)?'bar':t;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
-const ctt=c=>c.ys.join(', ')+' by '+c.x+(c.g?' ('+c.g+')':'')+(c.f?' ['+c.f.c+': '+c.f.v+']':'');
+const ctt=c=>c.title||(c.type==='scatter'?c.ys[1]+' vs '+c.ys[0]:c.type==='hist'?'Distribution of '+c.ys[0]:'')||c.ys.join(', ')+' by '+c.x+(c.g?' ('+c.g+')':'')+(c.f?' ['+c.f.c+': '+c.f.v+']':'');
 function fillFilter(){$('bf').innerHTML='<option value="">No filter</option>'+CAT.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fv()}
 function fv(){const c=$('bf').value;$('bfv').innerHTML=c?[...new Set(rows.map(r=>r[c]))].slice(0,200).map(v=>`<option value="${esc(v)}">${esc(v||'(blank)')}</option>`).join(''):'';$('bfv').disabled=!c}
 $('bf').onchange=fv;
@@ -514,12 +552,12 @@ $('tq').oninput=()=>table($('tq').value);
 var DATE=[],CAT=[],IDS=[],MEAS=[],AVG={},FAM={},RT={};
 const isAvg=(y,a)=>a==='avg'||(a==='auto'&&AVG[y]);
 const pc=(c,v)=>RT[c]?(v*100).toFixed(1)+'%':(+v).toFixed(1)+'%';
-const ff=(c,v)=>FAM[c]==='ratio'?pc(c,v):FAM[c]==='unit'?(+v).toLocaleString(undefined,{maximumFractionDigits:2}):fmt(v);
+const ff=(c,v)=>FAM[c]==='ratio'?pc(c,v):(c==='#count'||FAM[c]==='unit')?(+v).toLocaleString(undefined,{maximumFractionDigits:2}):fmt(v);
 const capText=c=>c.ys.map(y=>y+': '+(isAvg(y,c.agg)?'average':'total')).join(', ')+(c.g?', grouped by '+c.g:'')+(c.ys.some(y=>FAM[y]!==FAM[c.ys[0]])?'. Right axis: '+c.ys.find(y=>FAM[y]!==FAM[c.ys[0]]):'');
 function classify(){
   const u=c=>new Set(rows.map(r=>r[c])).size;
   DATE=cats.filter(c=>{const v=rows.map(r=>r[c]).filter(Boolean);return v.length&&v.filter(x=>/^\d{4}-\d{2}/.test(x)||/^\d{1,2}[\/.-]\d{1,2}[\/.-]\d{4}/.test(x)).length/v.length>=.8});
-  CAT=cats.filter(c=>!DATE.includes(c)&&u(c)>1&&u(c)<=Math.max(2,Math.min(15,rows.length/2)));
+  CAT=cats.filter(c=>!DATE.includes(c)&&u(c)>1&&u(c)<=15&&(u(c)<rows.length||rows.length<=15));
   AVG={};FAM={};RT={};
   nums.forEach(c=>{
     const v=rows.map(r=>r[c]).filter(x=>x!==null),frac=v.length>0&&v.every(x=>x>=-1&&x<=1)&&v.some(x=>x%1),
@@ -533,9 +571,14 @@ function classify(){
 }
 function validate(c){
   const fams=new Set(c.ys.map(y=>FAM[y]));
+  if(c.type==='scatter'&&c.ys.length<2)return 'Scatter needs two values: the first is the horizontal axis, the second is the vertical axis.';
+  if(['waterfall','cumulative','pareto','stack100'].includes(c.type)&&c.ys.some(y=>AVG[y]))return 'This chart needs amounts that add up. '+c.ys.find(y=>AVG[y])+' is a rate, price or average.';
+  if(c.type==='pareto'&&(DATE.includes(c.x)||IDS.includes(c.x)))return 'Pareto ranks categories. Pick a category column, not a date or an ID.';
+  if(c.type==='stack100'&&(c.ys.length<2||fams.size>1))return '100% stacked bars need two or more values of the same kind.';
+  if(c.type==='radar'&&fams.size>1)return 'Radar charts compare values on one scale. Use values of the same kind.';
   if(fams.size>2)return 'Mix at most two kinds of values (amounts, units, percentages) on one chart.';
   if(c.agg==='sum'&&c.ys.some(y=>AVG[y]))return 'Summing a rate, price or average gives a misleading number. Use Auto or Average.';
-  if(c.type==='pie'||c.type==='doughnut'){
+  if(['pie','doughnut','polar'].includes(c.type)){
     if(DATE.includes(c.x)||IDS.includes(c.x))return 'Pie and doughnut charts show shares of a whole. Pick a category column instead of a date or an ID.';
     if(AVG[c.ys[0]])return c.ys[0]+' is a rate or average, so shares of a whole are not meaningful. Use a bar chart.';
     if(rows.some(r=>r[c.ys[0]]<0))return 'This column has negative values, which a pie chart cannot show.';
@@ -547,9 +590,11 @@ function validate(c){
 function autoDash(){
   const money=MEAS.filter(c=>FAM[c]==='amt'&&!AVG[c]),units=MEAS.filter(c=>FAM[c]==='unit'&&!AVG[c]),rat=MEAS.filter(c=>FAM[c]==='ratio'),m1=money.find(c=>/revenue|sales|income/i.test(c))||money[0]||units[0]||MEAS[0],D=DATE[0],C=CAT[0];
   if(D){const g='month';
-    if(money.length)addChart({x:D,ys:money.slice(0,3),type:'line',agg:'auto',g});
+    if(money.length)addChart({x:D,ys:money.slice(0,4),type:'line',agg:'auto',g});
     if(units.length)addChart({x:D,ys:units.slice(0,2),type:'line',agg:'auto',g});
     rat.slice(0,2).forEach(r=>addChart({x:D,ys:[r],type:'line',agg:'auto',g}));}
+  if(!D&&C&&money.length>1)addChart({x:C,ys:money.slice(0,2),type:'bar',agg:'auto'});
+  if(!D&&C)rat.slice(0,1).forEach(r=>addChart({x:C,ys:[r],type:'bar',agg:'auto'}));
   if(m1)CAT.slice(0,3).forEach(c=>addChart({x:c,ys:[m1],type:'bar',agg:'auto',s:'desc'}));
   if(C&&m1){
     if(!AVG[m1]&&rows.every(r=>r[m1]===null||r[m1]>=0)&&new Set(rows.map(r=>r[C])).size<=8)addChart({x:C,ys:[m1],type:'doughnut',agg:'auto'});}
@@ -582,7 +627,40 @@ function shot(it){
 }
 const toBlob=(cv,t)=>new Promise(r=>cv.toBlob(r,t,.92));
 function csv(a){return a.map(r=>r.map(v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')).join('\n')}
-function ctable(it){const s=series(it.cfg.x,it.cfg.ys,it.cfg.agg,it.cfg.g,it.cfg.f);return [[it.cfg.x,...it.cfg.ys]].concat(s.labels.map((l,i)=>[l,...s.data.map(d=>d[i])]))}
+function histo(cfg){
+  const v=rows.filter(r=>!(cfg.f&&cfg.f.c&&r[cfg.f.c]!==cfg.f.v)).map(r=>r[cfg.ys[0]]).filter(x=>x!==null&&isFinite(x));
+  if(!v.length)return{labels:[],data:[[]]};
+  const mn=v.reduce((a,b)=>Math.min(a,b),Infinity),mx=v.reduce((a,b)=>Math.max(a,b),-Infinity),k=Math.min(12,Math.max(4,Math.ceil(Math.log2(v.length))+1)),w=(mx-mn)/k||1,cnt=Array(k).fill(0);
+  v.forEach(x=>{cnt[Math.min(k-1,Math.floor((x-mn)/w))]++});
+  return{labels:cnt.map((_,i)=>ff(cfg.ys[0],mn+i*w)+' to '+ff(cfg.ys[0],mn+(i+1)*w)),data:[cnt]};
+}
+function buildScatter(cv,cfg,light){
+  const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid'),xa=cfg.ys[0],ya=cfg.ys[1];
+  let rs=rows.filter(r=>!(cfg.f&&cfg.f.c&&r[cfg.f.c]!==cfg.f.v)&&r[xa]!==null&&r[ya]!==null);
+  const st=Math.ceil(rs.length/3000);if(st>1)rs=rs.filter((_,i)=>i%st===0);
+  const grp=CAT.includes(cfg.x)?[...new Set(rs.map(r=>r[cfg.x]))].slice(0,8):[null];
+  const ds=grp.map((gv,i)=>({label:gv===null?ya+' vs '+xa:String(gv),data:rs.filter(r=>gv===null||r[cfg.x]===gv).map(r=>({x:r[xa],y:r[ya]})),backgroundColor:PALX[i%PALX.length]+'cc',borderColor:PALX[i%PALX.length],pointRadius:5,pointHoverRadius:8}));
+  const ax=(txt,col)=>({title:{display:true,text:txt,color:t,font:{size:12,weight:'600'},padding:8},grid:{color:g},border:{display:false},ticks:{color:t,callback:v=>ff(col,v)}});
+  return new Chart(cv,{type:'scatter',data:{datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),layout:{padding:{top:18,right:14,bottom:4,left:4}},
+    plugins:{datalabels:{display:false},legend:{display:ds.length>1,position:'top',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:16}},tooltip:{padding:10,callbacks:{label:c=>`${xa}: ${ff(xa,c.parsed.x)}, ${ya}: ${ff(ya,c.parsed.y)}`}}},
+    scales:{x:ax(xa,xa),y:ax(ya,ya)}}});
+}
+function capSpecial(c){
+  const t=c.type;
+  if(t==='scatter'){const rs=rows.filter(r=>!(c.f&&c.f.c&&r[c.f.c]!==c.f.v)&&r[c.ys[0]]!==null&&r[c.ys[1]]!==null),n=rs.length;if(n<3)return 'Not enough points.';
+    const mx=rs.reduce((a,r)=>a+r[c.ys[0]],0)/n,my=rs.reduce((a,r)=>a+r[c.ys[1]],0)/n;let sxy=0,sxx=0,syy=0;rs.forEach(r=>{const a=r[c.ys[0]]-mx,b=r[c.ys[1]]-my;sxy+=a*b;sxx+=a*a;syy+=b*b});
+    const k=sxy/Math.sqrt(sxx*syy||1),a=Math.abs(k);return 'Each dot is one row. Correlation (r) = '+k.toFixed(2)+', a '+(a>.7?'strong':a>.4?'moderate':'weak')+(k>=0?' positive':' negative')+' relationship.'}
+  if(t==='hist')return 'Shows how often '+c.ys[0]+' falls in each range (count of rows).';
+  if(t==='waterfall')return 'Each bar adds (green) or subtracts (red) from the running total. The blue bar is the final total.';
+  if(t==='pareto'){const r=series(c.x,[c.ys[0]],c.agg,c.g,c.f),v=r.data[0].slice().sort((a,b)=>b-a),tot=v.reduce((a,b)=>a+b,0);let s=0,k=0;while(k<v.length&&s<tot*.8)s+=v[k++];
+    return 'Categories ranked high to low, the line is the cumulative share. The top '+k+' of '+v.length+' make up 80% of the total.'}
+  if(t==='cumulative')return 'Running total of '+c.ys.join(', ')+' across '+c.x+'.';
+  if(t==='stack100')return 'Each bar is 100%, showing the share of every value within that category.';
+  if(t==='variance')return 'Green bars are above zero and red bars are below zero'+peek(c);
+  if(t==='radar')return 'Compares values across categories. A larger area means higher values.';
+  return '';
+}
+function ctable(it){if(it.cfg.type==='scatter')return [[...it.cfg.ys]].concat(rows.map(r=>it.cfg.ys.map(y=>r[y])));if(it.cfg.type==='hist'){const h=histo(it.cfg);return [['Range','Rows']].concat(h.labels.map((l,i)=>[l,h.data[0][i]]))}const s=series(it.cfg.x,it.cfg.ys,it.cfg.agg,it.cfg.g,it.cfg.f);return [[it.cfg.x,...it.cfg.ys]].concat(s.labels.map((l,i)=>[l,...s.data.map(d=>d[i])]))}
 function makePdf(list){
   const doc=new jspdf.jsPDF({orientation:'l',unit:'pt',format:'a4'}),W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
   doc.setFillColor(10,26,47);doc.rect(0,0,W,H,'F');
@@ -627,6 +705,36 @@ if(sp){const end=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),800)};s
   document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.kpi,.panel,.steps div,details');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}});
   if(!rm&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});document.querySelectorAll('.sec,footer').forEach(e=>{e.classList.add('rv');io.observe(e)})}
 })();
+var lastRm=null;
+function fileBar(){
+  let miss=0;rows.forEach(r=>cols.forEach(c=>{if(r[c]===''||r[c]===null)miss++}));
+  const h=Math.max(0,Math.round((1-miss/(rows.length*cols.length||1))*100)-(ER?3:0)-(FN?3:0));
+  $('fbn').textContent=fname;$('fbm').textContent=rows.length.toLocaleString()+' rows, '+cols.length+' columns';
+  const b=$('fbh');b.textContent='Data health '+h+'%';b.className='badge '+(h>=95?'ok':h>=80?'mid':'bad');
+}
+$('fbr').onclick=()=>file.click();
+$('toast').onclick=()=>{if(lastRm){const c=lastRm;lastRm=null;addChart(c);toast('Chart restored')}};
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'&&lastRm&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!document.activeElement.isContentEditable){e.preventDefault();const c=lastRm;lastRm=null;addChart(c);toast('Chart restored')}});
+addEventListener('error',()=>toast('Something went wrong. Your data is safe, please try again.'));
+addEventListener('unhandledrejection',()=>toast('Something went wrong. Please try again.'));
+const PALS={default:['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a'],ocean:['#0a4f8f','#1593c8','#4cc9d9','#6a8cff','#2a3f9e','#89d4e6','#3b6fb6','#1d2b64'],sunset:['#d8503f','#f08a24','#e0a526','#b83280','#7a3b9e','#f2b5a0','#c2410c','#7c2d12'],mono:['#10243e','#3b5575','#6b86a6','#9fb3c8','#1f6f6b','#5d8f8c','#c2cfdc','#364b63']};
+const applyPal=n=>PALS[n].forEach((c,i)=>{PAL[i]=c;PALX[i]=c});
+const savePrefs=()=>{try{localStorage.setItem('cz-prefs',JSON.stringify({cur:$('cur').value,sys:$('nsys').value,pal:$('pal').value}))}catch(e){}};
+$('pal').onchange=()=>{applyPal($('pal').value);savePrefs();rebuild()};
+$('cur').addEventListener('change',savePrefs);$('nsys').addEventListener('change',savePrefs);
+try{const pr=JSON.parse(localStorage.getItem('cz-prefs')||'{}');if(pr.cur!==undefined){$('cur').value=pr.cur;NF.cur=pr.cur}if(pr.sys){$('nsys').value=pr.sys;NF.sys=pr.sys}if(pr.pal&&PALS[pr.pal]){$('pal').value=pr.pal;applyPal(pr.pal)}}catch(e){}
+const SAMPLES={
+  sales:()=>{const reg=['North','South','East','West'],pr=['Laptop','Phone','Tablet'],d=[['Order ID','Date','Region','Product','Quantity','Unit Price','Discount','Revenue','Cost','Profit']];
+    for(let i=0;i<120;i++){const q=1+(i*7)%9,up=[55000,28000,32000][i%3]+(i%5)*1000,ds=[0,.05,.1][i%3],rev=Math.round(q*up*(1-ds)),c=Math.round(rev*(.68+(i%4)*.02));
+      d.push([1001+i,new Date(Date.UTC(2025,3+Math.floor(i/10),1+i%27)).toISOString().slice(0,10),reg[i%4],pr[i%3],q,up,ds,rev,c,rev-c])}return d},
+  pl:()=>{const d=[['Month','Revenue','COGS','Opex','Net Profit','Net Margin %']];
+    for(let i=0;i<12;i++){const r=Math.round(9e6+i*35e4+Math.sin(i*1.3)*4e5),g=Math.round(r*.58),o=Math.round(r*.22+i*2e4),n=r-g-o;d.push([new Date(Date.UTC(2025,3+i,1)).toISOString().slice(0,10),r,g,o,n,+(n/r).toFixed(4)])}return d},
+  bva:()=>{const d=[['Department','Budget','Actual','Variance','Variance %']];
+    [['Sales',5200000,5650000],['Marketing',3100000,3480000],['Operations',7800000,7350000],['HR',1900000,1820000],['IT',2600000,2910000],['Finance',1500000,1440000]].forEach(([n,b,a])=>d.push([n,b,a,a-b,+((a-b)/b).toFixed(4)]));return d}
+};
+$('sample').onclick=()=>{const k=$('sampleSel').value,w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(SAMPLES[k]()),'Sample');load(w,'Sample '+$('sampleSel').selectedOptions[0].textContent.replace(' sample',''))};
+$('tpl').onclick=()=>{const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet([SAMPLES.sales()[0],SAMPLES.sales()[1]]),'Data');save('chartzen-template.xlsx',XLSX.write(w,{bookType:'xlsx',type:'array'}))};
+$('bt').onchange=()=>{const h={scatter:'Scatter: pick two values. The first is the horizontal axis, the second is vertical. Choose a category in X axis to color the dots.',waterfall:'Waterfall: each category adds or subtracts, and a Total bar is added at the end.',pareto:'Pareto: ranks categories high to low with a cumulative % line.',hist:'Histogram: shows how a single value is spread across ranges.',stack100:'100% stacked: compares the mix of 2 or more values in each category.',variance:'Variance: bars above zero are green, below zero are red.',cumulative:'Running total: adds values up over time or across categories.',radar:'Radar: compares a few values across categories.'};$('msg').textContent=h[$('bt').value]||''};
 </script>
 </body>
 </html>
