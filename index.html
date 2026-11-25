@@ -6,6 +6,7 @@
 <title>Chartzen</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Manrope:wght@400;500;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -185,6 +186,22 @@ h1{font-weight:700;letter-spacing:-.035em}
 .lm{height:.82em;width:auto;flex:none}
 .lms{height:20px;width:auto}
 .hl{font:700 clamp(19px,3vw,26px)/1.25 'Plus Jakarta Sans',Manrope,sans-serif;letter-spacing:-.02em;margin:12px 0 0}
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,620px),1fr));gap:20px}
+.cv{height:clamp(360px,50vw,460px)}
+.cc{padding:18px 20px 14px}
+.cc h2{font-size:18px;letter-spacing:-.01em}
+.cap{line-height:1.5;font-size:13px}
+#prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:95;background:linear-gradient(90deg,var(--acc),#e0a526);transition:width .1s linear}
+#totop{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;text-decoration:none;color:var(--ink);font-size:20px;background:var(--card);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--line);box-shadow:0 8px 24px var(--sh),inset 0 1px 0 var(--edge);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s,transform .25s}
+#totop.on{opacity:1;transform:none;pointer-events:auto}
+.kpi,.panel,.steps div,details{position:relative}
+.kpi::after,.panel::after,.steps div::after,details::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.2),transparent 65%)}
+.kpi:hover::after,.panel:hover::after,.steps div:hover::after,details:hover::after{opacity:1}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+body::before{animation:drift 24s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-2%,3%,0) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -201,6 +218,8 @@ h1{font-weight:700;letter-spacing:-.035em}
   <a class="cta" href="#drop">Upload file</a>
 </div></nav>
 <div id="mdl" hidden><div class="mbox cc"><header><h2 id="mt"></h2><button class="btn ghost" id="mclose">Close</button></header><div class="mcv"><canvas id="mcanvas"></canvas></div></div></div>
+<div id="prog"></div>
+<a id="totop" href="#top" aria-label="Back to top">↑</a>
 <div id="toast" role="status"></div>
 <div class="wrap" id="top">
   <div class="hero"><div class="ht"><h1 class="brand"><svg class='lm' viewBox='0 0 120 80' aria-hidden='true'><g style='fill:var(--acc)'><rect x='10' y='46' width='14' height='26' rx='3'/><rect x='32' y='34' width='14' height='38' rx='3'/><rect x='54' y='40' width='14' height='32' rx='3'/><rect x='76' y='22' width='14' height='50' rx='3'/><rect x='98' y='10' width='14' height='62' rx='3'/></g><path d='M17 46 L39 34 L61 40 L83 22 L105 10' fill='none' stroke='#e0a526' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='105' cy='10' r='7' fill='#e0a526'/></svg><span>Chartzen</span></h1><p class="hl">Turn spreadsheets into boardroom-ready charts.</p>
@@ -372,6 +391,8 @@ function series(x,ys,agg,g,f){
   const labels=[...m.keys()];if(g)labels.sort();
   return{labels,data:ys.map((y,i)=>labels.map(k=>{const o=m.get(k);return isAvg(y,agg)?(o.n[i]?o.v[i]/o.n[i]:0):o.v[i]}))};
 }
+if(window.ChartDataLabels)Chart.register(ChartDataLabels);
+Chart.defaults.font.family="Manrope,system-ui,sans-serif";Chart.defaults.font.size=12;
 function build(cv,cfg,light){
   const {labels,data}=series(cfg.x,cfg.ys,cfg.agg,cfg.g,cfg.f);
   const round=cfg.type==='pie'||cfg.type==='doughnut';
@@ -382,22 +403,67 @@ function build(cv,cfg,light){
     const idx=L.map((_,i)=>i).sort((a,b)=>D[0][b]-D[0][a]).slice(0,10);
     L=idx.map(i=>labels[i]);D=[idx.map(i=>data[0][i])];
   }
+  if(cfg.g==='month')L=L.map(mlab);
   const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid');
   const dual=!round&&!['hbar','stacked'].includes(cfg.type)&&new Set(cfg.ys.map(y=>FAM[y])).size>1;
   const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:PAL,borderColor:light?'#fff':css('--card'),borderWidth:2}
-    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:cfg.type==='area',tension:.3,borderWidth:2,pointRadius:L.length>40?0:3,borderRadius:3});
+    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:cfg.type==='area',tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--card'),pointBorderWidth:2,borderRadius:6});
   if(cfg.tr&&!round&&cfg.type!=='hbar')D.forEach((d,i)=>{const n=d.length;if(n>2){let sx=0,sy=0,sxy=0,sxx=0;d.forEach((y,k)=>{sx+=k;sy+=y;sxy+=k*y;sxx+=k*k});const b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a=(sy-b*sx)/n;ds.push({label:cfg.ys[i]+' trend',data:d.map((_,k)=>a+b*k),type:'line',yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',borderColor:PAL[i%8],borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false,backgroundColor:'transparent'})}});
-  return new Chart(cv,{type:CT(cfg.type),data:{labels:L,datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),indexAxis:cfg.type==='hbar'?'y':'x',
-    plugins:{legend:{display:round||ds.length>1,labels:{color:t}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${ff(c.dataset.col||cfg.ys[0],cfg.type==='hbar'?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
-    scales:round?{}:{x:{stacked:cfg.type==='stacked',ticks:{color:t,maxTicksLimit:12,callback:cfg.type==='hbar'?v=>ff(cfg.ys[0],v):undefined},grid:{color:g}},y:{stacked:cfg.type==='stacked',ticks:{color:t,callback:cfg.type==='hbar'?undefined:v=>ff(cfg.ys[0],v)},grid:{color:g}},...(dual?{y2:{position:'right',grid:{drawOnChartArea:false},ticks:{color:t,callback:v=>ff(cfg.ys.find(y=>FAM[y]!==FAM[cfg.ys[0]]),v)}}}:{})}}});
+  const ink=light?'#10243e':css('--ink'),horiz=cfg.type==='hbar',stk=cfg.type==='stacked',n=L.length;
+  const trunc=v=>{v=String(v);return v.length>16?v.slice(0,15)+'\u2026':v};
+  const ytitle=cfg.ys.length===1?cfg.ys[0]+(isAvg(cfg.ys[0],cfg.agg)?' (average)':' (total)'):cfg.ys.filter(y=>FAM[y]===FAM[cfg.ys[0]]).join(', ');
+  const y2name=dual?cfg.ys.filter(y=>FAM[y]!==FAM[cfg.ys[0]]).join(', '):'';
+  const xt=cfg.x+(cfg.g?' ('+cfg.g+')':'');
+  const ttl=text=>({display:true,text,color:t,font:{size:12,weight:'600'},padding:8});
+  const isLine=c=>(c.dataset.type||CT(cfg.type))==='line';
+  const dl={
+    display:c=>{
+      if(c.dataset.label.endsWith(' trend'))return false;
+      const d=c.dataset.data,k=c.dataIndex;
+      if(round)return d[k]/d.reduce((a,b)=>a+b,0)>=.04;
+      if(!isLine(c))return n<=24&&!(stk&&!d[k]);
+      if(n<=12)return true;
+      return n<=120&&(k===0||k===n-1||d[k]===Math.max(...d)||d[k]===Math.min(...d));
+    },
+    formatter:(v,c)=>round?(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(0)+'%':ff(c.dataset.col||cfg.ys[0],v),
+    anchor:c=>round||stk?'center':'end',
+    align:c=>round||stk?'center':isLine(c)?'top':'end',
+    offset:c=>isLine(c)?6:4,
+    color:c=>round||stk?'#fff':ink,
+    backgroundColor:c=>isLine(c)&&!round?(light?'rgba(255,255,255,.88)':'rgba(20,35,56,.72)'):null,
+    borderRadius:5,padding:{top:2,bottom:2,left:5,right:5},clip:false,
+    font:{size:round?13:11,weight:'700'}
+  };
+  const cat=function(v){return trunc(this.getLabelForValue(v))};
+  const xs={offset:true,stacked:stk,title:horiz?ttl(ytitle):ttl(xt),grid:{display:horiz,color:g},border:{display:false},
+    ticks:{color:t,padding:6,autoSkip:n>16,maxRotation:n>8?40:0,...(n>16?{maxTicksLimit:14}:{}),callback:horiz?v=>ff(cfg.ys[0],v):cat},
+    ...(horiz?{grace:'12%',beginAtZero:true}:{})};
+  const ys={stacked:stk,title:horiz?ttl(xt):ttl(ytitle),grid:{display:!horiz,color:g},border:{display:false},
+    ticks:{color:t,padding:6,callback:horiz?cat:v=>ff(cfg.ys[0],v)},
+    ...(horiz?{}:{grace:'12%',...(cfg.type!=='line'?{beginAtZero:true}:{})})};
+  const y2={position:'right',title:ttl(y2name),grid:{drawOnChartArea:false},border:{display:false},grace:'12%',ticks:{color:t,padding:6,callback:v=>ff(cfg.ys.find(y=>FAM[y]!==FAM[cfg.ys[0]]),v)}};
+  const pieLegend={position:'right',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:12},
+    generateLabels:ch=>{const d=ch.data.datasets[0].data,sm=d.reduce((a,b)=>a+b,0)||1;return ch.data.labels.map((l,i)=>({text:trunc(l)+'  '+(d[i]/sm*100).toFixed(1)+'%  ('+ff(cfg.ys[0],d[i])+')',fillStyle:PAL[i%8],strokeStyle:PAL[i%8],fontColor:t,hidden:!ch.getDataVisibility(i),index:i,pointStyle:'circle'}))}}};
+  return new Chart(cv,{type:CT(cfg.type),data:{labels:L,datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),indexAxis:horiz?'y':'x',
+    layout:{padding:{top:18,right:14,bottom:4,left:4}},
+    ...(round?{}:{interaction:{mode:'index',intersect:false}}),
+    datasets:{bar:{categoryPercentage:.72,barPercentage:.82,maxBarThickness:90}},
+    plugins:{datalabels:dl,
+      legend:round?pieLegend:{display:ds.length>1,position:'top',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:16,font:{size:12}}},
+      tooltip:{padding:10,boxPadding:4,usePointStyle:true,callbacks:{label:c=>`${c.dataset.label}: ${ff(c.dataset.col||cfg.ys[0],horiz?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
+    scales:round?{}:{x:xs,y:ys,...(dual?{y2}:{})}}});
 }
+
+const mlab=v=>{const m=/^(\d{4})-(\d{2})$/.exec(v);return m?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2]-1]+' '+m[1]:v};
+function fitH(it){const n=it.chart.data.labels.length;it.el.querySelector('.cv').style.height=it.cfg.type==='hbar'?Math.max(380,n*36+110)+'px':'';it.chart.resize()}
+function peek(cfg){try{const r=series(cfg.x,[cfg.ys[0]],cfg.agg,cfg.g,cfg.f),v=r.data[0];if(r.labels.length<2)return '';let hi=0,lo=0;v.forEach((x,i)=>{if(x>v[hi])hi=i;if(x<v[lo])lo=i});return '. Highest: '+(cfg.g==='month'?mlab(r.labels[hi]):r.labels[hi])+' ('+ff(cfg.ys[0],v[hi])+'). Lowest: '+(cfg.g==='month'?mlab(r.labels[lo]):r.labels[lo])+' ('+ff(cfg.ys[0],v[lo])+').'}catch(e){return ''}}
 function addChart(cfg){
   const id='c'+Date.now()+Math.random().toString(36).slice(2,5);
   const el=document.createElement('div');el.className='cc';
-  el.innerHTML=`<header><h2>${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="ex">Expand</button><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(capText(cfg))}</p>`;
+  el.innerHTML=`<header><h2>${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="ex">Expand</button><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(capText(cfg)+peek(cfg))}</p>`;
   $('charts').appendChild(el);
-  const item={chart:build($(id),cfg),cfg,el};charts.push(item);
-  el.querySelector('select').onchange=e=>{item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg)};
+  const item={chart:build($(id),cfg),cfg,el};charts.push(item);fitH(item);
+  el.querySelector('select').onchange=e=>{item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg);fitH(item)};
   el.querySelector('[data-a=ex]').onclick=()=>expand(item);const dsel=el.querySelector('[data-a=dl]');dsel.onchange=async()=>{const f=dsel.value;dsel.value='';if(f)await dl(item,f)};
   el.querySelector('[data-a=rm]').onclick=()=>{item.chart.destroy();el.remove();charts=charts.filter(c=>c!==item)};
 }
@@ -554,6 +620,13 @@ try{const s=localStorage.getItem('cz-theme');if(s)document.documentElement.datas
 $('theme').textContent=isDark()?'Light mode':'Dark mode';
 const sp=$('splash');
 if(sp){const end=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),800)};sp.onclick=end;setTimeout(end,3000)}
+(function(){
+  const rm=matchMedia('(prefers-reduced-motion:reduce)').matches,pg=$('prog'),tt=$('totop');
+  const onS=()=>{const h=document.documentElement,m=h.scrollHeight-h.clientHeight;pg.style.width=(m>0?h.scrollTop/m*100:0)+'%';tt.classList.toggle('on',h.scrollTop>600)};
+  addEventListener('scroll',onS,{passive:true});onS();
+  document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.kpi,.panel,.steps div,details');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}});
+  if(!rm&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});document.querySelectorAll('.sec,footer').forEach(e=>{e.classList.add('rv');io.observe(e)})}
+})();
 </script>
 </body>
 </html>
