@@ -213,6 +213,125 @@ body::before{animation:drift 24s ease-in-out infinite alternate}
 #toast.on{pointer-events:auto;cursor:pointer}
 .cc h2[contenteditable]{cursor:text;border-radius:6px;padding:1px 4px;margin-left:-4px;outline:none;transition:background .2s}
 .cc h2[contenteditable]:hover,.cc h2[contenteditable]:focus{background:var(--accsoft)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;gap:12px;padding:24px;border-radius:24px;background:linear-gradient(135deg,var(--hl),transparent 45%),var(--card);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid var(--line);box-shadow:0 10px 36px var(--sh),inset 0 1px 0 var(--edge)}
+.plan.hot{border:2px solid var(--acc);box-shadow:0 18px 50px rgba(11,143,108,.22),inset 0 1px 0 var(--edge)}
+.plan h3{margin:0;font:800 20px 'Plus Jakarta Sans',Manrope,sans-serif}
+.plan .pr{font:800 38px 'Plus Jakarta Sans',Manrope,sans-serif;letter-spacing:-.03em}
+.plan .pr small{font:500 14px Manrope,sans-serif;color:var(--mute);letter-spacing:0}
+.plan ul{list-style:none;margin:0;padding:0;flex:1;display:grid;gap:8px;color:var(--mute)}
+.plan li::before{content:"\2713";color:var(--acc);font-weight:800;margin-right:8px}
+.plan li.no::before{content:"\2013";color:var(--mute)}
+.tagp{position:absolute;top:-12px;right:20px;background:var(--acc);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px}
+.lnk{background:none;border:0;color:var(--acc);font-weight:700;cursor:pointer;padding:4px;text-decoration:underline}
+.btn.on{background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 55%),#d9a21b;box-shadow:0 6px 18px rgba(217,162,27,.35),inset 0 1px 0 rgba(255,255,255,.55)}
+#lic{position:fixed;inset:0;z-index:85;display:grid;place-items:center;padding:20px;background:rgba(5,12,24,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#lic[hidden]{display:none}
+.lbox{width:min(440px,100%)}
+#lkey{width:100%;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit;margin-bottom:6px}
+.plan p{margin:0;color:var(--mute);flex:1}
+a.plan{text-decoration:none;color:inherit;transition:transform .2s}
+a.plan:hover{transform:translateY(-3px)}
+.ph{margin:30px 0 12px;font:800 20px 'Plus Jakarta Sans',Manrope,sans-serif}
+.nl{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.nl input{flex:1;min-width:220px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit}
+#sponsor{margin-top:26px}
+#adbox{margin-top:18px}
+/* ===== simple layout + mobile ===== */
+.hero{margin-top:6px}
+.st{font:800 22px/1.2 'Plus Jakarta Sans',Manrope,sans-serif;letter-spacing:-.02em;margin:28px 0 12px}
+.dt{padding:0}
+.dt>summary,details.inner>summary{cursor:pointer;font-weight:700;list-style:none;padding:16px 18px}
+.dt>summary::-webkit-details-marker,details.inner>summary::-webkit-details-marker{display:none}
+.dt>summary::after,details.inner>summary::after{content:"+";float:right;font-size:22px;line-height:1;color:var(--acc)}
+.dt[open]>summary::after,details.inner[open]>summary::after{content:"\2013"}
+.dt>.in{padding:0 18px 18px}
+details.inner{margin:14px 0 0;padding:0;border-radius:16px}
+.bgrid.builder{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;align-items:end}
+.lbl{margin:16px 0 8px;color:var(--mute);font-size:13px}
+.btn.wide{width:100%;margin-top:16px;padding:13px 18px}
+.tin{padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit;min-width:200px;flex:1}
+.fl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.fl li{display:flex;gap:10px;align-items:flex-start;color:var(--ink)}
+.ic{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;margin-top:1px}
+.ic.ok{background:rgba(11,143,108,.16);color:var(--acc)}
+.ic.wn{background:rgba(224,165,38,.22);color:#b7791f}
+#helpBtn{margin-left:4px}
+#helper{position:fixed;right:18px;bottom:18px;z-index:90;width:min(400px,calc(100vw - 24px));height:min(580px,82vh);display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:color-mix(in srgb,var(--bg) 94%,var(--card));border:1px solid var(--line);box-shadow:0 24px 70px var(--sh)}
+#helper[hidden]{display:none}
+#helper>header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:14px 16px;border-bottom:1px solid var(--sep)}
+#helper>header div{display:flex;flex-direction:column}
+#helper>header span{color:var(--mute);font-size:12px}
+#hx{border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink);min-width:40px}
+#hlog{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:88%;padding:10px 13px;border-radius:16px;white-space:pre-wrap;line-height:1.5;font-size:14px}
+.m.b{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:5px}
+.m.u{background:var(--acc);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+#hchips{display:flex;gap:6px;overflow-x:auto;padding:0 14px 8px;scrollbar-width:none}
+.chip.q{white-space:nowrap}
+#hform{display:flex;gap:8px;padding:10px 14px 14px;border-top:1px solid var(--sep)}
+#hform input{flex:1;min-width:0;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit}
+@media(max-width:640px){
+  .wrap{padding:14px 14px 46px}
+  button,select,input{min-height:46px}
+  input,select,textarea{font-size:16px}
+  .nav div{padding:6px 8px 6px 12px;gap:4px}
+  .nav .lg{font-size:18px}
+  .nav .btn{padding:8px 12px;font-size:14px;min-height:40px}
+  .brand{font-size:42px}
+  .hl{font-size:18px}
+  .sub{font-size:14px}
+  .drop{padding:30px 14px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:12px}
+  .kpi strong{font-size:19px}
+  .cc{padding:14px 12px 10px}
+  .cc header{flex-direction:column;align-items:flex-start}
+  .cc .tools{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cc .tools select,.cc .tools button{width:100%;font-size:14px}
+  .cv{height:340px}
+  .grid{grid-template-columns:1fr;gap:14px}
+  .xp .btn{flex:1}
+  .dt>summary{padding:15px 14px}
+  .dt>.in{padding:0 14px 16px}
+  #helper{right:0;left:0;bottom:0;width:100%;height:80vh;border-radius:22px 22px 0 0}
+  .kpi,.cc,.panel,details,.filebar,.drop{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  footer{flex-direction:column}
+}
+/* ===== daily-use polish ===== */
+.fatal{position:fixed;inset:0;z-index:300;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;padding:24px;background:var(--bg);color:var(--ink)}
+#busy{position:fixed;left:50%;top:calc(76px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:120;display:flex;align-items:center;gap:12px;padding:12px 20px;border-radius:999px;background:var(--card);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--line);box-shadow:0 12px 36px var(--sh);font-weight:600}
+#busy[hidden]{display:none}
+.spin{width:18px;height:18px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--acc);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.kpi{position:relative;overflow:hidden;min-height:96px}
+.kpi small,.kpi strong,.kpi span{position:relative;z-index:1}
+.sp{position:absolute;right:0;bottom:0;width:56%;height:38px;opacity:.5}
+.sp polyline{fill:none;stroke:var(--acc);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.dl{font-style:normal;font-weight:700}
+.dl.up{color:var(--acc)}.dl.dn{color:#d8503f}
+#welcome{margin-top:18px}
+.recent{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.rc{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:18px;background:linear-gradient(135deg,var(--hl),transparent 45%),var(--card);border:1px solid var(--line);box-shadow:0 8px 26px var(--sh),inset 0 1px 0 var(--edge)}
+.rc div{min-width:0;margin-right:auto}
+.rc b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc span{color:var(--mute);font-size:13px}
+.btn.ic{padding:8px 12px;min-width:40px}
+#cmd{position:fixed;inset:0;z-index:130;display:grid;align-items:start;justify-items:center;padding:12vh 16px 16px;background:rgba(5,12,24,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#cmd[hidden]{display:none}
+.cbox{width:min(560px,100%);border-radius:22px;padding:14px;background:color-mix(in srgb,var(--bg) 94%,var(--card));border:1px solid var(--line);box-shadow:0 30px 80px var(--sh)}
+#cin{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit;font-size:16px}
+#clist{list-style:none;margin:10px 0 6px;padding:0;max-height:min(46vh,360px);overflow:auto}
+#clist li{padding:11px 14px;border-radius:12px;cursor:pointer}
+#clist li.on,#clist li:hover{background:var(--accsoft);color:var(--acc);font-weight:700}
+@media print{
+  body::before,.nav,.hero,.drop,#welcome,#helper,#cmd,#busy,#toast,.filebar button,.xp,.dt,.cc .tools,#msg,footer,#sampleSel,#sample,#tpl,.row,#splash{display:none!important}
+  body{background:#fff}
+  .wrap{padding:0}
+  .grid{grid-template-columns:1fr}
+  .cc,.kpi,.panel{box-shadow:none!important;background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;break-inside:avoid;border:1px solid #ddd!important}
+}
 </style>
 </head>
 <body>
@@ -222,122 +341,90 @@ body::before{animation:drift 24s ease-in-out infinite alternate}
   <div class="tg">Excel data in, charts out.</div>
   <div class="sp"></div>
 </div>
-<nav class="nav"><div>
-  <a class="lg" href="#top"><svg class='lms' viewBox='0 0 120 80' aria-hidden='true'><g style='fill:var(--acc)'><rect x='10' y='46' width='14' height='26' rx='3'/><rect x='32' y='34' width='14' height='38' rx='3'/><rect x='54' y='40' width='14' height='32' rx='3'/><rect x='76' y='22' width='14' height='50' rx='3'/><rect x='98' y='10' width='14' height='62' rx='3'/></g><path d='M17 46 L39 34 L61 40 L83 22 L105 10' fill='none' stroke='#e0a526' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='105' cy='10' r='7' fill='#e0a526'/></svg>Chartzen</a>
-  <a href="#features">Features</a><a href="#how">How it works</a><a href="#about">About</a><a href="#faq">FAQ</a>
-  <button class="btn ghost" id="theme">Dark mode</button>
-  <a class="cta" href="#drop">Upload file</a>
-</div></nav>
+<nav class="nav"><div><a class="lg" href="#top"><svg class='lms' viewBox='0 0 120 80' aria-hidden='true'><g style='fill:var(--acc)'><rect x='10' y='46' width='14' height='26' rx='3'/><rect x='32' y='34' width='14' height='38' rx='3'/><rect x='54' y='40' width='14' height='32' rx='3'/><rect x='76' y='22' width='14' height='50' rx='3'/><rect x='98' y='10' width='14' height='62' rx='3'/></g><path d='M17 46 L39 34 L61 40 L83 22 L105 10' fill='none' stroke='#e0a526' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='105' cy='10' r='7' fill='#e0a526'/></svg>Chartzen</a><button class="btn ghost" id="cmdBtn" aria-label="Open command menu">Menu</button><button class="btn ghost" id="theme">Dark mode</button><button class="btn" id="helpBtn">Ask Helper</button></div></nav>
 <div id="mdl" hidden><div class="mbox cc"><header><h2 id="mt"></h2><button class="btn ghost" id="mclose">Close</button></header><div class="mcv"><canvas id="mcanvas"></canvas></div></div></div>
-<div id="prog"></div>
-<a id="totop" href="#top" aria-label="Back to top">↑</a>
+<div id="busy" hidden><div class="spin"></div><span id="busyt">Working...</span></div>
+<div id="cmd" hidden><div class="cbox"><input id="cin" placeholder="Type a command, e.g. pdf, sample, dark" aria-label="Command" autocomplete="off"><ul id="clist" role="listbox"></ul><p class="cap">Up and Down to move, Enter to run, Esc to close. Shortcut: Ctrl+K</p></div></div>
 <div id="toast" role="status"></div>
+<aside id="helper" hidden role="dialog" aria-label="Chartzen Helper">
+  <header><div><b>Chartzen Helper</b><span>Works offline. Your data stays on your device.</span></div><button id="hx" aria-label="Close helper">✕</button></header>
+  <div id="hlog"></div>
+  <div id="hchips"></div>
+  <form id="hform"><input id="hin" placeholder="Ask anything, e.g. show profit by month" autocomplete="off" aria-label="Ask the helper"><button class="btn" type="submit">Send</button></form>
+</aside>
 <div class="wrap" id="top">
-  <div class="hero"><div class="ht"><h1 class="brand"><svg class='lm' viewBox='0 0 120 80' aria-hidden='true'><g style='fill:var(--acc)'><rect x='10' y='46' width='14' height='26' rx='3'/><rect x='32' y='34' width='14' height='38' rx='3'/><rect x='54' y='40' width='14' height='32' rx='3'/><rect x='76' y='22' width='14' height='50' rx='3'/><rect x='98' y='10' width='14' height='62' rx='3'/></g><path d='M17 46 L39 34 L61 40 L83 22 L105 10' fill='none' stroke='#e0a526' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='105' cy='10' r='7' fill='#e0a526'/></svg><span>Chartzen</span></h1><p class="hl">Turn spreadsheets into boardroom-ready charts.</p>
-  <p class="sub">Drop in your Excel or CSV file and get the charts you need. Your data is read inside your browser and never uploaded anywhere.</p>
-  <div class="pills"><span>No sign-up</span><span>Private in your browser</span><span>Export PDF, Excel, PNG</span><span>Smart chart checks</span></div></div>
-  </div>
-
+  <header class="hero">
+    <h1 class="brand"><svg class='lm' viewBox='0 0 120 80' aria-hidden='true'><g style='fill:var(--acc)'><rect x='10' y='46' width='14' height='26' rx='3'/><rect x='32' y='34' width='14' height='38' rx='3'/><rect x='54' y='40' width='14' height='32' rx='3'/><rect x='76' y='22' width='14' height='50' rx='3'/><rect x='98' y='10' width='14' height='62' rx='3'/></g><path d='M17 46 L39 34 L61 40 L83 22 L105 10' fill='none' stroke='#e0a526' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='105' cy='10' r='7' fill='#e0a526'/></svg><span>Chartzen</span></h1>
+    <p class="hl">Turn your Excel data into clear charts.</p>
+    <p class="sub">Upload a file. Chartzen reads your numbers, checks the accounting and builds the right charts. Free, and your data never leaves your device.</p>
+  </header>
+  <section id="welcome" hidden></section>
   <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file">
-    <b>Drop your .xlsx, .xls or .csv here</b>
-    <p>or click to choose a file</p>
+    <b>Tap to choose your Excel or CSV file</b>
+    <p>or drag and drop it here. Put column headings in row 1.</p>
     <input type="file" id="file" accept=".xlsx,.xls,.csv" hidden>
   </div>
-  <div class="row"><select id="sampleSel" aria-label="Sample dataset"><option value="sales">Sales sample</option><option value="pl">Profit &amp; loss sample</option><option value="bva">Budget vs actual sample</option></select><button class="btn ghost" id="sample">Try sample data</button><button class="btn ghost" id="tpl">Download Excel template</button><span id="msg" class="sub" style="margin:0"></span></div>
-
+  <div class="row" style="margin-top:12px"><select id="sampleSel" aria-label="Sample dataset"><option value="sales">Sales sample</option><option value="pl">Profit &amp; loss sample</option><option value="bva">Budget vs actual sample</option><option value="tb">Trial balance sample</option><option value="age">Receivables ageing sample</option></select><button class="btn ghost" id="sample">Try a sample</button><button class="lnk" id="tpl">Excel template</button></div>
+  <p id="msg" class="sub" style="margin:8px 0 0"></p>
   <div id="app">
-    <div class="filebar"><div class="fb"><b id="fbn"></b><span id="fbm"></span></div><span class="badge" id="fbh"></span><button class="btn ghost" id="fbr">Replace file</button></div>
-    <div class="row"><label class="sub" style="margin:0">Sheet <select id="sheet"></select></label><label class="sub" style="margin:0">Currency <select id="cur"><option value="">None</option><option>₹</option><option>$</option><option>€</option><option>£</option></select></label><label class="sub" style="margin:0">Numbers <select id="nsys"><option value="in">Lakh / Crore</option><option value="intl">K / M / B</option></select></label><label class="sub" style="margin:0">Colors <select id="pal"><option value="default">Default</option><option value="ocean">Ocean</option><option value="sunset">Sunset</option><option value="mono">Mono</option></select></label><span id="meta" class="sub" style="margin:0"></span></div>
+    <div class="filebar"><div class="fb"><b id="fbn"></b><span id="fbm"></span></div><span class="badge" id="fbh"></span><span class="cap" id="svd" style="margin:0"></span><button class="btn ghost" id="fbr">Replace file</button></div>
     <div class="kpis" id="kpis"></div>
-    <div class="panel" id="ins"></div>
-
-    <div class="panel">
-      <h2 style="font-size:18px;margin-bottom:12px">Build a chart</h2>
-      <div class="builder">
-        <label>X axis (category or date)<select id="bx"></select></label>
-        <label>Chart type<select id="bt"><option value="line">Line</option><option value="bar">Bar</option><option value="hbar">Horizontal bar</option><option value="stacked">Stacked bar</option><option value="stack100">100% stacked bar</option><option value="cumulative">Running total</option><option value="pareto">Pareto (80/20)</option><option value="waterfall">Waterfall (bridge)</option><option value="variance">Variance (green/red)</option><option value="hist">Histogram</option><option value="scatter">Scatter (X vs Y)</option><option value="radar">Radar</option><option value="polar">Polar area (size by value)</option><option value="combo">Bars + line (2+ values)</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></select></label>
-        <label>Combine repeats<select id="ba"><option value="auto">Auto (recommended)</option><option value="sum">Sum</option><option value="avg">Average</option></select></label>
-        <label>Group dates by<select id="bg"><option value="">None</option><option value="month">Month</option><option value="quarter">Quarter</option><option value="year">Year</option></select></label>
-        <label>Filter by<select id="bf"></select></label>
-        <label>Value<select id="bfv" disabled></select></label>
-        <label>Show<select id="bn"><option value="0">All</option><option value="5">Top 5</option><option value="10">Top 10</option><option value="20">Top 20</option></select></label>
-        <label>Sort<select id="bs"><option value="">Original order</option><option value="desc">High to low</option><option value="asc">Low to high</option></select></label>
-        <label class="chk"><input type="checkbox" id="btr"> Trend line</label>
-        <button class="btn" id="add">Add chart</button>
-      </div>
-      <p style="color:var(--mute);font-size:13px;margin:12px 0 6px">Values to plot (pick one or more)</p>
-      <div class="chips" id="by"></div>
-    </div>
-
-    <div class="panel xp"><h2 style="font-size:18px;margin-right:auto">Export</h2><button class="btn" id="xpdf">PDF report</button><button class="btn ghost" id="xxls">Excel workbook</button><button class="btn ghost" id="xcsv">Clean CSV</button><button class="btn ghost" id="xsave">Save dashboard</button><button class="btn ghost" id="xload">Load dashboard</button><input type="file" id="cfgfile" accept=".json" hidden><input id="rtitle" placeholder="PDF report title (optional)" aria-label="PDF report title" style="flex:1;min-width:190px;padding:9px 12px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit"><label class="btn ghost" for="logo" style="cursor:pointer">Add logo to PDF</label><input type="file" id="logo" accept="image/png,image/jpeg" hidden></div>
+    <h2 class="st">Your charts</h2>
     <div class="grid" id="charts"></div>
-
-    <div class="panel"><div class="row" style="margin:0 0 8px"><h2 style="font-size:18px;margin-right:auto">Data preview</h2><input id="tq" placeholder="Search rows" aria-label="Search rows"></div><div class="tbl" id="tbl"></div></div>
+    <div class="panel xp"><h2 style="font-size:18px;margin-right:auto">Download</h2><button class="btn" id="xpdf">PDF report</button><button class="btn ghost" id="xxls">Excel</button><button class="btn ghost" id="xcsv">CSV</button></div>
+    <div class="panel" id="ins"></div>
+    <details class="panel dt" id="builderBox"><summary>Make your own chart</summary><div class="in">
+      <div class="bgrid builder">
+        <label>Compare by<select id="bx"></select></label>
+        <label>Chart type<select id="bt">
+          <optgroup label="Everyday"><option value="bar">Bar</option><option value="line">Line</option><option value="area">Area</option><option value="doughnut">Doughnut</option><option value="pie">Pie</option></optgroup>
+          <optgroup label="Compare"><option value="hbar">Horizontal bar</option><option value="stacked">Stacked bar</option><option value="stack100">100% stacked bar</option><option value="combo">Bars + line</option><option value="radar">Radar</option></optgroup>
+          <optgroup label="Finance"><option value="waterfall">Waterfall (bridge)</option><option value="pareto">Pareto (80/20)</option><option value="cumulative">Running total</option><option value="variance">Variance (green/red)</option></optgroup>
+          <optgroup label="Analysis"><option value="hist">Histogram</option><option value="scatter">Scatter (X vs Y)</option><option value="polar">Polar area (size by value)</option></optgroup>
+        </select></label>
+      </div>
+      <p class="lbl">Values to show (tap to select)</p>
+      <div class="chips" id="by"></div>
+      <p class="cap" id="hint"></p>
+      <details class="inner"><summary>More options</summary>
+        <div class="bgrid builder">
+          <label>Group dates by<select id="bg"><option value="">None</option><option value="month">Month</option><option value="quarter">Quarter</option><option value="year">Year</option></select></label>
+          <label>Combine repeats<select id="ba"><option value="auto">Auto (recommended)</option><option value="sum">Sum</option><option value="avg">Average</option></select></label>
+          <label>Filter by<select id="bf"></select></label>
+          <label>Value<select id="bfv" disabled></select></label>
+          <label>Show<select id="bn"><option value="0">All</option><option value="5">Top 5</option><option value="10">Top 10</option><option value="20">Top 20</option></select></label>
+          <label>Sort<select id="bs"><option value="">Original order</option><option value="desc">High to low</option><option value="asc">Low to high</option></select></label>
+          <label class="chk"><input type="checkbox" id="btr"> Trend line</label>
+        </div>
+      </details>
+      <button class="btn wide" id="add">Add chart</button>
+    </div></details>
+    <details class="panel dt" id="settingsBox"><summary>Settings</summary><div class="in">
+      <div class="bgrid builder">
+        <label>Sheet<select id="sheet"></select></label>
+        <label>Currency<select id="cur"><option value="">None</option><option>₹</option><option>$</option><option>€</option><option>£</option></select></label>
+        <label>Numbers<select id="nsys"><option value="in">Lakh / Crore</option><option value="intl">K / M / B</option></select></label>
+        <label>Colors<select id="pal"><option value="default">Default</option><option value="ocean">Ocean</option><option value="sunset">Sunset</option><option value="mono">Mono</option></select></label>
+      </div>
+      <p class="cap" id="meta"></p>
+    </div></details>
+    <details class="panel dt"><summary>More tools</summary><div class="in xp">
+      <input id="rtitle" placeholder="PDF report title (optional)" aria-label="PDF report title" class="tin">
+      <label class="btn ghost" for="logo" style="cursor:pointer">Add logo to PDF</label><input type="file" id="logo" accept="image/png,image/jpeg" hidden>
+      <button class="btn ghost" id="xsave">Save dashboard</button><button class="btn ghost" id="xload">Load dashboard</button><input type="file" id="cfgfile" accept=".json" hidden>
+    </div></details>
+    <details class="panel dt" id="dataBox"><summary>See your data</summary><div class="in"><input id="tq" placeholder="Search rows" aria-label="Search rows" class="tin" style="margin-bottom:10px"><div class="tbl" id="tbl"></div></div></details>
   </div>
-  <section class="sec" id="features">
-  <h2>Everything you need to go from sheet to chart</h2>
-  <p class="lead">Built for the way finance teams actually work: messy exports, multiple sheets and reports due today.</p>
-  <div class="feat">
-    <div><h3>Instant dashboard</h3><p>KPI totals, averages and three starter charts appear the moment your file loads.</p></div>
-    <div><h3>Cleans messy numbers</h3><p>Values with ₹, $, %, commas and bracketed negatives like (500) are read correctly.</p></div>
-    <div><h3>Multi-sheet workbooks</h3><p>Switch between sheets of the same workbook without uploading again.</p></div>
-    <div><h3>Five chart types</h3><p>Line, bar, area, pie and doughnut, with sum or average grouping for repeated labels.</p></div>
-    <div><h3>Indian number style</h3><p>Large figures are shown in lakhs (L) and crores (Cr) so they read at a glance.</p></div>
-    <div><h3>Private by design</h3><p>Your file is processed inside your browser and is never sent to a server.</p></div>
-  </div>
-</section>
-
-<section class="sec" id="how">
-  <h2>How it works</h2>
-  <p class="lead">Three steps, no formulas and no setup.</p>
-  <div class="steps">
-    <div><h3>Upload your file</h3><p>Drop an .xlsx, .xls or .csv file. Keep column headings in the first row.</p></div>
-    <div><h3>Review the dashboard</h3><p>Chartzen finds your number and category columns and draws the charts that fit.</p></div>
-    <div><h3>Customise and save</h3><p>Pick your own X axis and values, change the chart type, then download each chart as a PNG.</p></div>
-  </div>
-</section>
-
-<section class="sec" id="about">
-  <h2>About Chartzen</h2>
-  <div class="about">
-    <div>
-      <p>Chartzen is a charting tool for finance professionals: analysts, accountants, FP&amp;A teams and business owners who keep their numbers in Excel and need clear charts for reports, reviews and presentations.</p>
-      <p>Instead of building every chart by hand, you upload your data and get a working set of charts in seconds, then refine them to match what you need.</p>
-    </div>
-    <ul>
-      <li>Monthly and quarterly revenue and expense trends</li>
-      <li>Budget versus actual comparisons</li>
-      <li>Region, product or cost-centre breakdowns</li>
-      <li>Quick charts for board decks and management reports</li>
-    </ul>
-  </div>
-</section>
-
-<section class="sec" id="trust">
-  <h2>Built to be trusted</h2>
-  <p class="lead">Charts you can put in front of a client or a board.</p>
-  <div class="feat">
-    <div><h3>Blocks misleading charts</h3><p>Pie charts of dates, summed percentages and stacked rates are stopped with a clear reason.</p></div>
-    <div><h3>Shows how numbers are built</h3><p>Every chart states whether a value is a total or an average, plus its highest and lowest points.</p></div>
-    <div><h3>Data health check</h3><p>Empty cells, duplicates, Excel errors and unsaved formulas are flagged before you chart.</p></div>
-    <div><h3>Your file stays with you</h3><p>Nothing is uploaded. Close the tab and the data is gone.</p></div>
-  </div>
-</section>
-
-<section class="sec" id="faq">
-  <h2>Questions people ask</h2>
-  <p class="lead"></p>
-  <details><summary>Which file formats work?</summary><p>Excel files (.xlsx and .xls) and CSV files. If a workbook has several sheets, choose the one you want from the Sheet menu.</p></details>
-  <details><summary>Is my financial data safe?</summary><p>Yes. Everything is read and charted inside your own browser. Your file is not uploaded or stored anywhere.</p></details>
-  <details><summary>Why is one of my columns not available to plot?</summary><p>A column is treated as numeric when most of its cells are numbers. Columns with mostly text are used as the X axis instead. Check for stray text in your number columns.</p></details>
-  <details><summary>How large can my file be?</summary><p>Thousands of rows work smoothly. The data preview shows the first 50 rows, but every row is used in the charts and totals.</p></details>
-  <details><summary>Can I use the charts in a report or deck?</summary><p>Yes. Use the Download menu on any chart for PNG, JPG, PDF or CSV, or export every chart at once as a PDF report or Excel workbook.</p></details>
-</section>
-
-<footer><span>Chartzen. Made for finance professionals.</span><span>Your data stays in your browser.</span></footer>
+  <footer><span>Chartzen. Made for finance professionals.</span><span>Your data stays on your device.</span></footer>
 </div>
 
 <script>
+if(typeof Chart==='undefined'||typeof XLSX==='undefined'){
+  const sp0=document.getElementById('splash');if(sp0)sp0.remove();
+  document.body.insertAdjacentHTML('afterbegin','<div class="fatal"><b>Chartzen could not load its chart tools.</b><p>Please check your internet connection and reload the page.</p><button class="btn" onclick="location.reload()">Reload</button></div>');
+  throw new Error('Chartzen libraries failed to load');
+}
+const FREE_MAX=1e9,PROT=[];
 const PALX=['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a','#6b7a90','#b45309','#0e7490','#9333ea'];
 const PAL=['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a'];
 let wb=null,rows=[],cols=[],nums=[],cats=[],charts=[];
@@ -355,73 +442,94 @@ drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();file.clic
 drop.addEventListener('drop',e=>e.dataTransfer.files[0]&&read(e.dataTransfer.files[0]));
 file.onchange=()=>file.files[0]&&read(file.files[0]);
 
+function busy(on,t){const b=$('busy');b.hidden=!on;if(t)$('busyt').textContent=t}
 function read(f){
   if(!/\.(xlsx|xls|csv)$/i.test(f.name)){toast('Please choose an .xlsx, .xls or .csv file.');return}
+  if(!f.size){toast('This file is empty.');return}
   if(f.size>30e6){toast('This file is larger than 30 MB. Try a smaller sheet.');return}
-  $('msg').textContent='Reading '+f.name+'...';
+  busy(true,'Reading '+f.name+'...');
   const r=new FileReader();
-  r.onload=e=>{try{load(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:true}),f.name)}catch(err){$('msg').textContent='Could not read this file. Please check it is a valid Excel or CSV file.'}};
+  r.onerror=()=>{busy(false);toast('Could not open that file. Please try again.')};
+  r.onload=e=>setTimeout(()=>{try{load(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:true}),f.name)}catch(err){console.error(err);busy(false);$('msg').textContent='Could not read this file. Check that it is a valid Excel or CSV file.'}},30);
   r.readAsArrayBuffer(f);
 }
-function load(w,name){
-  wb=w;$('msg').textContent=name;fname=name.replace(/\.[^.]+$/,'');
-  $('sheet').innerHTML=wb.SheetNames.map(n=>`<option>${n}</option>`).join('');
-  useSheet();
+function load(w,name){wb=w;fname=name.replace(/\.[^.]+$/,'');$('msg').textContent='';$('sheet').innerHTML=wb.SheetNames.map(n=>`<option>${esc(n)}</option>`).join('');useSheet()}
+$('sheet').onchange=()=>{if(!wb)return;try{useSheet()}catch(e){console.error(e);busy(false);toast('Could not read that sheet.')}};
+function sheetToObjects(ws){
+  const aoa=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:null,blankrows:false});
+  if(aoa.length<2)return null;
+  const width=aoa.slice(0,50).reduce((m,r)=>Math.max(m,r.length),0),filled=r=>r.filter(v=>v!==null&&v!=='').length;
+  let hi=0;
+  for(let i=0;i<Math.min(15,aoa.length-1);i++){const r=aoa[i],ne=filled(r),st=r.filter(v=>typeof v==='string'&&v.trim()!=='').length;if(ne>=Math.max(2,Math.ceil(width*.6))&&st>=Math.ceil(ne*.6)){hi=i;break}}
+  const used=new Set(),head=Array.from({length:width},(_,j)=>{let h=String(aoa[hi][j]==null?'':aoa[hi][j]).trim()||'Column '+(j+1);const b=h;let n=2;while(used.has(h))h=b+' ('+(n++)+')';used.add(h);return h});
+  const data=[];
+  for(let i=hi+1;i<aoa.length;i++){const r=aoa[i];if(!filled(r))continue;const o={};head.forEach((h,j)=>{o[h]=r[j]===undefined?null:r[j]});data.push(o)}
+  const keep=head.filter(h=>data.some(o=>o[h]!==null&&o[h]!==''));
+  if(!keep.length||!data.length)return null;
+  if(keep.length<head.length)data.forEach(o=>head.forEach(h=>{if(!keep.includes(h))delete o[h]}));
+  return{data,skipped:hi};
 }
-$('sheet').onchange=useSheet;
-
+var loadNote='';
 function useSheet(){
   const ws=wb.Sheets[$('sheet').value];FN=0;ER=0;
   for(const k in ws){if(k[0]==='!')continue;const c=ws[k];if(c.t==='e'){c.t='z';c.v=null;ER++}else if(c.f&&c.v===undefined)FN++}
-  let data=XLSX.utils.sheet_to_json(ws,{defval:null,raw:true});
-  data=data.filter(r=>Object.values(r).some(v=>v!=null));
-  if(!data.length){$('msg').textContent='This sheet has no data rows. Make sure row 1 holds column headings.';return}
-  cols=Object.keys(data[0]);
-  nums=[];cats=[];
+  const r=sheetToObjects(ws);
+  if(!r){busy(false);$('msg').textContent='This sheet has no usable data. Put your column headings in one row with the data below it.';return}
+  loadNote=r.skipped?' Skipped '+r.skipped+' title row'+(r.skipped>1?'s':'')+' above your headings.':'';
+  ingest(r.data,{});
+}
+function ingest(data,opt){
+  curData=data;cols=Object.keys(data[0]);nums=[];cats=[];
   cols.forEach(c=>{
     const vals=data.map(r=>r[c]).filter(v=>v!=null&&v!=='');
     const ok=vals.filter(v=>toNum(v)!==null&&!(v instanceof Date)).length;
     (vals.length&&ok/vals.length>=.7)?nums.push(c):cats.push(c);
   });
   rows=data.map(r=>{const o={};cols.forEach(c=>{let v=r[c];if(v instanceof Date)v=v.toISOString().slice(0,10);o[c]=nums.includes(c)?toNum(v):(v==null?'':String(v))});return o});
-  $('app').style.display='block';
+  $('app').style.display='block';$('welcome').hidden=true;
+  document.title='Chartzen \u00b7 '+fname;
   $('meta').textContent=`${rows.length} rows, ${cols.length} columns`;
   $('bx').innerHTML=(cats.length?cats:cols).map(c=>`<option>${esc(c)}</option>`).join('');
   $('by').innerHTML=nums.map((c,i)=>`<span class="chip${i<2?' on':''}" tabindex="0" role="button" data-c="${esc(c)}">${esc(c)}</span>`).join('');
-  document.querySelectorAll('.chip').forEach(ch=>{ch.onclick=()=>ch.classList.toggle('on');ch.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ch.classList.toggle('on')}}});
-  classify();kpis();countUp();table();fillFilter();insights();fileBar();
+  document.querySelectorAll('.chip:not(.q)').forEach(ch=>{ch.onclick=()=>ch.classList.toggle('on');ch.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ch.classList.toggle('on')}}});
+  classify();kpis();countUp();table();fillFilter();insights();fileBar();if(typeof helperChips==='function')helperChips();
   charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';
-  if(!nums.length){$('msg').textContent='No numeric columns found, so there is nothing to chart.';return}
-  autoDash();toast('Dashboard ready: '+charts.length+' charts from '+rows.length.toLocaleString()+' rows');
-  
-  
-  
+  if(!nums.length){busy(false);$('msg').textContent='No numeric columns found, so there is nothing to chart.';return}
+  const ok=(opt.charts||[]).filter(c=>c.ys.every(y=>cols.includes(y)||(c.bridge&&c.bridge.every(b=>cols.includes(b[1]))))&&(c.bridge||c.type==='hist'||c.type==='scatter'||cols.includes(c.x))&&(!c.f||cols.includes(c.f.c)));
+  if(ok.length){ok.forEach(c=>addChart(c));toast('Welcome back. Restored '+ok.length+' chart'+(ok.length>1?'s':'')+'.')}
+  else{autoDash();toast('Dashboard ready: '+charts.length+' charts from '+rows.length.toLocaleString()+' rows.'+loadNote)}
+  busy(false);queueSave();
   setTimeout(()=>$('app').scrollIntoView({behavior:'smooth'}),200);
 }
-
 function kpis(){
-  $('kpis').innerHTML=MEAS.slice(0,4).map(c=>{
-    const v=rows.map(r=>r[c]).filter(x=>x!==null);const s=v.reduce((a,b)=>a+b,0);
-    return `<div class="kpi"><small>${esc(c)}</small><strong data-c="${esc(c)}" data-v="${AVG[c]?s/v.length:s}">${ff(c,AVG[c]?s/v.length:s)}</strong><span>${AVG[c]?'average':'total'}, per-row avg ${ff(c,s/v.length)} · max ${ff(c,v.reduce((a,b)=>Math.max(a,b),-Infinity))}</span></div>`}).join('');
+  const R=ACC.roles,costy=new Set([R.cogs,R.opex].filter(Boolean));
+  $('kpis').innerHTML=kpiCols().map(c=>{
+    const v=rows.map(r=>r[c]).filter(x=>x!==null),s=v.reduce((a,b)=>a+b,0),val=kv(c,s,v);
+    let spark='',delta='';
+    if(DATE[0]){const d=series(DATE[0],[c],'auto','month'),y=d.data[0];
+      if(y.length>2){const mn=y.reduce((a,b)=>Math.min(a,b),Infinity),mx=y.reduce((a,b)=>Math.max(a,b),-Infinity),rg=mx-mn||1,pts=y.map((n,i)=>(i/(y.length-1)*100).toFixed(1)+','+(26-(n-mn)/rg*22).toFixed(1)).join(' ');
+        spark='<svg class="sp" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+pts+'"/></svg>';
+        const l=y.length-1,pv=y[l-1];if(pv){const ch=(y[l]-pv)/Math.abs(pv)*100,good=costy.has(c)?ch<=0:ch>=0;delta='<em class="dl '+(good?'up':'dn')+'">'+(ch>=0?'\u25b2 ':'\u25bc ')+Math.abs(ch).toFixed(1)+'%</em>'}}}
+    return `<div class="kpi"><small>${esc(c)}</small><strong data-c="${esc(c)}" data-v="${val}">${ff(c,val)}</strong><span>${RATIO[c]?'overall':AVG[c]?'average':'total'}${delta?' \u00b7 vs last month ':''}${delta}</span>${spark}</div>`}).join('');
 }
 function table(q,sc,sd){
   let sh=rows;if(q)sh=sh.filter(r=>cols.some(c=>String(r[c]).toLowerCase().includes(q.toLowerCase())));if(sc)sh=[...sh].sort((a,b)=>(a[sc]>b[sc]?1:a[sc]<b[sc]?-1:0)*sd);sh=sh.slice(0,50);
-  $('tbl').innerHTML='<table><thead><tr>'+cols.map(c=>`<th data-c="${esc(c)}" style="cursor:pointer">${esc(c)}${sc===c?(sd>0?' ▲':' ▼'):''}</th>`).join('')+'</tr></thead><tbody>'+sh.map(r=>'<tr>'+cols.map(c=>nums.includes(c)?`<td class="n">${r[c]==null?'':r[c].toLocaleString()}</td>`:`<td>${esc(r[c])}</td>`).join('')+'</tr>').join('')+'</tbody></table>';
+  $('tbl').innerHTML='<table><thead><tr>'+cols.map(c=>`<th data-c="${esc(c)}" style="cursor:pointer">${esc(c)}${DER.has(c)?' ƒ':''}${sc===c?(sd>0?' ▲':' ▼'):''}</th>`).join('')+'</tr></thead><tbody>'+sh.map(r=>'<tr>'+cols.map(c=>nums.includes(c)?`<td class="n">${r[c]==null?'':r[c].toLocaleString()}</td>`:`<td>${esc(r[c])}</td>`).join('')+'</tr>').join('')+'</tbody></table>';
   $('tbl').querySelectorAll('th').forEach(th=>th.onclick=()=>table(q,th.dataset.c,sc===th.dataset.c?-sd:1));
 }
 
 const roll=(v,g)=>{if(!g)return v;let y,m,a=/^(\d{4})-(\d{2})/.exec(v);if(a){y=a[1];m=+a[2]}else if(a=/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/.exec(v)){y=a[3];m=+a[2]}else return v;return g==='year'?y:g==='quarter'?y+' Q'+Math.ceil(m/3):y+'-'+String(m).padStart(2,'0')};
 function series(x,ys,agg,g,f){
   const m=new Map();
-  rows.forEach(r=>{if(f&&f.c&&r[f.c]!==f.v)return;const k=r[x]===''?'(blank)':roll(r[x],g);if(!m.has(k))m.set(k,{n:ys.map(()=>0),v:ys.map(()=>0)});const o=m.get(k);ys.forEach((y,i)=>{if(r[y]!==null){o.v[i]+=r[y];o.n[i]++}})});
+  rows.forEach(r=>{if(f&&f.c&&r[f.c]!==f.v)return;const k=r[x]===''?'(blank)':roll(r[x],g);if(!m.has(k))m.set(k,{n:ys.map(()=>0),v:ys.map(()=>0),a:ys.map(()=>0)});const o=m.get(k);ys.forEach((y,i)=>{const q=RATIO[y];if(q){o.v[i]+=nz(r[q.n]);o.a[i]+=nz(r[q.d]);o.n[i]++}else if(r[y]!==null){o.v[i]+=r[y];o.n[i]++}})});
   const labels=[...m.keys()];if(g)labels.sort();
-  return{labels,data:ys.map((y,i)=>labels.map(k=>{const o=m.get(k);return isAvg(y,agg)?(o.n[i]?o.v[i]/o.n[i]:0):o.v[i]}))};
+  return{labels,data:ys.map((y,i)=>labels.map(k=>{const o=m.get(k);return RATIO[y]?(o.a[i]?o.v[i]/o.a[i]:0):isAvg(y,agg)?(o.n[i]?o.v[i]/o.n[i]:0):o.v[i]}))};
 }
 if(window.ChartDataLabels)Chart.register(ChartDataLabels);
 Chart.defaults.font.family="Manrope,system-ui,sans-serif";Chart.defaults.font.size=12;
 function build(cv,cfg,light){
   if(cfg.type==='scatter')return buildScatter(cv,cfg,light);
-  const {labels,data}=cfg.type==='hist'?histo(cfg):series(cfg.x,cfg.ys,cfg.agg,cfg.g,cfg.f);
+  const {labels,data}=cfg.bridge?bridgeSrc(cfg):cfg.type==='hist'?histo(cfg):series(cfg.x,cfg.ys,cfg.agg,cfg.g,cfg.f);
   const round=['pie','doughnut','polar'].includes(cfg.type);
   let L=labels,D=data;
   if(cfg.s||+cfg.n||cfg.type==='pareto'){const dir=cfg.s||'desc',ix=L.map((_,i)=>i).sort((a,b)=>dir==='asc'?D[0][a]-D[0][b]:D[0][b]-D[0][a]),sel=ix.slice(0,+cfg.n||ix.length);L=sel.map(i=>labels[i]);D=data.map(d=>sel.map(i=>d[i]))}
@@ -438,27 +546,28 @@ function build(cv,cfg,light){
   const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid');
   const dual=!round&&!['hbar','stacked','stack100','waterfall','hist','pareto','variance','radar'].includes(cfg.type)&&new Set(cfg.ys.map(y=>FAM[y])).size>1;
   const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:rcol,borderColor:light?'#fff':css('--card'),borderWidth:2}
-    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:['area','cumulative','radar'].includes(cfg.type),tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--card'),pointBorderWidth:2,borderRadius:6});
+    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:['area','cumulative','radar'].includes(cfg.type),tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:window.innerWidth<640?3:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--card'),pointBorderWidth:2,borderRadius:6});
   if(cfg.tr&&!round&&cfg.type!=='hbar')D.forEach((d,i)=>{const n=d.length;if(n>2){let sx=0,sy=0,sxy=0,sxx=0;d.forEach((y,k)=>{sx+=k;sy+=y;sxy+=k*y;sxx+=k*k});const b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a=(sy-b*sx)/n;ds.push({label:cfg.ys[i]+' trend',data:d.map((_,k)=>a+b*k),type:'line',yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',borderColor:PAL[i%8],borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false,backgroundColor:'transparent'})}});
-  const sp=cfg.type,yk=sp==='hist'?'#count':cfg.ys[0];
-  if(sp==='pareto'){const d=D[0],tot=d.reduce((a,b)=>a+b,0)||1;let r=0;ds.length=1;ds.push({label:'Cumulative %',type:'line',yAxisID:'y2',pct:true,data:d.map(v=>(r+=v)/tot*100),borderColor:PALX[2],backgroundColor:PALX[2],borderWidth:3,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2,tension:.2})}
-  if(sp==='waterfall'){const d=D[0];let r=0;const bars=d.map(v=>{const a=r;r+=v;return [a,r]}),dv=d.slice();L=L.concat('Total');bars.push([0,r]);dv.push(r);ds.length=0;ds.push({label:cfg.ys[0],col:cfg.ys[0],data:bars,deltas:dv,backgroundColor:dv.map((v,i)=>i===d.length?PALX[1]:v>=0?PALX[0]:PALX[3]),borderRadius:5,borderSkipped:false})}
-  if(sp==='variance'){ds.length=1;ds[0].backgroundColor=D[0].map(v=>v>=0?PALX[0]:PALX[3])}
+  const small=window.innerWidth<640,sp=cfg.type,yk=sp==='hist'?'#count':cfg.ys[0];
+  if(sp==='pareto'){const d=D[0],tot=d.reduce((a,b)=>a+b,0)||1;let r=0;ds.length=1;ds.push({label:'Cumulative %',type:'line',yAxisID:'y2',pct:true,order:-1,datalabels:{align:'right',offset:8},data:d.map(v=>(r+=v)/tot*100),borderColor:PALX[2],backgroundColor:PALX[2],borderWidth:3,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2,tension:.2})}
+  if(sp==='waterfall'){const d=D[0];let r=0;const bars=d.map(v=>{const a=r;r+=v;return [a,r]}),dv=d.slice();L=L.concat(cfg.totalLabel||'Total');bars.push([0,r]);dv.push(r);ds.length=0;ds.push({label:cfg.ys[0],col:cfg.ys[0],data:bars,deltas:dv,backgroundColor:dv.map((v,i)=>i===d.length?PALX[1]:v>=0?PALX[0]:PALX[3]),borderRadius:5,borderSkipped:false})}
+  if(sp==='variance'){ds.length=1;ds[0].backgroundColor=D[0].map(v=>(cfg.invert?v<=0:v>=0)?PALX[0]:PALX[3])}
   if(sp==='hist'){ds.length=1;ds[0].col='#count';ds[0].label='Rows'}
   if(sp==='stack100')ds.forEach(x=>x.pct=true);
   const ink=light?'#10243e':css('--ink'),horiz=cfg.type==='hbar',stk=['stacked','stack100'].includes(cfg.type),n=L.length;
-  const trunc=v=>{v=String(v);return v.length>(cfg.type==='hist'?30:16)?v.slice(0,cfg.type==='hist'?29:15)+'\u2026':v};
-  const ytitle=cfg.type==='hist'?'Number of rows':cfg.type==='stack100'?'Share of total (%)':cfg.type==='cumulative'?cfg.ys.join(', ')+' (running total)':cfg.type==='waterfall'?cfg.ys[0]+' (change)':cfg.ys.length===1?cfg.ys[0]+(isAvg(cfg.ys[0],cfg.agg)?' (average)':' (total)'):cfg.ys.filter(y=>FAM[y]===FAM[cfg.ys[0]]).join(', ');
+  const trunc=v=>{v=String(v);return v.length>(cfg.type==='hist'?30:small?11:16)?v.slice(0,cfg.type==='hist'?29:small?10:15)+'\u2026':v};
+  const ytitle=cfg.bridge?'Amount':cfg.type==='hist'?'Number of rows':cfg.type==='stack100'?'Share of total (%)':cfg.type==='cumulative'?cfg.ys.join(', ')+' (running total)':cfg.type==='waterfall'?cfg.ys[0]+' (change)':cfg.ys.length===1?cfg.ys[0]+(isAvg(cfg.ys[0],cfg.agg)?' (average)':' (total)'):cfg.ys.filter(y=>FAM[y]===FAM[cfg.ys[0]]).join(', ');
   const y2name=dual?cfg.ys.filter(y=>FAM[y]!==FAM[cfg.ys[0]]).join(', '):'';
-  const xt=cfg.type==='hist'?cfg.ys[0]+' (value ranges)':cfg.x+(cfg.g?' ('+cfg.g+')':'');
-  const ttl=text=>({display:true,text,color:t,font:{size:12,weight:'600'},padding:8});
+  const xt=cfg.bridge?'':cfg.type==='hist'?cfg.ys[0]+' (value ranges)':cfg.x+(cfg.g?' ('+cfg.g+')':'');
+  const ttl=text=>({display:!small,text,color:t,font:{size:12,weight:'600'},padding:8});
   const isLine=c=>(c.dataset.type||CT(cfg.type))==='line';
   const dl={
     display:c=>{
       if(c.dataset.label.endsWith(' trend')||cfg.type==='radar')return false;
       const d=c.dataset.data,k=c.dataIndex;
       if(round)return d[k]/d.reduce((a,b)=>a+b,0)>=.04;
-      if(!isLine(c))return n<=24&&!(stk&&!d[k]);
+      if(!isLine(c))return n<=(small?10:24)&&!(stk&&!d[k]);
+      if(small)return k===n-1;
       if(n<=12)return true;
       return n<=120&&(k===0||k===n-1||d[k]===Math.max(...d)||d[k]===Math.min(...d));
     },
@@ -473,20 +582,20 @@ function build(cv,cfg,light){
   };
   const cat=function(v){return trunc(this.getLabelForValue(v))};
   const xs={offset:true,stacked:stk,title:horiz?ttl(ytitle):ttl(xt),grid:{display:horiz,color:g},border:{display:false},
-    ticks:{color:t,padding:6,autoSkip:n>16,maxRotation:n>8?40:0,...(n>16?{maxTicksLimit:14}:{}),callback:horiz?v=>ff(cfg.ys[0],v):cat},
+    ticks:{color:t,font:{size:small?10:12},padding:6,autoSkip:n>16,maxRotation:n>8?40:0,...(small?{maxTicksLimit:6}:n>16?{maxTicksLimit:14}:{}),callback:horiz?v=>ff(cfg.ys[0],v):cat},
     ...(horiz?{grace:'12%',beginAtZero:true}:{})};
   const ys={stacked:stk,title:horiz?ttl(xt):ttl(ytitle),grid:{display:!horiz,color:g},border:{display:false},
-    ticks:{color:t,padding:6,callback:horiz?cat:v=>cfg.type==='stack100'?v+'%':ff(yk,v)},
+    ticks:{color:t,font:{size:small?10:12},...(small?{maxTicksLimit:6}:{}),padding:6,callback:horiz?cat:v=>cfg.type==='stack100'?v+'%':ff(yk,v)},
     ...(cfg.type==='stack100'?{max:100}:{}),...(horiz?{}:{grace:'12%',...(cfg.type!=='line'?{beginAtZero:true}:{})})};
   const y2={position:'right',title:ttl(y2name),grid:{drawOnChartArea:false},border:{display:false},grace:'12%',ticks:{color:t,padding:6,callback:v=>ff(cfg.ys.find(y=>FAM[y]!==FAM[cfg.ys[0]]),v)}};
-  const pieLegend={position:'right',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:12},
+  const pieLegend={position:small?'bottom':'right',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:small?10:14,font:{size:12},
     generateLabels:ch=>{const d=ch.data.datasets[0].data,sm=d.reduce((a,b)=>a+b,0)||1;return ch.data.labels.map((l,i)=>({text:trunc(l)+'  '+(d[i]/sm*100).toFixed(1)+'%  ('+ff(cfg.ys[0],d[i])+')',fillStyle:rcol[i],strokeStyle:rcol[i],fontColor:t,hidden:!ch.getDataVisibility(i),index:i,pointStyle:'circle'}))}}};
   return new Chart(cv,{type:CT(cfg.type),data:{labels:L,datasets:ds},options:{responsive:!light,maintainAspectRatio:false,...(light?{animation:false,devicePixelRatio:1}:{}),indexAxis:horiz?'y':'x',
-    layout:{padding:{top:18,right:14,bottom:4,left:4}},
+    layout:{padding:{top:18,right:small?24:14,bottom:4,left:4}},
     ...(round?{}:{interaction:{mode:'index',intersect:false}}),
     datasets:{bar:{categoryPercentage:.72,barPercentage:.82,maxBarThickness:90}},
     plugins:{datalabels:dl,
-      legend:round?pieLegend:{display:ds.length>1,position:'top',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:16,font:{size:12}}},
+      legend:round?pieLegend:{display:ds.length>1,position:'top',labels:{color:t,usePointStyle:true,pointStyle:'circle',padding:small?10:16,boxWidth:small?7:10,boxHeight:small?7:10,font:{size:small?11:12}}},
       tooltip:{padding:10,boxPadding:4,usePointStyle:true,callbacks:{label:c=>c.dataset.deltas?`${c.dataset.label}: ${ff(c.dataset.col,c.dataset.deltas[c.dataIndex])}`:c.dataset.pct?`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`:`${c.dataset.label}: ${ff(c.dataset.col||cfg.ys[0],horiz?c.parsed.x:(c.parsed.y??c.parsed))}`}}},
     scales:cfg.type==='radar'?{r:{ticks:{display:false},grid:{color:g},angleLines:{color:g},pointLabels:{color:t,font:{size:12}}}}:round?(cfg.type==='polar'?{r:{ticks:{display:false},grid:{color:g},angleLines:{color:g}}}:{}):{x:xs,y:ys,...(dual?{y2}:{}),...(cfg.type==='pareto'?{y2:{position:'right',min:0,max:100,title:ttl('Cumulative %'),grid:{drawOnChartArea:false},border:{display:false},ticks:{color:t,callback:v=>v+'%'}}}:{})}}});
 }
@@ -495,20 +604,22 @@ const mlab=v=>{const m=/^(\d{4})-(\d{2})$/.exec(v);return m?['Jan','Feb','Mar','
 function fitH(it){const n=it.chart.data.labels.length;it.el.querySelector('.cv').style.height=it.cfg.type==='hbar'?Math.max(380,n*36+110)+'px':'';it.chart.resize()}
 function peek(cfg){try{const r=series(cfg.x,[cfg.ys[0]],cfg.agg,cfg.g,cfg.f),v=r.data[0];if(r.labels.length<2)return '';let hi=0,lo=0;v.forEach((x,i)=>{if(x>v[hi])hi=i;if(x<v[lo])lo=i});return '. Highest: '+(cfg.g==='month'?mlab(r.labels[hi]):r.labels[hi])+' ('+ff(cfg.ys[0],v[hi])+'). Lowest: '+(cfg.g==='month'?mlab(r.labels[lo]):r.labels[lo])+' ('+ff(cfg.ys[0],v[lo])+').'}catch(e){return ''}}
 function addChart(cfg){
+  if(!isPro()&&charts.length>=FREE_MAX){limitHit=true;gateMsg('Free plan shows up to '+FREE_MAX+' charts. Click to see Pro.');return}
   const id='c'+Date.now()+Math.random().toString(36).slice(2,5);
   const el=document.createElement('div');el.className='cc';
-  el.innerHTML=`<header><h2 contenteditable="true" spellcheck="false" title="Click to rename this chart">${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="ex">Expand</button><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(capSpecial(cfg)||capText(cfg)+peek(cfg))}</p>`;
+  el.innerHTML=`<header><h2 contenteditable="true" spellcheck="false" title="Click to rename this chart">${esc(ctt(cfg))}</h2><div class="tools"><select aria-label="Chart type">${Object.keys(TN).map(t=>`<option value="${t}"${t===cfg.type?' selected':''}>${TN[t]}</option>`).join('')}</select><select data-a="dl" aria-label="Download chart"><option value="">Download</option><option value="png">PNG image</option><option value="jpg">JPG image</option><option value="pdf">PDF</option><option value="csv">CSV data</option></select><button class="btn ghost" data-a="ex">Expand</button><button class="btn ghost ic" data-a="up" aria-label="Move chart up" title="Move up">↑</button><button class="btn ghost ic" data-a="dn" aria-label="Move chart down" title="Move down">↓</button><button class="btn ghost" data-a="dup">Copy</button><button class="btn ghost" data-a="rm">Remove</button></div></header><div class="cv"><canvas id="${id}"></canvas></div><p class="cap">${esc(cfg.note||capSpecial(cfg)||capText(cfg)+peek(cfg))}</p>`;
   $('charts').appendChild(el);
-  const item={chart:build($(id),cfg),cfg,el};charts.push(item);fitH(item);
-  const h2=el.querySelector('h2');h2.onblur=()=>{const t=h2.textContent.trim();item.cfg.title=t&&t!==ctt({...item.cfg,title:undefined})?t:undefined};h2.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();h2.blur()}};
-  el.querySelector('select').onchange=e=>{item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg);fitH(item)};
-  el.querySelector('[data-a=ex]').onclick=()=>expand(item);const dsel=el.querySelector('[data-a=dl]');dsel.onchange=async()=>{const f=dsel.value;dsel.value='';if(f)await dl(item,f)};
-  el.querySelector('[data-a=rm]').onclick=()=>{item.chart.destroy();el.remove();charts=charts.filter(c=>c!==item);lastRm=item.cfg;toast('Chart removed. Click here or press Ctrl+Z to undo.')};
+  const item={chart:build($(id),cfg),cfg,el};charts.push(item);fitH(item);queueSave();
+  const h2=el.querySelector('h2');h2.onblur=()=>{const t=h2.textContent.trim();item.cfg.title=t&&t!==ctt({...item.cfg,title:undefined})?t:undefined;queueSave()};h2.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();h2.blur()}};
+  el.querySelector('select').onchange=e=>{if(item.cfg.bridge&&e.target.value!==item.cfg.type){e.target.value=item.cfg.type;toast('This chart is built from totals. Use Make your own chart to try other types.');return}if(!isPro()&&PROT.includes(e.target.value)){e.target.value=item.cfg.type;gateMsg(TN[item.cfg.type]?'That chart type is a Pro feature. Click to see Pro.':'Pro feature');return}item.cfg.type=e.target.value;item.chart.destroy();item.chart=build($(id),item.cfg);fitH(item);queueSave()};
+  el.querySelector('[data-a=ex]').onclick=()=>expand(item);el.querySelector('[data-a=up]').onclick=()=>moveChart(item,-1);el.querySelector('[data-a=dn]').onclick=()=>moveChart(item,1);el.querySelector('[data-a=dup]').onclick=()=>dupChart(item);const dsel=el.querySelector('[data-a=dl]');dsel.onchange=async()=>{const f=dsel.value;dsel.value='';if(f)await dl(item,f)};
+  el.querySelector('[data-a=rm]').onclick=()=>{item.chart.destroy();el.remove();charts=charts.filter(c=>c!==item);queueSave();lastRm=item.cfg;toast('Chart removed. Click here or press Ctrl+Z to undo.')};
 }
 $('add').onclick=()=>{
   const ys=[...document.querySelectorAll('.chip.on')].map(c=>c.dataset.c);
   if(!ys.length){$('msg').textContent='Pick at least one value to plot.';return}
   $('msg').textContent='';
+  if(!isPro()&&PROT.includes($('bt').value)){gateMsg(TN[$('bt').value]+' charts are a Pro feature. Click to see Pro.');return}
   const cfg0={x:$('bx').value,ys,type:$('bt').value,agg:$('ba').value,g:$('bg').value,f:$('bf').value?{c:$('bf').value,v:$('bfv').value}:null,n:$('bn').value,s:$('bs').value,tr:$('btr').checked};const bad=validate(cfg0);if(bad){$('msg').textContent=bad;toast(bad);return}if(new Set(ys.map(y=>FAM[y])).size>1&&!['scatter','radar','hist'].includes(cfg0.type))toast('Different kinds of values are drawn on separate left and right axes.');addChart(cfg0);
 };
 $('sample').onclick=()=>{
@@ -524,21 +635,85 @@ const ctt=c=>c.title||(c.type==='scatter'?c.ys[1]+' vs '+c.ys[0]:c.type==='hist'
 function fillFilter(){$('bf').innerHTML='<option value="">No filter</option>'+CAT.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fv()}
 function fv(){const c=$('bf').value;$('bfv').innerHTML=c?[...new Set(rows.map(r=>r[c]))].slice(0,200).map(v=>`<option value="${esc(v)}">${esc(v||'(blank)')}</option>`).join(''):'';$('bfv').disabled=!c}
 $('bf').onchange=fv;
-function insights(){
-  const n=MEAS[0],x=CAT[0]||DATE[0],out=[];let miss=0;
-  rows.forEach(r=>cols.forEach(c=>{if(r[c]===''||r[c]===null)miss++}));
-  const dup=rows.length>50000?0:rows.length-new Set(rows.map(r=>JSON.stringify(r))).size;
-  out.push(`<b>Data check:</b> ${rows.length} rows, ${nums.length} numeric and ${cats.length} text or date columns, ${miss} empty cells, ${dup} duplicate rows.`);
-  if(ER)out.push(`<b>Excel errors:</b> ${ER} cells with errors such as #DIV/0! were treated as empty.`);
-  if(FN)out.push(`<b>Formulas without saved results:</b> ${FN} cells. Open the file in Excel, save it once and upload it again to include them.`);
-  if(rows.length>600)out.push('<b>Large data:</b> long charts are automatically grouped into about 400 points so they stay fast.');
-  if(n&&x){
-    const s=series(x,[n],'auto'),v=s.data[0],tot=v.reduce((a,b)=>a+b,0)||1,ix=s.labels.map((_,i)=>i).sort((a,b)=>v[b]-v[a]);
-    if(s.labels.length>1)out.push(`<b>${esc(n)}:</b> highest for ${esc(s.labels[ix[0]])} at ${ff(n,v[ix[0]])}${AVG[n]?'':' ('+(v[ix[0]]/tot*100).toFixed(1)+'% of the total)'} and lowest for ${esc(s.labels[ix[ix.length-1]])}.`);
-    const d=DATE[0]?series(DATE[0],[n],'auto','month'):{labels:[]};
-    if(d.labels.length>2&&/^\d{4}-\d{2}$/.test(d.labels[0])){const w=d.data[0],l=w.length-1,ch=w[l-1]?(w[l]-w[l-1])/Math.abs(w[l-1])*100:0;out.push(`<b>Latest month (${d.labels[l]}):</b> ${ff(n,w[l])}, ${ch>=0?'up':'down'} ${Math.abs(ch).toFixed(1)}% from ${d.labels[l-1]}.`)}
+var ACC={roles:{}},DER=new Set(),RATIO={};
+const nz=v=>v===null||v===undefined||v===''?0:+v,dv=(a,b)=>b?a/b:null;
+const ROLES=[['ebitda',/ebitda|\bebit\b|operating\s*profit/],['gprofit',/gross\s*(profit|income)/],['nprofit',/net\s*(profit|income|earnings)|profit\s*after\s*tax|\bpat\b|^profit$|^profit\s*\(/],
+ ['cogs',/cogs|cost\s*of\s*(goods|sales|revenue)|direct\s*cost|purchases?|^costs?$|total\s*cost/],['revenue',/revenue|\bsales\b|turnover|income(?!\s*tax)/],
+ ['opex',/opex|operating\s*(exp|cost)|overheads?|expenses?|sg&a|admin/],['budget',/budget|planned|\bplan\b|target|forecast/],['actual',/actual|achieved|spent|spend/],
+ ['variance',/variance|over\/under|difference/],['debit',/debit|\bdr\b/],['credit',/credit|\bcr\b/],['recv',/receivable|debtors?/],['payable',/payable|creditors?/],
+ ['asset',/assets?/],['liab',/liabilit/],['equity',/equity|capital|reserves/],['cash',/cash|bank/],['tax',/\btax|gst|vat/],['qty',/qty|quantity|units/],['price',/price|rate|mrp/],['discount',/discount/]];
+const ROLE_NAME={revenue:'Revenue',cogs:'Cost',opex:'Expenses',gprofit:'Gross profit',nprofit:'Profit',budget:'Budget',actual:'Actual',variance:'Variance',debit:'Debit',credit:'Credit',qty:'Quantity',price:'Price',discount:'Discount'};
+function accounting(){
+  ACC={roles:{}};DER=new Set();RATIO={};const R=ACC.roles;
+  nums.forEach(c=>{const n=c.toLowerCase();for(const [r,re] of ROLES){if(!R[r]&&re.test(n)){R[r]=c;break}}});
+  nums.forEach(c=>{const n=c.toLowerCase();
+    if(/gross\s*margin|gp\s*margin/.test(n)&&R.gprofit&&R.revenue)RATIO[c]={n:R.gprofit,d:R.revenue};
+    else if(/margin/.test(n)&&R.nprofit&&R.revenue)RATIO[c]={n:R.nprofit,d:R.revenue};
+    else if(/variance\s*%|var\s*%|variance\s*percent/.test(n)&&R.variance&&R.budget)RATIO[c]={n:R.variance,d:R.budget};
+  });
+  const add=(name,fn,ratio)=>{if(cols.includes(name))return;rows.forEach(r=>{r[name]=fn(r)});cols.push(name);nums.push(name);DER.add(name);if(ratio)RATIO[name]=ratio};
+  const hasM=re=>nums.some(c=>/margin|%/.test(c.toLowerCase())&&re.test(c.toLowerCase()));
+  if(R.revenue){
+    if(R.cogs&&!R.gprofit&&(R.opex||!R.nprofit)){add('Gross profit',r=>nz(r[R.revenue])-nz(r[R.cogs]));R.gprofit='Gross profit'}
+    if(R.gprofit&&!hasM(/gross/))add('Gross margin %',r=>dv(r[R.gprofit],r[R.revenue]),{n:R.gprofit,d:R.revenue});
+    if(R.opex&&R.gprofit&&!R.nprofit){const g=R.gprofit;add('Net profit',r=>nz(r[g])-nz(r[R.opex]));R.nprofit='Net profit'}
+    if(R.nprofit&&!hasM(/net|profit/))add(R.opex&&R.gprofit?'Net margin %':'Profit margin %',r=>dv(r[R.nprofit],r[R.revenue]),{n:R.nprofit,d:R.revenue});
   }
-  $('ins').innerHTML='<h2 style="font-size:18px;margin-bottom:8px">Quick insights</h2><ul>'+out.map(o=>'<li>'+o+'</li>').join('')+'</ul>';
+  if(R.budget&&R.actual){
+    if(!R.variance){add('Variance',r=>nz(r[R.actual])-nz(r[R.budget]));R.variance='Variance'}
+    if(!nums.some(c=>/variance\s*%|var\s*%/i.test(c)))add('Variance %',r=>dv(r[R.variance],r[R.budget]),{n:R.variance,d:R.budget});
+  }
+}
+const ratioTotal=c=>{const q=RATIO[c],a=rows.reduce((z,r)=>z+nz(r[q.n]),0),b=rows.reduce((z,r)=>z+nz(r[q.d]),0);return b?a/b:0};
+const kv=(c,s,v)=>RATIO[c]?ratioTotal(c):AVG[c]?(v.length?s/v.length:0):s;
+function kpiCols(){const R=ACC.roles,k=[...new Set([R.revenue,R.gprofit,R.nprofit].filter(Boolean))],m=nums.find(c=>RATIO[c]&&/margin/i.test(c));if(m)k.push(m);if(R.variance&&!k.includes(R.variance))k.push(R.variance);MEAS.forEach(c=>{if(k.length<4&&!k.includes(c)&&!RATIO[c])k.push(c)});return k.filter(c=>nums.includes(c)).slice(0,4)}
+const ageCols=()=>nums.filter(c=>/^(current|not\s*due)$|^\d+\s*[-\u2013]\s*\d+|^\d+\s*\+|^(>|over\s*)\d+/i.test(c.trim()));
+function bridgeSrc(cfg){const rs=rows.filter(r=>!(cfg.f&&cfg.f.c&&r[cfg.f.c]!==cfg.f.v));return{labels:cfg.bridge.map(b=>b[0]),data:[cfg.bridge.map(b=>b[2]*rs.reduce((a,r)=>a+nz(r[b[1]]),0))]}}
+function accChecks(){
+  const R=ACC.roles,res=[],tol=v=>Math.max(1,Math.abs(v)*.005),sum=c=>rows.reduce((a,r)=>a+nz(r[c]),0);
+  if(R.revenue&&R.nprofit&&!DER.has(R.nprofit)){
+    const cand=[];if(R.cogs)cand.push([R.revenue+' - '+R.cogs,r=>nz(r[R.revenue])-nz(r[R.cogs])]);if(R.opex)cand.push([R.revenue+' - '+R.opex,r=>nz(r[R.revenue])-nz(r[R.opex])]);
+    if(R.cogs&&R.opex)cand.push([R.revenue+' - '+R.cogs+' - '+R.opex,r=>nz(r[R.revenue])-nz(r[R.cogs])-nz(r[R.opex])]);
+    if(cand.length){let best=null;cand.forEach(([t,f])=>{const bad=rows.filter(r=>r[R.nprofit]!==null&&Math.abs(nz(r[R.nprofit])-f(r))>tol(r[R.nprofit])).length;if(!best||bad<best.bad)best={t,bad}});
+      res.push(best.bad===0?{ok:1,t:R.nprofit+' equals '+best.t+' in all '+rows.length+' rows.'}:{ok:0,t:best.bad+' of '+rows.length+' rows where '+R.nprofit+' does not equal '+best.t+'. Please check those rows.'})}
+  }
+  if(R.budget&&R.actual&&R.variance&&!DER.has(R.variance)){const bad=rows.filter(r=>Math.abs(nz(r[R.variance])-(nz(r[R.actual])-nz(r[R.budget])))>tol(r[R.variance])).length;res.push(bad?{ok:0,t:bad+' rows where '+R.variance+' is not '+R.actual+' minus '+R.budget+'.'}:{ok:1,t:R.variance+' equals '+R.actual+' minus '+R.budget+' in every row.'})}
+  if(R.debit&&R.credit){const d=sum(R.debit),c=sum(R.credit);res.push(Math.abs(d-c)<=1?{ok:1,t:'Debits equal credits ('+ff(R.debit,d)+'). The trial balance balances.'}:{ok:0,t:'Debits and credits differ by '+ff(R.debit,Math.abs(d-c))+'. A trial balance should balance.'})}
+  const ic=IDS[0]||cats.find(c=>/invoice|voucher|order|txn|transaction|bill/i.test(c)&&!CAT.includes(c)&&!DATE.includes(c));
+  if(ic){const vals=rows.map(r=>r[ic]).filter(v=>v!==''&&v!==null),d=vals.length-new Set(vals).size;if(d>0)res.push({ok:0,t:d+' repeated '+ic+' values. Repeated invoice or voucher numbers can double count amounts.'})}
+  [R.revenue,R.qty].forEach(c=>{if(c){const n=rows.filter(r=>r[c]!==null&&r[c]<0).length;if(n)res.push({ok:0,t:n+' rows have negative '+c+'. These may be returns or credit notes.'})}});
+  const tr=cats.find(c=>rows.some(r=>/^(grand\s*)?total\b|^sub\s*total/i.test(String(r[c]).trim())));
+  if(tr)res.push({ok:0,t:'A "Total" row is inside your data ('+tr+'). It will be counted again in every total. Remove it before charting.'});
+  return res;
+}
+function facts(){
+  const f=[],R=ACC.roles,real=cols.filter(c=>!DER.has(c));let miss=0;
+  rows.forEach(r=>real.forEach(c=>{if(r[c]===''||r[c]===null)miss++}));
+  const dup=rows.length>50000?0:rows.length-new Set(rows.map(r=>JSON.stringify(r))).size;
+  f.push({ok:!miss&&!dup,t:rows.length.toLocaleString()+' rows, '+real.length+' columns, '+miss+' empty cells, '+dup+' duplicate rows.'});
+  if(ER)f.push({ok:0,t:ER+' Excel error cells (like #DIV/0!) were treated as empty.'});
+  if(FN)f.push({ok:0,t:FN+' formula cells had no saved result. Open the file in Excel, save it once and upload again.'});
+  const det=Object.entries(R).filter(([k])=>ROLE_NAME[k]&&!DER.has(R[k])).map(([k,v])=>ROLE_NAME[k]+' = "'+v+'"');
+  if(det.length)f.push({ok:1,t:'Understood your columns: '+det.join(', ')+'.'});
+  if(DER.size)f.push({ok:1,t:'Calculated for you: '+[...DER].join(', ')+'. They are marked with \u0192 in the data table.'});
+  accChecks().forEach(x=>f.push(x));
+  const prim=R.revenue||MEAS[0];
+  if(prim&&DATE[0]){const d=series(DATE[0],[prim],'auto','month');
+    if(d.labels.length>2&&/^\d{4}-\d{2}$/.test(d.labels[0])){const v=d.data[0],l=v.length-1,ch=v[l-1]?(v[l]-v[l-1])/Math.abs(v[l-1])*100:0;let hi=0,lo=0;v.forEach((x,i)=>{if(x>v[hi])hi=i;if(x<v[lo])lo=i});
+      f.push({ok:ch>=0,t:prim+' in '+mlab(d.labels[l])+' was '+ff(prim,v[l])+', '+(ch>=0?'up ':'down ')+Math.abs(ch).toFixed(1)+'% from '+mlab(d.labels[l-1])+'. Best month: '+mlab(d.labels[hi])+'. Weakest: '+mlab(d.labels[lo])+'.'})}}
+  if(prim&&CAT[0]&&!AVG[prim]){const r=series(CAT[0],[prim],'auto'),v=r.data[0],tot=v.reduce((a,b)=>a+b,0)||1;if(v.length>1){let hi=0;v.forEach((x,i)=>{if(x>v[hi])hi=i});f.push({ok:1,t:'Top '+CAT[0]+': '+r.labels[hi]+' with '+ff(prim,v[hi])+' ('+(v[hi]/tot*100).toFixed(1)+'% of total '+prim+').'})}}
+  const ag=ageCols();
+  if(ag.length>=3){const tot=ag.reduce((a,c)=>a+rows.reduce((z,r)=>z+nz(r[c]),0),0)||1,old=ag.slice(-2).reduce((a,c)=>a+rows.reduce((z,r)=>z+nz(r[c]),0),0),cur=rows.reduce((z,r)=>z+nz(r[ag[0]]),0);
+    f.push({ok:old/tot<.15,t:'Total receivables '+ff(ag[0],tot)+'. '+(cur/tot*100).toFixed(0)+'% is current and '+(old/tot*100).toFixed(0)+'% is in the two oldest buckets ('+ag.slice(-2).join(' and ')+')'+(old/tot>=.15?'. Follow up on these first.':'.')});
+    if(CAT[0]){const r=series(CAT[0],[ag[ag.length-1]],'auto'),v=r.data[0];let hi=0;v.forEach((x,i)=>{if(x>v[hi])hi=i});if(v[hi]>0)f.push({ok:0,t:'Largest amount in '+ag[ag.length-1]+': '+r.labels[hi]+' ('+ff(ag[0],v[hi])+').'})}}
+  nums.filter(c=>RATIO[c]&&/margin/i.test(c)).slice(0,2).forEach(c=>f.push({ok:ratioTotal(c)>=0,t:c+' overall: '+ff(c,ratioTotal(c))+'.'}));
+  if(R.variance&&R.budget){const vt=rows.reduce((a,r)=>a+nz(r[R.variance]),0),bt=rows.reduce((a,r)=>a+nz(r[R.budget]),0),exp=!/revenue|sales|income/i.test(R.budget+(R.actual||''));
+    f.push({ok:exp?vt<=0:vt>=0,t:'Total '+(vt>=0?'over':'under')+' budget by '+ff(R.variance,Math.abs(vt))+(bt?' ('+(Math.abs(vt)/Math.abs(bt)*100).toFixed(1)+'%)':'')+(exp?(vt>0?'. Costs are higher than planned.':'. Costs are within plan.'):'.')});
+    if(CAT[0]){const r=series(CAT[0],[R.variance],'auto'),v=r.data[0];let hi=0;v.forEach((x,i)=>{if(exp?x>v[hi]:x<v[hi])hi=i});if(v.length>1&&(exp?v[hi]>0:v[hi]<0))f.push({ok:0,t:'Biggest '+(exp?'overspend':'shortfall')+': '+r.labels[hi]+' ('+ff(R.variance,Math.abs(v[hi]))+').'})}}
+  return f;
+}
+function insights(){
+  $('ins').innerHTML='<h2 class="st" style="margin:0 0 12px;font-size:18px">What Chartzen found</h2><ul class="fl">'+facts().map(f=>'<li><span class="ic '+(f.ok?'ok':'wn')+'">'+(f.ok?'\u2713':'!')+'</span><span>'+esc(f.t)+'</span></li>').join('')+'</ul>';
 }
 $('cur').onchange=$('nsys').onchange=()=>{NF.cur=$('cur').value;NF.sys=$('nsys').value;if(rows.length){kpis();insights();rebuild()}};
 const grad=col=>ctx=>{const a=ctx.chart.chartArea;if(!a)return col+'33';const g=ctx.chart.ctx.createLinearGradient(0,a.top,0,a.bottom);g.addColorStop(0,col+'66');g.addColorStop(1,col+'05');return g};
@@ -553,11 +728,12 @@ var DATE=[],CAT=[],IDS=[],MEAS=[],AVG={},FAM={},RT={};
 const isAvg=(y,a)=>a==='avg'||(a==='auto'&&AVG[y]);
 const pc=(c,v)=>RT[c]?(v*100).toFixed(1)+'%':(+v).toFixed(1)+'%';
 const ff=(c,v)=>FAM[c]==='ratio'?pc(c,v):(c==='#count'||FAM[c]==='unit')?(+v).toLocaleString(undefined,{maximumFractionDigits:2}):fmt(v);
-const capText=c=>c.ys.map(y=>y+': '+(isAvg(y,c.agg)?'average':'total')).join(', ')+(c.g?', grouped by '+c.g:'')+(c.ys.some(y=>FAM[y]!==FAM[c.ys[0]])?'. Right axis: '+c.ys.find(y=>FAM[y]!==FAM[c.ys[0]]):'');
+const capText=c=>c.ys.map(y=>y+': '+(RATIO[y]?'overall ratio':isAvg(y,c.agg)?'average':'total')).join(', ')+(c.g?', grouped by '+c.g:'')+(c.ys.some(y=>FAM[y]!==FAM[c.ys[0]])?'. Right axis: '+c.ys.find(y=>FAM[y]!==FAM[c.ys[0]]):'');
 function classify(){
   const u=c=>new Set(rows.map(r=>r[c])).size;
   DATE=cats.filter(c=>{const v=rows.map(r=>r[c]).filter(Boolean);return v.length&&v.filter(x=>/^\d{4}-\d{2}/.test(x)||/^\d{1,2}[\/.-]\d{1,2}[\/.-]\d{4}/.test(x)).length/v.length>=.8});
   CAT=cats.filter(c=>!DATE.includes(c)&&u(c)>1&&u(c)<=15&&(u(c)<rows.length||rows.length<=15));
+  accounting();
   AVG={};FAM={};RT={};
   nums.forEach(c=>{
     const v=rows.map(r=>r[c]).filter(x=>x!==null),frac=v.length>0&&v.every(x=>x>=-1&&x<=1)&&v.some(x=>x%1),
@@ -567,6 +743,7 @@ function classify(){
   });
   MEAS=nums.filter(c=>{const v=rows.map(r=>r[c]).filter(x=>x!==null),mx=v.reduce((a,b)=>Math.max(a,b),-Infinity),mn=v.reduce((a,b)=>Math.min(a,b),Infinity);return !(/(^|[^a-z])(id|sr|sl|code|year|rank|serial)([^a-z]|$)/i.test(c)||(v.length>2&&v.every(Number.isInteger)&&new Set(v).size===v.length&&mx-mn<v.length*2))});
   IDS=nums.filter(c=>!MEAS.includes(c));if(!MEAS.length)MEAS=nums.slice();
+  nums.forEach(c=>{if(RATIO[c]){FAM[c]='ratio';AVG[c]=true}});
   $('bx').innerHTML=[...DATE,...CAT,...cats.filter(c=>!DATE.includes(c)&&!CAT.includes(c)),...IDS].map(c=>`<option>${esc(c)}</option>`).join('');
 }
 function validate(c){
@@ -588,30 +765,37 @@ function validate(c){
   return '';
 }
 function autoDash(){
-  const money=MEAS.filter(c=>FAM[c]==='amt'&&!AVG[c]),units=MEAS.filter(c=>FAM[c]==='unit'&&!AVG[c]),rat=MEAS.filter(c=>FAM[c]==='ratio'),m1=money.find(c=>/revenue|sales|income/i.test(c))||money[0]||units[0]||MEAS[0],D=DATE[0],C=CAT[0];
-  if(D){const g='month';
-    if(money.length)addChart({x:D,ys:money.slice(0,4),type:'line',agg:'auto',g});
-    if(units.length)addChart({x:D,ys:units.slice(0,2),type:'line',agg:'auto',g});
-    rat.slice(0,2).forEach(r=>addChart({x:D,ys:[r],type:'line',agg:'auto',g}));}
-  if(!D&&C&&money.length>1)addChart({x:C,ys:money.slice(0,2),type:'bar',agg:'auto'});
-  if(!D&&C)rat.slice(0,1).forEach(r=>addChart({x:C,ys:[r],type:'bar',agg:'auto'}));
-  if(m1)CAT.slice(0,3).forEach(c=>addChart({x:c,ys:[m1],type:'bar',agg:'auto',s:'desc'}));
-  if(C&&m1){
-    if(!AVG[m1]&&rows.every(r=>r[m1]===null||r[m1]>=0)&&new Set(rows.map(r=>r[C])).size<=8)addChart({x:C,ys:[m1],type:'doughnut',agg:'auto'});}
+  const R=ACC.roles,D=DATE[0],C=CAT[0],g='month',A=c=>{if(charts.length<8)addChart(c)};
+  const money=MEAS.filter(c=>FAM[c]==='amt'&&!AVG[c]&&!RATIO[c]),units=MEAS.filter(c=>FAM[c]==='unit'&&!AVG[c]),rat=MEAS.filter(c=>FAM[c]==='ratio'||RATIO[c]);
+  const prim=R.revenue||money[0]||units[0]||MEAS[0],ag=ageCols(),gx=x=>DATE.includes(x)?{g}:{};
+  if(R.budget&&R.actual){const x=C||D||cats[0];
+    if(x){A({x,ys:[R.budget,R.actual],type:'bar',agg:'auto',...gx(x)});if(R.variance)A({x,ys:[R.variance],type:'variance',agg:'auto',invert:!/revenue|sales|income/i.test(R.budget+R.actual),...gx(x)})}}
+  if(R.debit&&R.credit){const x=C||cats[0];if(x)A({x,ys:[R.debit,R.credit],type:'bar',agg:'auto'})}
+  if(ag.length>=3){A({x:'Bucket',ys:[ag[0]],type:'bar',agg:'auto',bridge:ag.map(c=>[c,c,1]),title:'Receivables ageing: total by bucket',note:'Older buckets carry more risk of non-payment. Follow up on the oldest first.'});
+    if(C)A({x:C,ys:ag,type:'stacked',agg:'auto'})}
+  if(R.revenue&&D){
+    const pl=[...new Set([R.revenue,R.cogs,R.opex,R.gprofit,R.nprofit].filter(Boolean))].slice(0,4);A({x:D,ys:pl,type:'line',agg:'auto',g});
+    const mg=nums.filter(c=>RATIO[c]&&/margin/i.test(c)).slice(0,2);if(mg.length)A({x:D,ys:mg,type:'line',agg:'auto',g});
+    const br=[[R.revenue,R.revenue,1]];if(R.cogs)br.push([R.cogs,R.cogs,-1]);if(R.opex)br.push([R.opex,R.opex,-1]);
+    if(br.length>=2)A({x:'Item',ys:[R.revenue],type:'waterfall',agg:'auto',bridge:br,totalLabel:R.opex?'Net profit':'Profit',title:'Profit bridge: revenue to profit',note:'Revenue minus costs gives profit. Green adds, red subtracts and the blue bar is the result.'});
+  }else if(D&&money.length){A({x:D,ys:money.slice(0,4),type:'line',agg:'auto',g})}
+  if(D&&units.length)A({x:D,ys:units.slice(0,2),type:'line',agg:'auto',g});
+  if(D)rat.filter(c=>!/margin/i.test(c)&&!/variance/i.test(c)).slice(0,1).forEach(r=>A({x:D,ys:[r],type:'line',agg:'auto',g}));
+  if(prim&&!(R.budget&&R.actual)&&ag.length<3){CAT.slice(0,2).forEach(c=>A({x:c,ys:[prim],type:'bar',agg:'auto',s:'desc'}));
+    if(C&&!AVG[prim]&&rows.every(r=>r[prim]===null||r[prim]>=0)&&new Set(rows.map(r=>r[C])).size<=8)A({x:C,ys:[prim],type:'doughnut',agg:'auto'})}
   const ID=IDS[0]||cats.find(c=>/order|invoice|txn|transaction|(^|[^a-z])id([^a-z]|$)/i.test(c)&&!DATE.includes(c)&&!CAT.includes(c)),q=units[0],pr=MEAS.find(c=>/price|rate/i.test(c)&&FAM[c]==='amt');
-  if(ID&&q&&pr)addChart({x:ID,ys:[q,pr],type:'combo',agg:'auto'});
-  else if(ID&&q)addChart({x:ID,ys:[q],type:'bar',agg:'auto'});
-  if(!charts.length&&m1&&cats[0])addChart({x:cats[0],ys:[m1],type:'bar',agg:'auto',n:'10',s:'desc'});
+  if(ID&&q&&pr)A({x:ID,ys:[q,pr],type:'combo',agg:'auto'});
+  if(!charts.length&&prim&&cats[0])A({x:cats[0],ys:[prim],type:'bar',agg:'auto',n:'10',s:'desc'});
 }
 var FN=0,ER=0,LOGO=null;
 $('logo').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{LOGO={d:r.result,f:/png/i.test(f.type)?'PNG':'JPEG',w:im.naturalWidth,h:im.naturalHeight};toast('Logo will appear in PDF reports')};im.src=r.result};r.readAsDataURL(f);e.target.value=''};
-$('xsave').onclick=()=>charts.length?save(slug(fname)+'.chartzen.json',JSON.stringify({v:1,fname,NF,charts:charts.map(c=>c.cfg)})):toast('Add a chart first.');
-$('xload').onclick=()=>$('cfgfile').click();
+$('xsave').onclick=()=>!isPro()?gateMsg('Saving dashboards is a Pro feature. Click to see Pro.'):charts.length?save(slug(fname)+'.chartzen.json',JSON.stringify({v:1,fname,NF,charts:charts.map(c=>c.cfg)})):toast('Add a chart first.');
+$('xload').onclick=()=>isPro()?$('cfgfile').click():gateMsg('Loading dashboards is a Pro feature. Click to see Pro.');
 $('cfgfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;f.text().then(t=>{try{const j=JSON.parse(t);if(!rows.length)return toast('Load your data file first, then load the dashboard.');const ok=j.charts.filter(c=>cols.includes(c.x)&&c.ys.every(y=>cols.includes(y))&&(!c.f||cols.includes(c.f.c)));if(j.NF){NF.cur=j.NF.cur||'';NF.sys=j.NF.sys||'in';$('cur').value=NF.cur;$('nsys').value=NF.sys;kpis();insights()}charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';ok.forEach(c=>addChart(c));toast(ok.length+' of '+j.charts.length+' charts restored')}catch(err){toast('That is not a valid Chartzen dashboard file.')}})};
 function rebuild(){charts.forEach(c=>{c.chart.destroy();c.chart=build(c.el.querySelector('canvas'),c.cfg)})}
 matchMedia('(prefers-color-scheme:dark)').addEventListener('change',rebuild);
 var fname='Chartzen report';
-function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2800)}
+function toast(t){toastGate=false;const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2800)}
 async function save(name,data){
   const d=typeof claude!=='undefined'?await claude.use('downloads'):null;
   if(!d){const u=URL.createObjectURL(new Blob([data]));const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('Saved '+name);return}
@@ -656,11 +840,11 @@ function capSpecial(c){
     return 'Categories ranked high to low, the line is the cumulative share. The top '+k+' of '+v.length+' make up 80% of the total.'}
   if(t==='cumulative')return 'Running total of '+c.ys.join(', ')+' across '+c.x+'.';
   if(t==='stack100')return 'Each bar is 100%, showing the share of every value within that category.';
-  if(t==='variance')return 'Green bars are above zero and red bars are below zero'+peek(c);
+  if(t==='variance')return (c.invert?'Green means under budget (favourable). Red means over budget (unfavourable)':'Green bars are above zero and red bars are below zero')+peek(c);
   if(t==='radar')return 'Compares values across categories. A larger area means higher values.';
   return '';
 }
-function ctable(it){if(it.cfg.type==='scatter')return [[...it.cfg.ys]].concat(rows.map(r=>it.cfg.ys.map(y=>r[y])));if(it.cfg.type==='hist'){const h=histo(it.cfg);return [['Range','Rows']].concat(h.labels.map((l,i)=>[l,h.data[0][i]]))}const s=series(it.cfg.x,it.cfg.ys,it.cfg.agg,it.cfg.g,it.cfg.f);return [[it.cfg.x,...it.cfg.ys]].concat(s.labels.map((l,i)=>[l,...s.data.map(d=>d[i])]))}
+function ctable(it){if(it.cfg.bridge){const b=bridgeSrc(it.cfg);return [['Item','Amount']].concat(b.labels.map((l,i)=>[l,b.data[0][i]]))}if(it.cfg.type==='scatter')return [[...it.cfg.ys]].concat(rows.map(r=>it.cfg.ys.map(y=>r[y])));if(it.cfg.type==='hist'){const h=histo(it.cfg);return [['Range','Rows']].concat(h.labels.map((l,i)=>[l,h.data[0][i]]))}const s=series(it.cfg.x,it.cfg.ys,it.cfg.agg,it.cfg.g,it.cfg.f);return [[it.cfg.x,...it.cfg.ys]].concat(s.labels.map((l,i)=>[l,...s.data.map(d=>d[i])]))}
 function makePdf(list){
   const doc=new jspdf.jsPDF({orientation:'l',unit:'pt',format:'a4'}),W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
   doc.setFillColor(10,26,47);doc.rect(0,0,W,H,'F');
@@ -671,7 +855,7 @@ function makePdf(list){
   list.forEach(it=>{
     doc.addPage();doc.setTextColor(16,36,62);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text(ctitle(it),40,48);
     const w=W-80;doc.addImage(shot(it).toDataURL('image/jpeg',.92),'JPEG',40,66,w,Math.min(w*640/1200,H-120));
-    doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(120);doc.text('Made with Chartzen',40,H-24);
+    doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(120);
     if(LOGO)doc.addImage(LOGO.d,LOGO.f,W-40-LOGO.w*22/LOGO.h,H-42,LOGO.w*22/LOGO.h,22);
   });
   return doc.output('blob');
@@ -683,7 +867,7 @@ async function dl(it,f){
   if(f==='csv')return save(n+'.csv',csv(ctable(it)));
 }
 $('xpdf').onclick=()=>charts.length?save(slug(fname)+'-report.pdf',makePdf(charts)):toast('Add a chart first.');
-$('xxls').onclick=()=>{
+$('xxls').onclick=()=>{if(!isPro())return gateMsg('Excel export is a Pro feature. Click to see Pro.');
   if(!rows.length)return toast('Load a file first.');
   const w=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(w,XLSX.utils.json_to_sheet(rows),'Data');
@@ -698,24 +882,18 @@ try{const s=localStorage.getItem('cz-theme');if(s)document.documentElement.datas
 $('theme').textContent=isDark()?'Light mode':'Dark mode';
 const sp=$('splash');
 if(sp){const end=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),800)};sp.onclick=end;setTimeout(end,3000)}
-(function(){
-  const rm=matchMedia('(prefers-reduced-motion:reduce)').matches,pg=$('prog'),tt=$('totop');
-  const onS=()=>{const h=document.documentElement,m=h.scrollHeight-h.clientHeight;pg.style.width=(m>0?h.scrollTop/m*100:0)+'%';tt.classList.toggle('on',h.scrollTop>600)};
-  addEventListener('scroll',onS,{passive:true});onS();
-  document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.kpi,.panel,.steps div,details');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}});
-  if(!rm&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});document.querySelectorAll('.sec,footer').forEach(e=>{e.classList.add('rv');io.observe(e)})}
-})();
-var lastRm=null;
+
+var lastRm=null,curData=null;
 function fileBar(){
   let miss=0;rows.forEach(r=>cols.forEach(c=>{if(r[c]===''||r[c]===null)miss++}));
-  const h=Math.max(0,Math.round((1-miss/(rows.length*cols.length||1))*100)-(ER?3:0)-(FN?3:0));
-  $('fbn').textContent=fname;$('fbm').textContent=rows.length.toLocaleString()+' rows, '+cols.length+' columns';
+  const h=Math.max(0,Math.round((1-miss/(rows.length*(cols.length-DER.size)||1))*100)-(ER?3:0)-(FN?3:0));
+  $('fbn').textContent=fname;$('fbm').textContent=rows.length.toLocaleString()+' rows, '+(cols.length-DER.size)+' columns';
   const b=$('fbh');b.textContent='Data health '+h+'%';b.className='badge '+(h>=95?'ok':h>=80?'mid':'bad');
 }
 $('fbr').onclick=()=>file.click();
 $('toast').onclick=()=>{if(lastRm){const c=lastRm;lastRm=null;addChart(c);toast('Chart restored')}};
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'&&lastRm&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!document.activeElement.isContentEditable){e.preventDefault();const c=lastRm;lastRm=null;addChart(c);toast('Chart restored')}});
-addEventListener('error',()=>toast('Something went wrong. Your data is safe, please try again.'));
+addEventListener('error',e=>{console.error(e.error||e.message);busy(false);toast('Something went wrong. Your data is safe, please try again.')});
 addEventListener('unhandledrejection',()=>toast('Something went wrong. Please try again.'));
 const PALS={default:['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a'],ocean:['#0a4f8f','#1593c8','#4cc9d9','#6a8cff','#2a3f9e','#89d4e6','#3b6fb6','#1d2b64'],sunset:['#d8503f','#f08a24','#e0a526','#b83280','#7a3b9e','#f2b5a0','#c2410c','#7c2d12'],mono:['#10243e','#3b5575','#6b86a6','#9fb3c8','#1f6f6b','#5d8f8c','#c2cfdc','#364b63']};
 const applyPal=n=>PALS[n].forEach((c,i)=>{PAL[i]=c;PALX[i]=c});
@@ -727,6 +905,8 @@ const SAMPLES={
   sales:()=>{const reg=['North','South','East','West'],pr=['Laptop','Phone','Tablet'],d=[['Order ID','Date','Region','Product','Quantity','Unit Price','Discount','Revenue','Cost','Profit']];
     for(let i=0;i<120;i++){const q=1+(i*7)%9,up=[55000,28000,32000][i%3]+(i%5)*1000,ds=[0,.05,.1][i%3],rev=Math.round(q*up*(1-ds)),c=Math.round(rev*(.68+(i%4)*.02));
       d.push([1001+i,new Date(Date.UTC(2025,3+Math.floor(i/10),1+i%27)).toISOString().slice(0,10),reg[i%4],pr[i%3],q,up,ds,rev,c,rev-c])}return d},
+  tb:()=>{const d=[['Account','Type','Debit','Credit']];[['Cash and bank','Asset',480000,0],['Accounts receivable','Asset',350000,0],['Inventory','Asset',620000,0],['Equipment','Asset',900000,0],['Accounts payable','Liability',0,410000],['Bank loan','Liability',0,700000],['Share capital','Equity',0,1000000],['Sales','Income',0,1850000],['Cost of goods sold','Expense',1120000,0],['Salaries and rent','Expense',490000,0]].forEach(x=>d.push(x));return d},
+  age:()=>{const d=[['Customer','Current','1-30','31-60','61-90','90+']];[['Asha Traders',220000,90000,40000,0,0],['Bharat Foods',150000,120000,80000,60000,25000],['City Mart',310000,50000,0,0,0],['Delta Pharma',90000,70000,110000,95000,140000],['Eagle Motors',180000,60000,30000,20000,0],['Frontier Tech',260000,40000,15000,0,0]].forEach(x=>d.push(x));return d},
   pl:()=>{const d=[['Month','Revenue','COGS','Opex','Net Profit','Net Margin %']];
     for(let i=0;i<12;i++){const r=Math.round(9e6+i*35e4+Math.sin(i*1.3)*4e5),g=Math.round(r*.58),o=Math.round(r*.22+i*2e4),n=r-g-o;d.push([new Date(Date.UTC(2025,3+i,1)).toISOString().slice(0,10),r,g,o,n,+(n/r).toFixed(4)])}return d},
   bva:()=>{const d=[['Department','Budget','Actual','Variance','Variance %']];
@@ -734,7 +914,149 @@ const SAMPLES={
 };
 $('sample').onclick=()=>{const k=$('sampleSel').value,w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(SAMPLES[k]()),'Sample');load(w,'Sample '+$('sampleSel').selectedOptions[0].textContent.replace(' sample',''))};
 $('tpl').onclick=()=>{const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet([SAMPLES.sales()[0],SAMPLES.sales()[1]]),'Data');save('chartzen-template.xlsx',XLSX.write(w,{bookType:'xlsx',type:'array'}))};
-$('bt').onchange=()=>{const h={scatter:'Scatter: pick two values. The first is the horizontal axis, the second is vertical. Choose a category in X axis to color the dots.',waterfall:'Waterfall: each category adds or subtracts, and a Total bar is added at the end.',pareto:'Pareto: ranks categories high to low with a cumulative % line.',hist:'Histogram: shows how a single value is spread across ranges.',stack100:'100% stacked: compares the mix of 2 or more values in each category.',variance:'Variance: bars above zero are green, below zero are red.',cumulative:'Running total: adds values up over time or across categories.',radar:'Radar: compares a few values across categories.'};$('msg').textContent=h[$('bt').value]||''};
+$('bt').onchange=()=>{const h={scatter:'Scatter: pick two values. The first is the horizontal axis, the second is vertical. Choose a category in X axis to color the dots.',waterfall:'Waterfall: each category adds or subtracts, and a Total bar is added at the end.',pareto:'Pareto: ranks categories high to low with a cumulative % line.',hist:'Histogram: shows how a single value is spread across ranges.',stack100:'100% stacked: compares the mix of 2 or more values in each category.',variance:'Variance: bars above zero are green, below zero are red.',cumulative:'Running total: adds values up over time or across categories.',radar:'Radar: compares a few values across categories.'};$('hint').textContent=h[$('bt').value]||''};
+var toastGate=false,limitHit=false;
+const isPro=()=>true,gateMsg=t=>toast(t);
+const HN=t=>String(t).toLowerCase().replace(/[^a-z0-9%&\/\s\-]/g,' ').replace(/\s+/g,' ').trim();
+function hsay(t,who,acts){const d=document.createElement('div');d.className='m '+who;d.textContent=t;$('hlog').appendChild(d);
+  if(acts&&acts.length){const b=document.createElement('div');b.className='acts';acts.forEach(([l,fn])=>{const x=document.createElement('button');x.className='chip';x.textContent=l;x.onclick=fn;b.appendChild(x)});$('hlog').appendChild(b)}
+  $('hlog').scrollTop=1e9}
+const KB=[
+ {k:['start','begin','get started','how to use','kaise use','shuru','how do i use'],a:'1) Tap "Tap to choose your Excel or CSV file" (headings in row 1), or press "Try a sample".\n2) Chartzen reads your numbers and builds the charts for you.\n3) Scroll down to download a PDF, Excel or CSV. Use "Make your own chart" for anything else.'},
+ {k:['mobile','phone','small screen','zoom','tap'],a:'On a phone: tap Expand on a chart to see it big, turn the phone sideways for wide charts, and open "Make your own chart" only when you need something custom. Everything else is automatic.'},
+ {k:['export','download','pdf','save chart','png','jpg'],a:'Scroll to Download for a PDF report (all charts), Excel (chart data) or CSV (cleaned data). Each chart also has a Download menu for PNG, JPG, PDF or CSV of just that chart.'},
+ {k:['blocked','not allowed','cannot','cant make','why not','nahi ban','refuse'],a:'Chartzen blocks charts that would mislead, for example a pie chart of dates, adding up percentages or prices, or stacking different units. The message tells you why. A bar or line chart usually works instead.'},
+ {k:['which chart','what chart','best chart','kaun sa chart','konsa chart','recommend','chart type'],a:'Over time: line. Compare categories: bar. Share of a whole (up to 8 parts): doughnut. Budget vs actual: grouped bars + variance. Revenue to profit: waterfall. Biggest contributors: Pareto. Spread of values: histogram. Two numbers together: scatter.'},
+ {k:['format','heading','row 1','how should my data','data layout','template'],a:'Keep one table per sheet. Headings in row 1, one row per entry (one invoice, one day, one account). Numbers as numbers, dates as dates. No merged cells, blank rows or "Total" rows. Press "Excel template" for an example.'},
+ {k:['total row','grand total','double count'],a:'A "Total" row inside your data gets added again, so every total doubles. Delete total and subtotal rows before uploading. Chartzen warns you when it finds one.'},
+ {k:['currency','rupee','lakh','crore','million','number format'],a:'Open Settings under your charts. Pick a currency symbol and choose Lakh/Crore or K/M/B. Everything updates together.'},
+ {k:['privacy','safe','secure','server','data safe'],a:'Your file is read in your browser. Nothing is uploaded to a server. Close the tab and the data is gone.'},
+ {k:['rename','title','change name'],a:'Click the title above any chart and type a new name. It carries into your PDF and file names.'},
+ {k:['undo','remove chart','delete chart','restore'],a:'Press Remove on a chart. A message appears: click it or press Ctrl+Z to bring the chart back.'},
+ {k:['month','quarter','yearly','group date','rollup'],a:'In Make your own chart > More options, use "Group dates by" to roll days into months, quarters or years.'},
+ {k:['gross margin','gross profit margin'],a:'Gross margin = (Revenue - Cost of goods sold) / Revenue. It shows how much of each rupee of sales is left after direct costs. Falling gross margin often means pricing or purchase cost problems.'},
+ {k:['net margin','net profit margin','profit margin'],a:'Net margin = Net profit / Revenue. It is what remains after all costs, interest and tax. Compare it with last year and with similar businesses.'},
+ {k:['ebitda','ebit'],a:'EBITDA = profit before interest, tax, depreciation and amortisation. It approximates operating cash earnings and is used to compare companies with different financing and assets.'},
+ {k:['variance','favourable','unfavourable','favorable'],a:'Variance = Actual - Budget. For revenue, positive is favourable. For costs, positive (spending more than planned) is unfavourable. Chartzen colours costs red when over budget.'},
+ {k:['budget vs actual','bva','budget actual'],a:'Compare planned and real numbers by department or month. Grouped bars show both side by side and the variance chart shows who is over or under plan.'},
+ {k:['working capital','current ratio'],a:'Working capital = Current assets - Current liabilities. Current ratio = Current assets / Current liabilities. Above 1 means short-term bills can be paid; many businesses aim for 1.5 to 2.'},
+ {k:['dso','ageing','aging','receivable','debtor'],a:'Ageing groups unpaid invoices by how overdue they are (current, 1-30, 31-60, 61-90, 90+ days). DSO = Receivables / Credit sales x days in the period. Higher means slower collection.'},
+ {k:['trial balance','debit credit','debits and credits'],a:'A trial balance lists every ledger account with its debit or credit balance. Total debits must equal total credits. If not, there is a posting error. Chartzen checks this when it sees Debit and Credit columns.'},
+ {k:['accrual','cash basis','cash vs accrual'],a:'Accrual accounting records income and expenses when they are earned or incurred. Cash accounting records them when money moves. Accrual gives a truer picture of performance.'},
+ {k:['cogs','cost of goods','opex','operating expense'],a:'COGS are direct costs of making or buying what you sell. Opex are running costs such as rent, salaries and marketing. Revenue - COGS = gross profit. Gross profit - Opex = operating profit.'},
+ {k:['yoy','mom','growth','year on year','month on month'],a:'Growth % = (This period - Last period) / Last period. MoM compares with the previous month and YoY with the same period last year. Use YoY for seasonal businesses.'},
+ {k:['break even','breakeven'],a:'Break-even sales = Fixed costs / Contribution margin ratio, where contribution margin = (Price - Variable cost) / Price. Below this level you make a loss.'},
+ {k:['waterfall','bridge'],a:'A waterfall shows how a starting number becomes an ending number. Green steps add, red steps subtract and the last bar is the result, for example revenue to net profit.'},
+ {k:['pareto','80/20'],a:'A Pareto chart ranks categories from biggest to smallest with a cumulative % line. It shows which few customers, products or costs make up most (often 80%) of the total.'},
+ {k:['cash flow','cashflow'],a:'Cash flow tracks money actually coming in and going out. A business can show profit but run out of cash if customers pay late. Watch receivables ageing and payables.'},
+ {k:['depreciation'],a:'Depreciation spreads the cost of an asset over its useful life, so a machine bought for 10 lakh over 5 years costs 2 lakh a year in the books. It is a non-cash expense.'},
+ {k:['roi','return on investment'],a:'ROI = (Gain - Cost) / Cost. A project that costs 10 lakh and returns 12 lakh has an ROI of 20%.'},
+ {k:['hello','hi ','hey','namaste'],a:'Hello! I can help you use Chartzen, build charts from your data and explain accounting terms. Try "Explain my data" or "show revenue by month".'},
+ {k:['thank','thanks','shukriya'],a:'You are welcome! Ask me anything else about your data or Chartzen.'}
+];
+const CTYPES=[['waterfall|bridge','waterfall'],['pareto','pareto'],['histogram|distribution','hist'],['scatter','scatter'],['100%|percent stack','stack100'],['stack','stacked'],['donut|doughnut','doughnut'],['pie','pie'],['radar','radar'],['running|cumulative','cumulative'],['variance','variance'],['area','area'],['horizontal','hbar'],['line|trend','line'],['bar|column','bar']];
+function parseChart(q){
+  const R=ACC.roles;let t=q;const ys=[],add=c=>{if(c&&nums.includes(c)&&!ys.includes(c))ys.push(c)};
+  [['gross profit',R.gprofit],['gross margin',nums.find(c=>/gross\s*margin/i.test(c))]].forEach(([w,c])=>{if(t.includes(w)){add(c);t=t.replace(w,' ')}});
+  [['revenue|sales|turnover|income',R.revenue],['profit',R.nprofit||R.gprofit],['margin',nums.find(c=>/margin/i.test(c))],['cost|cogs',R.cogs],['expense|opex|overhead',R.opex],['budget',R.budget],['actual',R.actual],['variance',R.variance],['discount',R.discount],['quantity|qty|units',R.qty],['price',R.price],['debit',R.debit],['credit',R.credit]]
+    .forEach(([w,c])=>{if(new RegExp('\\b('+w+')').test(t))add(c)});
+  [...cols].sort((a,b)=>b.length-a.length).forEach(c=>{if(nums.includes(c)&&t.includes(HN(c)))add(c)});
+  let x=null,g;
+  if(/month|monthly|mahine/.test(q)){x=DATE[0];g='month'}else if(/quarter/.test(q)){x=DATE[0];g='quarter'}else if(/year|yearly|annual|saal/.test(q)){x=DATE[0];g='year'}else if(/\b(date|daily|day|time|trend)\b/.test(q))x=DATE[0];
+  if(!x){const m=[...cols].sort((a,b)=>b.length-a.length).find(c=>!nums.includes(c)&&q.includes(HN(c)));if(m)x=m}
+  let type=null;for(const [w,tp] of CTYPES){if(new RegExp('\\b('+w+')').test(q)||(w==='100%'&&q.includes('100%'))){type=tp;break}}
+  if(!ys.length){if(!x)return null;add(R.revenue||MEAS[0])}
+  if(!x)x=(type==='pie'||type==='doughnut'||type==='bar'||type==='hbar'||type==='pareto')?(CAT[0]||DATE[0]):(DATE[0]||CAT[0]);
+  if(!x)return{err:'Tell me what to show it by, for example "revenue by month" or "profit by region".'};
+  if(!type)type=DATE.includes(x)?'line':'bar';
+  const cfg={x,ys:type==='pie'||type==='doughnut'?[ys[0]]:ys,type,agg:'auto'};if(g)cfg.g=g;else if(DATE.includes(x)&&type!=='scatter')cfg.g='month';
+  const bad=validate(cfg);return bad?{err:bad+' Try a different chart type.'}:{cfg};
+}
+function hask(raw){
+  const q=HN(raw);if(!q)return;hsay(raw,'u');
+  const has=rows.length>0;
+  const sample=['Load a sample',()=>{$('sample').click();$('helper').hidden=true}];
+  if(/(explain|summary|summar|insight|analy|samjh|overview|my data)/.test(q)){if(!has)return hsay('Upload a file or load a sample first, then I can explain your data.','b',[sample]);return hsay(facts().map(f=>(f.ok?'\u2713 ':'! ')+f.t).join('\n'),'b')}
+  if(/(check|mistake|error|galat|wrong|audit|verify|reconcil)/.test(q)&&!/(why|blocked)/.test(q)){if(!has)return hsay('Upload a file first and I will check it for accounting mistakes.','b',[sample]);const c=accChecks();return hsay(c.length?c.map(f=>(f.ok?'\u2713 ':'! ')+f.t).join('\n'):'I did not find a specific accounting check to run on these columns. I looked for profit, variance, debit/credit, repeated invoice numbers and total rows.','b')}
+  if(/(chart|plot|graph|show|banao|bana|dikhao|dikha|draw|create|add| by | vs |wise|trend|compare)/.test(' '+q+' ')){
+    if(!has){const kb=KB.find(e=>e.k.some(w=>q.includes(w)));if(kb)return hsay(kb.a,'b');return hsay('Upload a file first, then I can build that chart for you.','b',[sample])}
+    const r=parseChart(q);
+    if(r){if(r.err)return hsay(r.err,'b');addChart(r.cfg);$('charts').scrollIntoView({behavior:'smooth'});return hsay('Done. I added "'+ctt(r.cfg)+'" ('+TN[r.cfg.type]+'). Find it at the end of your charts. You can rename it or change its type there.','b',[['Take me to it',()=>{$('helper').hidden=true;$('charts').lastElementChild&&$('charts').lastElementChild.scrollIntoView({behavior:'smooth'})}]])}
+  }
+  const sc=KB.map(e=>[e,e.k.reduce((a,w)=>a+(q.includes(w)?w.length:0),0)]).sort((a,b)=>b[1]-a[1])[0];
+  if(sc&&sc[1]>0)return hsay(sc[0].a,'b');
+  hsay('I am not sure about that yet. You can ask me things like:\n- Explain my data\n- Check my accounting\n- Show revenue by month\n- Profit by region as a pie\n- What is gross margin?','b');
+}
+function helperChips(){const c=['Explain my data','Check my accounting','Which chart should I use?','How do I start?','What is gross margin?','Why is my chart blocked?'];if(rows.length&&ACC.roles.revenue)c.splice(2,0,'Show '+ACC.roles.revenue+' by month');
+  $('hchips').innerHTML='';c.forEach(t=>{const b=document.createElement('button');b.className='chip q';b.textContent=t;b.onclick=()=>hask(t);$('hchips').appendChild(b)})}
+let hOpen=false;
+function openHelper(){$('helper').hidden=false;if(!hOpen){hOpen=true;hsay('Hi! I am the Chartzen Helper. I can build charts from plain words, check your accounting and explain finance terms. I run on your device, so your data stays private.','b')}helperChips();$('hin').focus()}
+$('helpBtn').onclick=()=>$('helper').hidden?openHelper():($('helper').hidden=true);
+$('hx').onclick=()=>{$('helper').hidden=true};
+$('hform').onsubmit=e=>{e.preventDefault();const v=$('hin').value;$('hin').value='';hask(v)};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('helper').hidden)$('helper').hidden=true});
+$('sampleSel').addEventListener('change',()=>{});
+/* ===== reliability + daily use ===== */
+const IDB={
+  open(){return new Promise((res,rej)=>{const r=indexedDB.open('chartzen',1);r.onupgradeneeded=()=>r.result.createObjectStore('ws');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})},
+  async tx(mode,fn){const db=await this.open();return new Promise((res,rej)=>{const t=db.transaction('ws',mode),q=fn(t.objectStore('ws'));t.oncomplete=()=>{db.close();res(q&&q.result)};t.onerror=()=>{db.close();rej(t.error)};t.onabort=()=>{db.close();rej(t.error)}})},
+  set(k,v){return this.tx('readwrite',st=>st.put(v,k))},
+  all(){return this.tx('readonly',st=>st.getAll())},
+  del(k){return this.tx('readwrite',st=>st.delete(k))},
+  clear(){return this.tx('readwrite',st=>st.clear())}
+};
+var saveT=null;
+function queueSave(){clearTimeout(saveT);saveT=setTimeout(saveWS,700)}
+async function saveWS(){
+  if(!curData||!curData.length||/^Sample /.test(fname))return;
+  if(curData.length*Object.keys(curData[0]).length>2e6){$('svd').textContent='File too large to save on this device';return}
+  try{
+    await IDB.set(fname,{name:fname,sheet:$('sheet').value,savedAt:Date.now(),data:curData,charts:charts.map(c=>JSON.parse(JSON.stringify(c.cfg))),er:ER,fn:FN});
+    const all=(await IDB.all()).sort((a,b)=>b.savedAt-a.savedAt);for(const o of all.slice(3))await IDB.del(o.name);
+    $('svd').textContent='Saved on this device';
+  }catch(e){console.warn('Autosave unavailable',e);$('svd').textContent=''}
+}
+const ago=ms=>{const m=Math.round((Date.now()-ms)/6e4);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' days ago'};
+async function showRecent(){
+  try{
+    const all=(await IDB.all()).sort((a,b)=>b.savedAt-a.savedAt).slice(0,3),w=$('welcome');
+    if(!all.length){w.hidden=true;return}
+    w.innerHTML='<h2 class="st" style="margin-top:0">Continue where you left off</h2><div class="recent"></div><p class="cap">Saved only on this device. <button class="lnk" id="forget">Forget saved files</button></p>';
+    const box=w.querySelector('.recent');
+    all.forEach(o=>{const d=document.createElement('div');d.className='rc';d.innerHTML='<div><b></b><span></span></div><button class="btn">Open</button>';
+      d.querySelector('b').textContent=o.name;d.querySelector('span').textContent=o.data.length.toLocaleString()+' rows, saved '+ago(o.savedAt);
+      d.querySelector('button').onclick=()=>{busy(true,'Opening '+o.name+'...');setTimeout(()=>{try{wb=null;fname=o.name;ER=o.er||0;FN=o.fn||0;loadNote='';$('sheet').innerHTML='<option>'+esc(o.sheet||'Sheet1')+'</option>';ingest(o.data,{charts:o.charts})}catch(e){console.error(e);busy(false);toast('Could not open that saved file.')}},30)};
+      box.appendChild(d)});
+    w.hidden=false;$('forget').onclick=forgetAll;
+  }catch(e){}
+}
+async function forgetAll(){try{await IDB.clear()}catch(e){}$('welcome').hidden=true;$('svd').textContent='';toast('Saved files removed from this device.')}
+function moveChart(it,d){const i=charts.indexOf(it),j=i+d;if(j<0||j>=charts.length)return;[charts[i],charts[j]]=[charts[j],charts[i]];charts.forEach(c=>$('charts').appendChild(c.el));charts.forEach(c=>c.chart.resize());it.el.scrollIntoView({block:'center',behavior:'smooth'});queueSave()}
+function dupChart(it){const c=JSON.parse(JSON.stringify(it.cfg));c.title=(it.cfg.title||ctt(it.cfg))+' (copy)';addChart(c);const n=charts.pop();charts.splice(charts.indexOf(it)+1,0,n);charts.forEach(x=>$('charts').appendChild(x.el));charts.forEach(x=>x.chart.resize());toast('Chart copied. Rename it or change its type.');queueSave()}
+/* command menu */
+const openBox=id=>{const d=$(id);if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}};
+const runSample=k=>{$('sampleSel').value=k;$('sample').click()};
+const CMDS=()=>[
+  ['Upload a file',()=>file.click()],['Try sample: Sales',()=>runSample('sales')],['Try sample: Profit & loss',()=>runSample('pl')],['Try sample: Budget vs actual',()=>runSample('bva')],['Try sample: Trial balance',()=>runSample('tb')],['Try sample: Receivables ageing',()=>runSample('age')],
+  ['Download PDF report',()=>$('xpdf').click()],['Download Excel',()=>$('xxls').click()],['Download CSV',()=>$('xcsv').click()],['Print this page',()=>window.print()],
+  ['Ask Helper',()=>openHelper()],['Make your own chart',()=>openBox('builderBox')],['Settings',()=>openBox('settingsBox')],['See your data',()=>openBox('dataBox')],
+  ['Toggle dark mode',()=>$('theme').click()],['Forget saved files',forgetAll]];
+let cSel=0,cList=[];
+function cRender(){const q=HN($('cin').value);cList=CMDS().filter(c=>!q||HN(c[0]).includes(q));cSel=Math.min(cSel,Math.max(0,cList.length-1));
+  $('clist').innerHTML='';cList.forEach((c,i)=>{const li=document.createElement('li');li.textContent=c[0];li.setAttribute('role','option');if(i===cSel)li.className='on';li.onclick=()=>cRun(i);$('clist').appendChild(li)});
+  if(!cList.length){const li=document.createElement('li');li.textContent='No match. Try "pdf", "sample" or "dark".';$('clist').appendChild(li)}}
+function cRun(i){const c=cList[i];if(!c)return;closeCmd();setTimeout(c[1],50)}
+function openCmd(){$('cmd').hidden=false;$('cin').value='';cSel=0;cRender();$('cin').focus()}
+function closeCmd(){$('cmd').hidden=true}
+$('cmdBtn').onclick=openCmd;
+$('cin').oninput=()=>{cSel=0;cRender()};
+$('cin').onkeydown=e=>{if(e.key==='ArrowDown'){e.preventDefault();cSel=Math.min(cList.length-1,cSel+1);cRender()}else if(e.key==='ArrowUp'){e.preventDefault();cSel=Math.max(0,cSel-1);cRender()}else if(e.key==='Enter'){e.preventDefault();cRun(cSel)}};
+$('cmd').onclick=e=>{if(e.target===$('cmd'))closeCmd()};
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('cmd').hidden?openCmd():closeCmd()}else if(e.key==='Escape'&&!$('cmd').hidden)closeCmd()});
+/* drop a file anywhere on the page */
+document.addEventListener('dragover',e=>e.preventDefault());
+document.addEventListener('drop',e=>{e.preventDefault();if(e.target.closest&&e.target.closest('#drop'))return;const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)read(f)});
+showRecent();
 </script>
 </body>
 </html>
