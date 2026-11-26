@@ -332,6 +332,47 @@ details.inner{margin:14px 0 0;padding:0;border-radius:16px}
   .grid{grid-template-columns:1fr}
   .cc,.kpi,.panel{box-shadow:none!important;background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;break-inside:avoid;border:1px solid #ddd!important}
 }
+/* ===== refined dark theme ===== */
+:root[data-theme="dark"]{--bg:#0a0f18;--ink:#e9eef6;--mute:#96a5b9;--acc:#43d9b0;--accsoft:rgba(67,217,176,.14);--card:rgba(255,255,255,.055);--line:rgba(255,255,255,.10);--grid:rgba(255,255,255,.08);--sep:rgba(255,255,255,.09);--hl:rgba(255,255,255,.05);--edge:rgba(255,255,255,.12);--sh:rgba(0,0,0,.5);--field:rgba(255,255,255,.07);--thbg:rgba(16,23,35,.97);color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0f18;--ink:#e9eef6;--mute:#96a5b9;--acc:#43d9b0;--accsoft:rgba(67,217,176,.14);--card:rgba(255,255,255,.055);--line:rgba(255,255,255,.10);--grid:rgba(255,255,255,.08);--sep:rgba(255,255,255,.09);--hl:rgba(255,255,255,.05);--edge:rgba(255,255,255,.12);--sh:rgba(0,0,0,.5);--field:rgba(255,255,255,.07);--thbg:rgba(16,23,35,.97);color-scheme:dark}}
+:root[data-theme="dark"] body::before{background:radial-gradient(46vw 46vw at 6% 4%,rgba(67,217,176,.13),transparent 70%),radial-gradient(48vw 48vw at 96% 14%,rgba(88,130,255,.11),transparent 70%),radial-gradient(44vw 44vw at 70% 96%,rgba(130,110,255,.08),transparent 70%)}
+:root[data-theme="dark"] .btn:not(.ghost):not(.on),:root[data-theme="dark"] .chip.on,:root[data-theme="dark"] .nav a.cta,:root[data-theme="dark"] .m.u,:root[data-theme="dark"] .tagp{color:#04261d}
+:root[data-theme="dark"] .btn:not(.ghost){background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 55%),var(--acc);border-color:rgba(255,255,255,.25);box-shadow:0 6px 18px rgba(67,217,176,.18),inset 0 1px 0 rgba(255,255,255,.4)}
+:root[data-theme="dark"] .btn.on{color:#2b1d00}
+:root[data-theme="dark"] .chip.on{background:var(--acc);border-color:var(--acc)}
+:root[data-theme="dark"] .kpi::after,:root[data-theme="dark"] .panel::after,:root[data-theme="dark"] .steps div::after,:root[data-theme="dark"] details::after{background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.06),transparent 65%)}
+:root[data-theme="dark"] .badge.ok{background:rgba(67,217,176,.16)}
+:root[data-theme="dark"] .badge.mid{background:rgba(240,190,80,.18);color:#f0c14e}
+:root[data-theme="dark"] .badge.bad{background:rgba(255,122,102,.16);color:#ff8a78}
+:root[data-theme="dark"] .ic.ok{background:rgba(67,217,176,.16)}
+:root[data-theme="dark"] .ic.wn{background:rgba(240,190,80,.2);color:#f0c14e}
+:root[data-theme="dark"] .dl.dn{color:#ff8a78}
+:root[data-theme="dark"] select option,:root[data-theme="dark"] select optgroup{background:#121a27;color:#e9eef6}
+:root[data-theme="dark"] ::placeholder{color:#7d8da3;opacity:1}
+:root[data-theme="dark"] .drop{border-color:rgba(255,255,255,.16)}
+:root[data-theme="dark"] .nav div{background:rgba(255,255,255,.06)}
+:root[data-theme="dark"] #helper,:root[data-theme="dark"] .cbox{background:#0f1622}
+:root[data-theme="dark"] .m.b{background:rgba(255,255,255,.06)}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) body::before{background:radial-gradient(46vw 46vw at 6% 4%,rgba(67,217,176,.13),transparent 70%),radial-gradient(48vw 48vw at 96% 14%,rgba(88,130,255,.11),transparent 70%),radial-gradient(44vw 44vw at 70% 96%,rgba(130,110,255,.08),transparent 70%)}
+:root:not([data-theme="light"]) .btn:not(.ghost):not(.on),:root:not([data-theme="light"]) .chip.on,:root:not([data-theme="light"]) .nav a.cta,:root:not([data-theme="light"]) .m.u,:root:not([data-theme="light"]) .tagp{color:#04261d}
+:root:not([data-theme="light"]) .btn:not(.ghost){background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 55%),var(--acc);border-color:rgba(255,255,255,.25);box-shadow:0 6px 18px rgba(67,217,176,.18),inset 0 1px 0 rgba(255,255,255,.4)}
+:root:not([data-theme="light"]) .btn.on{color:#2b1d00}
+:root:not([data-theme="light"]) .chip.on{background:var(--acc);border-color:var(--acc)}
+:root:not([data-theme="light"]) .kpi::after,:root:not([data-theme="light"]) .panel::after,:root:not([data-theme="light"]) .steps div::after,:root:not([data-theme="light"]) details::after{background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.06),transparent 65%)}
+:root:not([data-theme="light"]) .badge.ok{background:rgba(67,217,176,.16)}
+:root:not([data-theme="light"]) .badge.mid{background:rgba(240,190,80,.18);color:#f0c14e}
+:root:not([data-theme="light"]) .badge.bad{background:rgba(255,122,102,.16);color:#ff8a78}
+:root:not([data-theme="light"]) .ic.ok{background:rgba(67,217,176,.16)}
+:root:not([data-theme="light"]) .ic.wn{background:rgba(240,190,80,.2);color:#f0c14e}
+:root:not([data-theme="light"]) .dl.dn{color:#ff8a78}
+:root:not([data-theme="light"]) select option,:root:not([data-theme="light"]) select optgroup{background:#121a27;color:#e9eef6}
+:root:not([data-theme="light"]) ::placeholder{color:#7d8da3;opacity:1}
+:root:not([data-theme="light"]) .drop{border-color:rgba(255,255,255,.16)}
+:root:not([data-theme="light"]) .nav div{background:rgba(255,255,255,.06)}
+:root:not([data-theme="light"]) #helper,:root:not([data-theme="light"]) .cbox{background:#0f1622}
+:root:not([data-theme="light"]) .m.b{background:rgba(255,255,255,.06)}
+}
 </style>
 </head>
 <body>
@@ -545,8 +586,8 @@ function build(cv,cfg,light){
   const rcol=L.map((l,i)=>String(l).startsWith('Others')?'#94a3b8':PALX[i%PALX.length]);
   const t=light?'#5d6f84':css('--mute'),g=light?'#e6ecf1':css('--grid');
   const dual=!round&&!['hbar','stacked','stack100','waterfall','hist','pareto','variance','radar'].includes(cfg.type)&&new Set(cfg.ys.map(y=>FAM[y])).size>1;
-  const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:rcol,borderColor:light?'#fff':css('--card'),borderWidth:2}
-    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:['area','cumulative','radar'].includes(cfg.type),tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:window.innerWidth<640?3:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--card'),pointBorderWidth:2,borderRadius:6});
+  const ds=D.map((d,i)=>round?{label:cfg.ys[0],data:d,backgroundColor:rcol,borderColor:light?'#fff':css('--bg'),borderWidth:2}
+    :{label:cfg.ys[i],col:cfg.ys[i],yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',type:cfg.type==='combo'&&i>0?'line':undefined,data:d,borderColor:PAL[i%8],backgroundColor:BARS.includes(cfg.type)?PAL[i%8]:grad(PAL[i%8]),fill:['area','cumulative','radar'].includes(cfg.type),tension:.3,borderWidth:BARS.includes(cfg.type)&&!(cfg.type==='combo'&&i>0)?0:3,pointRadius:L.length>40?0:window.innerWidth<640?3:4,pointHoverRadius:7,pointBackgroundColor:light?'#fff':css('--bg'),pointBorderWidth:2,borderRadius:6});
   if(cfg.tr&&!round&&cfg.type!=='hbar')D.forEach((d,i)=>{const n=d.length;if(n>2){let sx=0,sy=0,sxy=0,sxx=0;d.forEach((y,k)=>{sx+=k;sy+=y;sxy+=k*y;sxx+=k*k});const b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a=(sy-b*sx)/n;ds.push({label:cfg.ys[i]+' trend',data:d.map((_,k)=>a+b*k),type:'line',yAxisID:dual&&FAM[cfg.ys[i]]!==FAM[cfg.ys[0]]?'y2':'y',borderColor:PAL[i%8],borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false,backgroundColor:'transparent'})}});
   const small=window.innerWidth<640,sp=cfg.type,yk=sp==='hist'?'#count':cfg.ys[0];
   if(sp==='pareto'){const d=D[0],tot=d.reduce((a,b)=>a+b,0)||1;let r=0;ds.length=1;ds.push({label:'Cumulative %',type:'line',yAxisID:'y2',pct:true,order:-1,datalabels:{align:'right',offset:8},data:d.map(v=>(r+=v)/tot*100),borderColor:PALX[2],backgroundColor:PALX[2],borderWidth:3,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2,tension:.2})}
@@ -576,7 +617,7 @@ function build(cv,cfg,light){
     align:c=>round||stk?'center':isLine(c)?'top':'end',
     offset:c=>isLine(c)?6:4,
     color:c=>round||stk?'#fff':ink,
-    backgroundColor:c=>isLine(c)&&!round?(light?'rgba(255,255,255,.88)':'rgba(20,35,56,.72)'):null,
+    backgroundColor:c=>isLine(c)&&!round?(light?'rgba(255,255,255,.88)':'rgba(10,15,24,.78)'):null,
     borderRadius:5,padding:{top:2,bottom:2,left:5,right:5},clip:false,
     font:{size:round?13:11,weight:'700'}
   };
@@ -793,7 +834,7 @@ $('xsave').onclick=()=>!isPro()?gateMsg('Saving dashboards is a Pro feature. Cli
 $('xload').onclick=()=>isPro()?$('cfgfile').click():gateMsg('Loading dashboards is a Pro feature. Click to see Pro.');
 $('cfgfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;f.text().then(t=>{try{const j=JSON.parse(t);if(!rows.length)return toast('Load your data file first, then load the dashboard.');const ok=j.charts.filter(c=>cols.includes(c.x)&&c.ys.every(y=>cols.includes(y))&&(!c.f||cols.includes(c.f.c)));if(j.NF){NF.cur=j.NF.cur||'';NF.sys=j.NF.sys||'in';$('cur').value=NF.cur;$('nsys').value=NF.sys;kpis();insights()}charts.forEach(c=>c.chart.destroy());charts=[];$('charts').innerHTML='';ok.forEach(c=>addChart(c));toast(ok.length+' of '+j.charts.length+' charts restored')}catch(err){toast('That is not a valid Chartzen dashboard file.')}})};
 function rebuild(){charts.forEach(c=>{c.chart.destroy();c.chart=build(c.el.querySelector('canvas'),c.cfg)})}
-matchMedia('(prefers-color-scheme:dark)').addEventListener('change',rebuild);
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{applyPal($('pal').value);rebuild()});
 var fname='Chartzen report';
 function toast(t){toastGate=false;const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2800)}
 async function save(name,data){
@@ -803,7 +844,8 @@ async function save(name,data){
 }
 const slug=s=>String(s).replace(/[^\w]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'chart';
 const ctitle=it=>ctt(it.cfg);
-function shot(it){
+function shot(it){applyPal($('pal').value,'light');try{return shot0(it)}finally{applyPal($('pal').value)}}
+function shot0(it){
   const c=document.createElement('canvas');c.width=1200;c.height=640;
   const ch=build(c,it.cfg,true);ch.update('none');
   const o=document.createElement('canvas');o.width=1200;o.height=640;
@@ -876,7 +918,7 @@ $('xxls').onclick=()=>{if(!isPro())return gateMsg('Excel export is a Pro feature
 };
 $('xcsv').onclick=()=>rows.length?save(slug(fname)+'-clean.csv',csv([cols].concat(rows.map(r=>cols.map(c=>r[c]))))):toast('Load a file first.');
 const isDark=()=>document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
-function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem('cz-theme',t)}catch(e){}rebuild();$('theme').textContent=isDark()?'Light mode':'Dark mode'}
+function setTheme(t){document.documentElement.dataset.theme=t;document.documentElement.dataset.theme=t;try{localStorage.setItem('cz-theme',t)}catch(e){}applyPal($('pal').value);rebuild();$('theme').textContent=isDark()?'Light mode':'Dark mode'}
 $('theme').onclick=()=>setTheme(isDark()?'light':'dark');
 try{const s=localStorage.getItem('cz-theme');if(s)document.documentElement.dataset.theme=s}catch(e){}
 $('theme').textContent=isDark()?'Light mode':'Dark mode';
@@ -896,7 +938,9 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'&&
 addEventListener('error',e=>{console.error(e.error||e.message);busy(false);toast('Something went wrong. Your data is safe, please try again.')});
 addEventListener('unhandledrejection',()=>toast('Something went wrong. Please try again.'));
 const PALS={default:['#0b8f6c','#2f6fdb','#e0a526','#d8503f','#7a5cc7','#17a2b8','#8a9a5b','#c2557a'],ocean:['#0a4f8f','#1593c8','#4cc9d9','#6a8cff','#2a3f9e','#89d4e6','#3b6fb6','#1d2b64'],sunset:['#d8503f','#f08a24','#e0a526','#b83280','#7a3b9e','#f2b5a0','#c2410c','#7c2d12'],mono:['#10243e','#3b5575','#6b86a6','#9fb3c8','#1f6f6b','#5d8f8c','#c2cfdc','#364b63']};
-const applyPal=n=>PALS[n].forEach((c,i)=>{PAL[i]=c;PALX[i]=c});
+const isDk=()=>document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+const lift=h=>{const n=parseInt(h.slice(1),16),m=v=>Math.round(v+(255-v)*.28);return '#'+[(n>>16)&255,(n>>8)&255,n&255].map(m).map(v=>v.toString(16).padStart(2,'0')).join('')};
+const applyPal=(n,mode)=>PALS[n].forEach((c,i)=>{const v=mode!=='light'&&isDk()?lift(c):c;PAL[i]=v;PALX[i]=v});
 const savePrefs=()=>{try{localStorage.setItem('cz-prefs',JSON.stringify({cur:$('cur').value,sys:$('nsys').value,pal:$('pal').value}))}catch(e){}};
 $('pal').onchange=()=>{applyPal($('pal').value);savePrefs();rebuild()};
 $('cur').addEventListener('change',savePrefs);$('nsys').addEventListener('change',savePrefs);
@@ -1056,6 +1100,7 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
 /* drop a file anywhere on the page */
 document.addEventListener('dragover',e=>e.preventDefault());
 document.addEventListener('drop',e=>{e.preventDefault();if(e.target.closest&&e.target.closest('#drop'))return;const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)read(f)});
+applyPal($('pal').value||'default');
 showRecent();
 </script>
 </body>
